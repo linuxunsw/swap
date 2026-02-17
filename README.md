@@ -1,26 +1,12 @@
-# sv
+# swap 📝
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
-
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```sh
-# create a new project
-npx sv create my-app
-```
-
-To recreate this project with the same configuration:
-
-```sh
-# recreate this project
-pnpm dlx sv create --template minimal --types ts --add prettier eslint vitest="usages:unit" tailwindcss="plugins:none" better-auth="demo:none" drizzle="database:sqlite+sqlite:libsql" --install pnpm subcom-application
-```
+Linux Society's portal for managing subcommittee applications.
 
 ## Developing
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+Install dependencies with `pnpm install`.
+
+Afterwards you can start a development server:
 
 ```sh
 npm run dev
@@ -39,4 +25,6 @@ npm run build
 
 You can preview the production build with `npm run preview`.
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+## CI/CD
+
+The `main` branch is automatically deployed to Cloudflare Workers.
