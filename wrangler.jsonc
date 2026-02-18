@@ -22,7 +22,8 @@
 		{
 			"binding": "DB",
 			"database_name": "swap-db",
-			"database_id": "a3981fe9-7e95-4e93-b1dc-21d072128f5b"
+			"database_id": "a3981fe9-7e95-4e93-b1dc-21d072128f5b",
+			"migrations_dir": "./src/lib/server/db/migrations"
 		}
 	]
 	/**

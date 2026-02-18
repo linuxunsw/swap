@@ -6,7 +6,7 @@ import { env } from '$env/dynamic/private';
 
 export function getDb() {
 	if (env.DB) {
-		return drizzleD1(env.DB as any);
+		return drizzleD1(env.DB as any, { schema });
 	}
 
 	if (env.DATABASE_URL) {
@@ -16,5 +16,3 @@ export function getDb() {
 
 	throw new Error('No valid db config!');
 }
-
-export type DrizzleClient = ReturnType<typeof getDb>;
