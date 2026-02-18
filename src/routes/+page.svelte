@@ -9,6 +9,8 @@
 <p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
 
 <h1>name: {data.user.name}</h1>
+<h1>zid: {data.user.zid}</h1>
+<h1>role: {data.user.role}</h1>
 <h1>email: {data.user.email}</h1>
 <h1>verified email: {data.user.emailVerified}</h1>
 <h1>user id: {data.user.id}</h1>

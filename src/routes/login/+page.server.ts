@@ -3,6 +3,7 @@ import type { Actions } from './$types';
 import type { PageServerLoad } from './$types';
 import { auth } from '$lib/server/auth';
 import { APIError } from 'better-auth';
+import { ZID_REGEX } from '$lib/server/utils';
 
 export const load: PageServerLoad = async (event) => {
 	if (event.locals.user) {
@@ -15,6 +16,10 @@ export const actions: Actions = {
 	sendOTP: async (event) => {
 		const formData = await event.request.formData();
 		const zid = formData.get('zid')?.toString() ?? '';
+
+		if (!ZID_REGEX.test(zid)) {
+			return fail(400, { message: 'Invalid zID' });
+		}
 
 		try {
 			await auth.api.sendVerificationOTP({
@@ -29,11 +34,17 @@ export const actions: Actions = {
 			}
 			return fail(500, { message: 'Unexpected error' });
 		}
+
+		return { message: 'OTP Sent Successfully' };
 	},
 	signInOTP: async (event) => {
 		const formData = await event.request.formData();
 		const zid = formData.get('zid')?.toString() ?? '';
 		const otp = formData.get('otp')?.toString() ?? '';
+
+		if (!ZID_REGEX.test(zid)) {
+			return fail(400, { message: 'Invalid zID' });
+		}
 
 		try {
 			await auth.api.signInEmailOTP({

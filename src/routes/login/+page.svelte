@@ -5,6 +5,7 @@
 </script>
 
 <h1>login</h1>
+<p>{form?.message ?? ''}</p>
 <div>
 	<form method="post" action="?/sendOTP" use:enhance>
 		<label>
