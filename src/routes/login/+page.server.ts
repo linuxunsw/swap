@@ -1,25 +1,39 @@
 import { fail, redirect } from '@sveltejs/kit';
-import type { Actions } from './$types';
-import type { PageServerLoad } from './$types';
+import type { Actions, PageServerLoad } from './$types';
 import { auth } from '$lib/server/auth';
 import { APIError } from 'better-auth';
+import { superValidate, message } from 'sveltekit-superforms';
+import { zod4 } from 'sveltekit-superforms/adapters';
+import { sendOTPSchema, signInSchema } from './schema';
 import { ZID_REGEX } from '$lib/server/utils';
 
 export const load: PageServerLoad = async (event) => {
 	if (event.locals.user) {
 		return redirect(302, '/');
 	}
-	return {};
+
+	const zid = event.url.searchParams.get('zid') ?? '';
+	const hasValidZid = ZID_REGEX.test(zid);
+
+	const sendOTPForm = await superValidate(zod4(sendOTPSchema));
+	const signInForm = await superValidate(zod4(signInSchema));
+
+	if (hasValidZid) {
+		sendOTPForm.data.zid = zid;
+		signInForm.data.zid = zid;
+	}
+
+	return { sendOTPForm, signInForm, step: hasValidZid ? 2 : 1 };
 };
 
 export const actions: Actions = {
 	sendOTP: async (event) => {
-		const formData = await event.request.formData();
-		const zid = formData.get('zid')?.toString() ?? '';
-
-		if (!ZID_REGEX.test(zid)) {
-			return fail(400, { message: 'Invalid zID' });
+		const form = await superValidate(event, zod4(sendOTPSchema));
+		if (!form.valid) {
+			return fail(400, { form });
 		}
+
+		const zid = form.data.zid;
 
 		try {
 			await auth.api.sendVerificationOTP({
@@ -30,36 +44,35 @@ export const actions: Actions = {
 			});
 		} catch (error) {
 			if (error instanceof APIError) {
-				return fail(400, { message: error.message || 'sendOTP failed' });
+				return message(form, error.message || 'Failed to send OTP', { status: 400 });
 			}
-			return fail(500, { message: 'Unexpected error' });
+			return message(form, 'Unexpected error', { status: 500 });
 		}
 
-		return { message: 'OTP Sent Successfully' };
+		redirect(303, `/login?zid=${zid}`);
 	},
 	signInOTP: async (event) => {
-		const formData = await event.request.formData();
-		const zid = formData.get('zid')?.toString() ?? '';
-		const otp = formData.get('otp')?.toString() ?? '';
-
-		if (!ZID_REGEX.test(zid)) {
-			return fail(400, { message: 'Invalid zID' });
+		const form = await superValidate(event, zod4(signInSchema));
+		if (!form.valid) {
+			return fail(400, { form });
 		}
+
+		const { zid, otp } = form.data;
 
 		try {
 			await auth.api.signInEmailOTP({
 				body: {
 					email: `${zid}@unsw.edu.au`,
-					otp: otp
+					otp
 				}
 			});
 		} catch (error) {
 			if (error instanceof APIError) {
-				return fail(400, { message: error.message || 'signInOTP failed' });
+				return message(form, error.message || 'Failed to sign in', { status: 400 });
 			}
-			return fail(500, { message: 'Unexpected error' });
+			return message(form, 'Unexpected error', { status: 500 });
 		}
 
-		return redirect(302, '/');
+		redirect(302, '/');
 	}
 };

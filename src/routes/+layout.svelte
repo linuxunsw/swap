@@ -1,6 +1,7 @@
 <script lang="ts">
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
+	import { ModeWatcher } from "mode-watcher";
 
 	let { children } = $props();
 </script>
@@ -27,4 +28,6 @@
 	<meta name="twitter:description" content="The subcommittee web application portal for the Linux Society @ UNSW.">
 	<meta name="twitter:image" content="https://swap.linuxunsw.org/og-image.png">
 </svelte:head>
+
+<ModeWatcher />
 {@render children()}
