@@ -4,7 +4,7 @@ import { sveltekitCookies } from 'better-auth/svelte-kit';
 import { env } from '$env/dynamic/private';
 import { getRequestEvent } from '$app/server';
 import { emailOTP } from 'better-auth/plugins';
-import { getDb, getSecondaryStorage } from '$lib/server/db';
+import { getDb } from '$lib/server/db';
 import { APIError, type User } from 'better-auth';
 import { ZID_REGEX, zidIsAdmin } from './utils';
 
