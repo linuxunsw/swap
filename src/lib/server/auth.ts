@@ -4,7 +4,7 @@ import { sveltekitCookies } from 'better-auth/svelte-kit';
 import { env } from '$env/dynamic/private';
 import { getRequestEvent } from '$app/server';
 import { emailOTP } from 'better-auth/plugins';
-import { getDb } from '$lib/server/db';
+import { getDb, getSecondaryStorage } from '$lib/server/db';
 import { APIError, type User } from 'better-auth';
 import { ZID_REGEX, zidIsAdmin } from './utils';
 
@@ -26,7 +26,8 @@ export const auth = betterAuth({
 				if (type === 'sign-in') {
 					console.log(`sending otp to ${email}: ${otp}`);
 				}
-			}
+			},
+			storeOTP: 'hashed'
 		}),
 		sveltekitCookies(getRequestEvent) // make sure this is the last plugin in the array
 	],
@@ -63,14 +64,6 @@ export const auth = betterAuth({
 					};
 				}
 			}
-			// delete: {
-			// 	before: async (user, _) => {
-			// 		if (user.role === 'admin') {
-			// 			return false;
-			// 		}
-			// 		return true;
-			// 	}
-			// }
 		}
 	},
 	telemetry: {
