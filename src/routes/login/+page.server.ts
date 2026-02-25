@@ -3,7 +3,7 @@ import type { Actions, PageServerLoad } from './$types';
 import { auth } from '$lib/server/auth';
 import { APIError } from 'better-auth';
 import { superValidate, message } from 'sveltekit-superforms';
-import { zod4 } from 'sveltekit-superforms/adapters';
+import { valibot } from 'sveltekit-superforms/adapters';
 import { sendOTPSchema, signInSchema } from './schema';
 import { ZID_REGEX } from '$lib/server/utils';
 import { enforceRateLimit } from '$lib/server/rate-limit';
@@ -16,8 +16,8 @@ export const load: PageServerLoad = async (event) => {
 	const zid = event.url.searchParams.get('zid') ?? '';
 	const hasValidZid = ZID_REGEX.test(zid);
 
-	const sendOTPForm = await superValidate(zod4(sendOTPSchema));
-	const signInForm = await superValidate(zod4(signInSchema));
+	const sendOTPForm = await superValidate(valibot(sendOTPSchema));
+	const signInForm = await superValidate(valibot(signInSchema));
 
 	if (hasValidZid) {
 		sendOTPForm.data.zid = zid;
@@ -34,7 +34,7 @@ export const actions: Actions = {
 			error(limit.status, { message: limit.message });
 		}
 
-		const form = await superValidate(event, zod4(sendOTPSchema));
+		const form = await superValidate(event, valibot(sendOTPSchema));
 		if (!form.valid) {
 			return fail(400, { form });
 		}
@@ -63,7 +63,7 @@ export const actions: Actions = {
 			error(limit.status, { message: limit.message });
 		}
 
-		const form = await superValidate(event, zod4(signInSchema));
+		const form = await superValidate(event, valibot(signInSchema));
 		if (!form.valid) {
 			return fail(400, { form });
 		}

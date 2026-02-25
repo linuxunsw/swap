@@ -5,13 +5,13 @@
 	import { REGEXP_ONLY_DIGITS } from 'bits-ui';
 	import { signInSchema, type SignInSchema } from './schema';
 	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
-	import { zod4Client } from 'sveltekit-superforms/adapters';
+	import { valibotClient } from 'sveltekit-superforms/adapters';
 
 	let { data }: { data: SuperValidated<Infer<SignInSchema>> } = $props();
 
 	// svelte-ignore state_referenced_locally
 	const form = superForm(data, {
-		validators: zod4Client(signInSchema),
+		validators: valibotClient(signInSchema),
 		onError: ({ result }) => {
 			if (result.error) {
 				$message = result.error.message || 'Unknown error';

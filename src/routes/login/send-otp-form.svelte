@@ -3,13 +3,13 @@
 	import { Input } from '$lib/components/ui/input/index.js';
 	import { sendOTPSchema, type SendOTPSchema } from './schema';
 	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
-	import { zod4Client } from 'sveltekit-superforms/adapters';
+	import { valibotClient } from 'sveltekit-superforms/adapters';
 
 	let { data }: { data: SuperValidated<Infer<SendOTPSchema>> } = $props();
 
 	// svelte-ignore state_referenced_locally
 	const form = superForm(data, {
-		validators: zod4Client(sendOTPSchema),
+		validators: valibotClient(sendOTPSchema),
 		onError: ({ result }) => {
 			if (result.error) {
 				$message = result.error.message || 'Unknown error';
