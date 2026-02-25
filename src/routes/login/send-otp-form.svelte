@@ -9,7 +9,12 @@
 
 	// svelte-ignore state_referenced_locally
 	const form = superForm(data, {
-		validators: zod4Client(sendOTPSchema)
+		validators: zod4Client(sendOTPSchema),
+		onError: ({ result }) => {
+			if (result.error) {
+				$message = result.error.message || 'Unknown error';
+			}
+		}
 	});
 
 	const { form: formData, enhance, message } = form;
@@ -28,9 +33,8 @@
 	</Form.Field>
 
 	{#if $message}
-		<p class="text-sm text-destructive mt-2">{$message}</p>
+		<p class="mt-2 text-sm text-destructive">{$message}</p>
 	{/if}
 
 	<Form.Button class="mt-4 w-full">Send OTP</Form.Button>
 </form>
-

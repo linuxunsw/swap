@@ -1,4 +1,4 @@
-import { fail, redirect } from '@sveltejs/kit';
+import { error, fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { auth } from '$lib/server/auth';
 import { APIError } from 'better-auth';
@@ -6,6 +6,7 @@ import { superValidate, message } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 import { sendOTPSchema, signInSchema } from './schema';
 import { ZID_REGEX } from '$lib/server/utils';
+import { enforceRateLimit } from '$lib/server/rate-limit';
 
 export const load: PageServerLoad = async (event) => {
 	if (event.locals.user) {
@@ -28,6 +29,11 @@ export const load: PageServerLoad = async (event) => {
 
 export const actions: Actions = {
 	sendOTP: async (event) => {
+		const limit = await enforceRateLimit(event, 'MAIL_RATE_LIMIT');
+		if (!limit.allowed) {
+			error(limit.status, { message: limit.message });
+		}
+
 		const form = await superValidate(event, zod4(sendOTPSchema));
 		if (!form.valid) {
 			return fail(400, { form });
@@ -52,6 +58,11 @@ export const actions: Actions = {
 		redirect(303, `/login?zid=${zid}`);
 	},
 	signInOTP: async (event) => {
+		const limit = await enforceRateLimit(event, 'AUTH_RATE_LIMIT');
+		if (!limit.allowed) {
+			error(limit.status, { message: limit.message });
+		}
+
 		const form = await superValidate(event, zod4(signInSchema));
 		if (!form.valid) {
 			return fail(400, { form });

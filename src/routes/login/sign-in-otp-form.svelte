@@ -11,7 +11,12 @@
 
 	// svelte-ignore state_referenced_locally
 	const form = superForm(data, {
-		validators: zod4Client(signInSchema)
+		validators: zod4Client(signInSchema),
+		onError: ({ result }) => {
+			if (result.error) {
+				$message = result.error.message || 'Unknown error';
+			}
+		}
 	});
 
 	const { form: formData, enhance, message } = form;
@@ -22,7 +27,7 @@
 	<input type="hidden" name="zid" bind:value={$formData.zid} />
 
 	{#if $message}
-		<p class="text-sm text-destructive mt-0 mb-4">{$message}</p>
+		<p class="mt-0 mb-4 text-sm text-destructive">{$message}</p>
 	{/if}
 
 	<Form.Field {form} name="zid">
@@ -38,7 +43,12 @@
 		<Form.Control>
 			{#snippet children({ props })}
 				<Form.Label>One-Time Password</Form.Label>
-				<InputOTP.Root {...props} pattern={REGEXP_ONLY_DIGITS} maxlength={6} bind:value={$formData.otp}>
+				<InputOTP.Root
+					{...props}
+					pattern={REGEXP_ONLY_DIGITS}
+					maxlength={6}
+					bind:value={$formData.otp}
+				>
 					{#snippet children({ cells })}
 						<InputOTP.Group>
 							{#each cells as cell}
@@ -52,8 +62,6 @@
 		<Form.Description></Form.Description>
 		<Form.FieldErrors />
 	</Form.Field>
-
-
 
 	<Form.Button class="mt-4 w-full">Sign In</Form.Button>
 </form>
