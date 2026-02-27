@@ -2,6 +2,7 @@ import { error, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { auth } from '$lib/server/auth';
 import { enforceRateLimit } from '$lib/server/rate-limit';
+import { log } from '$lib/log';
 
 export const load: PageServerLoad = async (event) => {
 	if (!event.locals.user) {
@@ -20,6 +21,7 @@ export const actions: Actions = {
 		await auth.api.signOut({
 			headers: event.request.headers
 		});
+		log('info', 'page', 'sign_out', { userId: event.locals.user?.id });
 		return redirect(302, '/login');
 	}
 };

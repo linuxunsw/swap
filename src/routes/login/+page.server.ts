@@ -7,6 +7,7 @@ import { valibot } from 'sveltekit-superforms/adapters';
 import { sendOTPSchema, signInSchema } from './schema';
 import { ZID_REGEX } from '$lib/server/utils';
 import { enforceRateLimit } from '$lib/server/rate-limit';
+import { log } from '$lib/log';
 
 export const load: PageServerLoad = async (event) => {
 	if (event.locals.user) {
@@ -48,10 +49,13 @@ export const actions: Actions = {
 					type: 'sign-in'
 				}
 			});
+			log('info', 'login', 'otp_sent', { zid });
 		} catch (error) {
 			if (error instanceof APIError) {
+				log('warn', 'login', 'otp_send_failed', { zid, error: error.message });
 				return message(form, error.message || 'Failed to send OTP', { status: 400 });
 			}
+			log('error', 'login', 'otp_send_error', { zid, error: String(error) });
 			return message(form, 'Unexpected error', { status: 500 });
 		}
 
@@ -77,10 +81,13 @@ export const actions: Actions = {
 					otp
 				}
 			});
+			log('info', 'login', 'sign_in_success', { zid });
 		} catch (error) {
 			if (error instanceof APIError) {
+				log('warn', 'login', 'sign_in_failed', { zid, error: error.message });
 				return message(form, error.message || 'Failed to sign in', { status: 400 });
 			}
+			log('error', 'login', 'sign_in_error', { zid, error: String(error) });
 			return message(form, 'Unexpected error', { status: 500 });
 		}
 

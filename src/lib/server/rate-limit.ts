@@ -1,6 +1,7 @@
 import { env } from '$env/dynamic/private';
 import { dev } from '$app/environment';
 import type { RequestEvent } from '@sveltejs/kit';
+import { devOnly, log } from '$lib/log';
 
 /**
  * Cloudflare rate-limit binding names (declared in wrangler.jsonc)
@@ -51,10 +52,10 @@ export async function enforceRateLimit(
 
 	if (!limiter) {
 		if (dev) {
-			console.warn(`[rate-limit] Binding "${binding}" unavailable - skipping in dev`);
+			log('warn', 'rate_limit', 'binding_unavailable', { binding, env: 'dev' });
 			return { allowed: true };
 		}
-		console.error(`[rate-limit] Binding "${binding}" unavailable in production`);
+		log('error', 'rate_limit', 'binding_unavailable', { binding, env: 'production' });
 		return { allowed: false, status: 429, message: 'Service temporarily unavailable' };
 	}
 
@@ -63,7 +64,7 @@ export async function enforceRateLimit(
 
 	const { success } = await limiter.limit({ key: limitKey });
 	if (!success) {
-		console.warn(`[rate-limit] Denied (binding: ${binding}, ip: ${ip})`);
+		log('warn', 'rate_limit', 'denied', { binding, ip: devOnly(ip), key: devOnly(key) });
 		return { allowed: false, status: 429, message: 'Too many requests. Please try again later.' };
 	}
 
