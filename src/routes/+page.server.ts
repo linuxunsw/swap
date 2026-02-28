@@ -13,7 +13,7 @@ export const load: PageServerLoad = async (event) => {
 
 export const actions: Actions = {
 	signOut: async (event) => {
-		const limit = await enforceRateLimit(event, 'API_RATE_LIMIT');
+		const limit = await enforceRateLimit(event, 'AUTH_RATE_LIMIT');
 		if (!limit.allowed) {
 			error(limit.status, { message: limit.message });
 		}
