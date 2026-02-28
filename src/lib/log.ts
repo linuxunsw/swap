@@ -1,4 +1,8 @@
-import { dev } from '$app/environment';
+import { LOG_DEV_ONLY, LOG_DEBUG } from "$env/static/private";
+const dev = LOG_DEV_ONLY === 'true';
+const debug = LOG_DEBUG === 'true';
+
+log('info', 'log', 'init', { dev, debug });
 
 export type LogLevel = 'debug' | 'info' | 'warn' | 'error';
 
@@ -19,7 +23,7 @@ function resolveData(data: LogData): Record<string, unknown> {
 	const out: Record<string, unknown> = {};
 	for (const [k, v] of Object.entries(data)) {
 		if (v && typeof v === 'object' && DEV_ONLY in v) {
-			if (process.env.NODE_ENV === 'development') {
+			if (dev) {
 				out[k] = (v as DevOnly)[DEV_ONLY];
 			}
 		} else {
@@ -45,10 +49,8 @@ export function log(level: LogLevel, component: string, event: string, data: Log
 		...resolveData(data)
 	});
 
-	if (level === 'debug' && process.env.NODE_ENV !== 'development') return;
+	if (level === 'debug' && !debug) return;
 	if (level === 'warn') return console.warn(payload);
 	if (level === 'error') return console.error(payload);
 	console.log(payload);
 }
-
-log('info', 'log', 'logger_initialised', { message: 'Structured logger initialised', env: process.env.NODE_ENV });

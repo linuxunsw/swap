@@ -21,7 +21,7 @@ export const getSecondaryStorage = (): SecondaryStorage | undefined => {
 		return undefined;
 	}
 
-	log('info', 'secondary_storage', 'initialised', {
+	log('info', 'secondary_storage', 'init', {
 		provider: 'cloudflare_kv',
 		message: 'Using KV as secondary storage for auth'
 	});

@@ -6,9 +6,11 @@ import { getRequestEvent } from '$app/server';
 import { emailOTP } from 'better-auth/plugins';
 import { getDb } from '$lib/server/db';
 import { APIError, type User } from 'better-auth';
-import { ZID_REGEX, zidIsAdmin } from './utils';
-import { getSecondaryStorage } from './secondary-storage';
+import { ZID_REGEX, zidIsAdmin } from '$lib/server/utils';
+import { getSecondaryStorage } from '$lib/server/secondary-storage';
 import { log, devOnly } from '$lib/log';
+import { otpExpirySecs, sendOTP } from '$lib/server/otp-mailer';
+import { BETTER_AUTH_SESSION_EXPIRES_IN, BETTER_AUTH_SESSION_UPDATE_AGE } from '$env/static/private';
 
 export type Role = 'user' | 'admin';
 
@@ -27,16 +29,18 @@ export const auth = betterAuth({
 			async sendVerificationOTP({ email, otp, type }) {
 				if (type === 'sign-in') {
 					log('info', 'auth', 'send_otp', { email, otp: devOnly(otp) });
+					await sendOTP(email, otp);
 				}
 			},
+			expiresIn: otpExpirySecs,
 			storeOTP: 'hashed'
 		}),
 		sveltekitCookies(getRequestEvent) // make sure this is the last plugin in the array
 	],
 	secondaryStorage: getSecondaryStorage(),
 	session: {
-		expiresIn: parseInt(env.BETTER_AUTH_SESSION_EXPIRES_IN) || 60 * 60 * 24 * 3, // 3 day default
-		updateAge: parseInt(env.BETTER_AUTH_SESSION_UPDATE_AGE) || 60 * 60 * 24, // 1 day default
+		expiresIn: parseInt(BETTER_AUTH_SESSION_EXPIRES_IN) || 60 * 60 * 24 * 3, // 3 day default
+		updateAge: parseInt(BETTER_AUTH_SESSION_UPDATE_AGE) || 60 * 60 * 24, // 1 day default
 		cookieCache: {
 			enabled: true,
 			maxAge: 5 * 60 // 5 mins

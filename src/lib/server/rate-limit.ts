@@ -1,5 +1,5 @@
 import { env } from '$env/dynamic/private';
-import { dev } from '$app/environment';
+import { RATE_LIMIT_BYPASS } from '$env/static/private';
 import type { RequestEvent } from '@sveltejs/kit';
 import { devOnly, log } from '$lib/log';
 
@@ -14,7 +14,7 @@ export type RateLimitBinding =
 
 export type RateLimitResult =
 	| { allowed: true }
-	| { allowed: false; status: 429; message: string };
+	| { allowed: false; status: 429 | 503; message: string };
 
 function getClientIp(event: RequestEvent): string {
 	return event.request.headers.get('cf-connecting-ip') || event.getClientAddress();
@@ -37,11 +37,7 @@ function getBinding(name: RateLimitBinding): RateLimit | null {
  * @param event   - SvelteKit RequestEvent
  * @param binding - Which wrangler rate-limit binding to check
  * @param key     - Optional extra key segment appended after the IP key.
- *                  Must be a **trusted** value (e.g. authenticated user ID)..
- *
- * Environment behaviour:
- *   production - binding unavailable -> fail **closed** (deny).
- *   dev - binding unavailable -> fail **open** (allow) + console warning.
+ *                  Must be a **trusted** value (e.g. authenticated user ID).
  */
 export async function enforceRateLimit(
 	event: RequestEvent,
@@ -51,12 +47,13 @@ export async function enforceRateLimit(
 	const limiter = getBinding(binding);
 
 	if (!limiter) {
-		if (dev) {
-			log('warn', 'rate_limit', 'binding_unavailable', { binding, env: 'dev' });
+		const bypass = RATE_LIMIT_BYPASS === 'true';
+		if (bypass) {
+			log('warn', 'rate_limit', 'binding_unavailable', { binding, bypass });
 			return { allowed: true };
 		}
-		log('error', 'rate_limit', 'binding_unavailable', { binding, env: 'production' });
-		return { allowed: false, status: 429, message: 'Service temporarily unavailable' };
+		log('error', 'rate_limit', 'binding_unavailable', { binding, bypass });
+		return { allowed: false, status: 503, message: 'Service temporarily unavailable' };
 	}
 
 	const ip = getClientIp(event);
