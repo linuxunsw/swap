@@ -7,6 +7,7 @@ import { valibot } from 'sveltekit-superforms/adapters';
 import { sendOTPSchema, signInSchema } from './schema';
 import { ZID_REGEX } from '$lib/server/utils';
 import { enforceRateLimit } from '$lib/server/rate-limit';
+import { verifyTurnstileToken } from '$lib/server/turnstile';
 import { log } from '$lib/log';
 
 export const load: PageServerLoad = async (event) => {
@@ -30,14 +31,27 @@ export const load: PageServerLoad = async (event) => {
 
 export const actions: Actions = {
 	sendOTP: async (event) => {
-		const limit = await enforceRateLimit(event, 'MAIL_RATE_LIMIT');
+		const limit = await enforceRateLimit(event, 'AUTH_RATE_LIMIT');
 		if (!limit.allowed) {
 			error(limit.status, { message: limit.message });
 		}
 
-		const form = await superValidate(event, valibot(sendOTPSchema));
+		const formData = await event.request.formData();
+		const captchaToken = formData.get('cf-turnstile-response') as string | null;
+
+		const form = await superValidate(formData, valibot(sendOTPSchema));
 		if (!form.valid) {
 			return fail(400, { form });
+		}
+
+		if (!captchaToken || !(await verifyTurnstileToken(captchaToken))) {
+			log('warn', 'login', 'otp_send_failed', { zid: form.data.zid, error: 'captcha_failed' });
+			return message(form, 'Captcha verification failed', { status: 400 });
+		}
+
+		const mailLimit = await enforceRateLimit(event, 'MAIL_RATE_LIMIT');
+		if (!mailLimit.allowed) {
+			return message(form, 'Please wait before requesting another OTP.', { status: mailLimit.status });
 		}
 
 		const zid = form.data.zid;

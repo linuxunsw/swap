@@ -21,7 +21,7 @@ export const actions: Actions = {
 		await auth.api.signOut({
 			headers: event.request.headers
 		});
-		log('info', 'page', 'sign_out', { userId: event.locals.user?.id });
+		log('info', 'page', 'sign_out', { zid: event.locals.user?.zid });
 		return redirect(302, '/login');
 	}
 };

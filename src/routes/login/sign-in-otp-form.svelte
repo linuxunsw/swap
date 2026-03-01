@@ -2,10 +2,12 @@
 	import * as Form from '$lib/components/ui/form/index.js';
 	import * as InputOTP from '$lib/components/ui/input-otp/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
+	import Turnstile from '$lib/components/turnstile.svelte';
 	import { REGEXP_ONLY_DIGITS } from 'bits-ui';
 	import { signInSchema, type SignInSchema } from './schema';
 	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
 	import { valibotClient } from 'sveltekit-superforms/adapters';
+	import { Spinner } from '$lib/components/ui/spinner';
 
 	let { data }: { data: SuperValidated<Infer<SignInSchema>> } = $props();
 
@@ -19,7 +21,7 @@
 		}
 	});
 
-	const { form: formData, enhance, message } = form;
+	const { form: formData, enhance, message, submitting } = form;
 </script>
 
 <form action="?/signInOTP" method="POST" use:enhance>
@@ -63,7 +65,12 @@
 		<Form.FieldErrors />
 	</Form.Field>
 
-	<Form.Button class="mt-4 w-full">Sign In</Form.Button>
+	<Form.Button class="mt-4 w-full" disabled={$submitting}>
+		{#if $submitting}
+			<Spinner />
+		{/if}
+		{$submitting ? 'Signing in...' : 'Sign In'}
+	</Form.Button>
 </form>
 
 <div class="mt-4 text-center text-sm text-muted-foreground">

@@ -14,10 +14,9 @@ import { BETTER_AUTH_SESSION_EXPIRES_IN, BETTER_AUTH_SESSION_UPDATE_AGE } from '
 
 export type Role = 'user' | 'admin';
 
-export type SwapUser = User & {
-	zid: string;
-	role: Role;
-};
+export type SwapUser = typeof auth.$Infer.Session.user
+
+export type SwapSession = typeof auth.$Infer.Session.session;
 
 export const auth = betterAuth({
 	baseURL: env.ORIGIN,
@@ -57,7 +56,8 @@ export const auth = betterAuth({
 			zid: {
 				type: 'string',
 				required: true,
-				input: false
+				input: false,
+				unique: true
 			}
 		}
 	},
@@ -67,7 +67,7 @@ export const auth = betterAuth({
 				before: async (user, _) => {
 					const zid = user.email.split('@')[0];
 					if (!ZID_REGEX.test(zid)) {
-						log('warn', 'auth', 'user_create_rejected', { email: user.email, reason: 'invalid zid' });
+						log('error', 'auth', 'user_create_rejected', { email: user.email, reason: 'invalid zid' });
 						throw new APIError('BAD_REQUEST', { message: 'invalid zid' });
 					}
 					const role: Role = zidIsAdmin(zid) ? 'admin' : 'user';
