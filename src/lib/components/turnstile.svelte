@@ -2,6 +2,7 @@
 	import { PUBLIC_TURNSTILE_SITE_KEY } from '$env/static/public';
 	import { onMount } from 'svelte';
 	import { Skeleton } from '$lib/components/ui/skeleton';
+	import { mode } from 'mode-watcher';
 
 	// bindable prop so parent can read whether the challenge is solved
 	let { solved = $bindable(false) }: { solved?: boolean } = $props();
@@ -12,6 +13,8 @@
 	let rendered = $state(false); // for skeleton
 	let error = $state(false); // true when script fails to load
 	let compact = $state(false); // true when container is too narrow for flexible (< 300px)
+	let currentSize: 'compact' | 'flexible' | null = null;
+	let scriptLoaded = false;
 
 	// lazily loads the cloudflare turnstile script, avoids loading it more than once
 	function loadScript(): Promise<void> {
@@ -43,9 +46,11 @@
 		if (widgetId !== undefined && window.turnstile) {
 			window.turnstile.remove(widgetId);
 		}
+		solved = false;
 		widgetId = window.turnstile!.render(container, {
 			sitekey: PUBLIC_TURNSTILE_SITE_KEY,
 			size,
+			theme: mode.current,
 			callback: () => (solved = true),
 			'expired-callback': () => (solved = false),
 			'error-callback': () => (solved = false)
@@ -53,10 +58,16 @@
 		rendered = true;
 	}
 
-	onMount(() => {
-		let currentSize: 'compact' | 'flexible' | null = null;
-		let scriptLoaded = false;
+	$effect(() => {
+		// re-render when theme changes
+		mode.current;
+		if (!scriptLoaded || currentSize === null || !container) {
+			return;
+		}
+		renderWidget(currentSize);
+	});
 
+	onMount(() => {
 		// observe container width and re-render the widget when crossing the 300px threshold
 		const observer = new ResizeObserver((entries) => {
 			for (const entry of entries) {
