@@ -54,7 +54,8 @@ export const createOrUpdateApplication = async (
 					preferredEmail: data.preferredEmail || null,
 					reason: data.reason,
 					experience: data.experience,
-					status: 'draft'
+					status: 'draft',
+					submittedAt: null
 				})
 				.where(eq(application.id, existing.id))
 				.returning();
