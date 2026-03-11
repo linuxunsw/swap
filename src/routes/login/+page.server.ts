@@ -49,9 +49,9 @@ export const actions: Actions = {
 			return message(form, 'Captcha verification failed', { status: 400 });
 		}
 
-		const mailLimit = await enforceRateLimit(event, 'MAIL_RATE_LIMIT');
+		const mailLimit = await enforceRateLimit(event, 'MAIL_RATE_LIMIT', undefined, 'Please wait before requesting another OTP.');
 		if (!mailLimit.allowed) {
-			return message(form, 'Please wait before requesting another OTP.', { status: mailLimit.status });
+			return message(form, mailLimit.message, { status: mailLimit.status });
 		}
 
 		const zid = form.data.zid;

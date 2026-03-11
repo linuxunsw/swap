@@ -43,6 +43,7 @@ export async function enforceRateLimit(
 	event: RequestEvent,
 	binding: RateLimitBinding,
 	key?: string,
+	message?: string
 ): Promise<RateLimitResult> {
 	const limiter = getBinding(binding);
 
@@ -62,7 +63,7 @@ export async function enforceRateLimit(
 	const { success } = await limiter.limit({ key: limitKey });
 	if (!success) {
 		log('warn', 'rate_limit', 'denied', { binding, ip: devOnly(ip), key: devOnly(key) });
-		return { allowed: false, status: 429, message: 'Too many requests. Please try again later.' };
+		return { allowed: false, status: 429, message: message || 'Too many requests. Please try again later.' };
 	}
 
 	return { allowed: true };
