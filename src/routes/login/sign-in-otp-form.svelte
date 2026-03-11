@@ -21,7 +21,7 @@
 		}
 	});
 
-	const { form: formData, enhance, message, submitting } = form;
+	const { form: formData, enhance, message, delayed } = form;
 </script>
 
 <form action="?/signInOTP" method="POST" use:enhance>
@@ -65,11 +65,11 @@
 		<Form.FieldErrors />
 	</Form.Field>
 
-	<Form.Button class="mt-4 w-full" disabled={$submitting}>
-		{#if $submitting}
+	<Form.Button class="mt-4 w-full" disabled={$delayed}>
+		{#if $delayed}
 			<Spinner />
 		{/if}
-		{$submitting ? 'Signing in...' : 'Sign In'}
+		{$delayed ? 'Signing in...' : 'Sign In'}
 	</Form.Button>
 </form>
 

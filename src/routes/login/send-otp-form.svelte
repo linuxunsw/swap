@@ -23,7 +23,7 @@
 		}
 	});
 
-	const { form: formData, enhance, message, submitting } = form;
+	const { form: formData, enhance, message, delayed } = form;
 </script>
 
 <form action="?/sendOTP" method="POST" use:enhance>
@@ -43,10 +43,10 @@
 	</Form.Field>
 
 	<Turnstile bind:this={turnstile} bind:solved={captchaSolved} />
-	<Form.Button class="mt-4 w-full" disabled={!captchaSolved || $submitting}>
-		{#if $submitting}
+	<Form.Button class="mt-4 w-full" disabled={!captchaSolved || $delayed}>
+		{#if $delayed}
 			<Spinner />
 		{/if}
-		{$submitting ? 'Sending...' : 'Send OTP'}
+		{$delayed ? 'Sending...' : 'Send OTP'}
 	</Form.Button>
 </form>
