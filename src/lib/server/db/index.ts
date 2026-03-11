@@ -7,12 +7,12 @@ import { log } from '$lib/log';
 
 export function getDb() {
 	if (env.DB) {
-		log('info', 'db', 'init', { provider: 'd1' });
+		log('debug', 'db', 'get', { provider: 'd1' });
 		return drizzleD1(env.DB as any, { schema });
 	}
 
 	if (env.DATABASE_URL) {
-		log('info', 'db', 'init', { provider: 'libsql' });
+		log('debug', 'db', 'get', { provider: 'libsql' });
 		const client = createClient({ url: env.DATABASE_URL });
 		return drizzleLibSql(client, { schema });
 	}
