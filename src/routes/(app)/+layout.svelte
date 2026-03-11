@@ -2,12 +2,20 @@
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
 	import AppSidebar from '$lib/components/app-sidebar.svelte';
 	import SiteHeader from '$lib/components/site-header.svelte';
-  import { page } from '$app/state';
+	import { page } from '$app/state';
+	import { toast } from 'svelte-sonner';
+	import { getFlash } from 'sveltekit-flash-message';
 	import { navTitle } from '$lib/nav';
 
 	let { children, data } = $props();
+	const title = $derived(page.data.routeTitle ?? navTitle(page.url.pathname));
 
-  const title = $derived(page.data.routeTitle ?? navTitle(page.url.pathname));
+	const flash = getFlash(page);
+	$effect(() => {
+		if (!$flash) return;
+		toast.success($flash);
+		$flash = undefined;
+	});
 </script>
 
 <svelte:head>

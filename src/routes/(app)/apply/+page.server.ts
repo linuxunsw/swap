@@ -1,4 +1,4 @@
-import { error, fail, redirect } from '@sveltejs/kit';
+import { error, fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { superValidate, message } from 'sveltekit-superforms';
 import { valibot } from 'sveltekit-superforms/adapters';
@@ -15,6 +15,7 @@ import {
 	getApplicationSubcommitteeIds,
 	getSubcommitteeOptions
 } from '$lib/server/controllers/subcommittee';
+import { redirect } from 'sveltekit-flash-message/server';
 
 export const load: PageServerLoad = async (event) => {
 	if (!event.locals.user) {
@@ -47,13 +48,11 @@ export const load: PageServerLoad = async (event) => {
 		form.data.subcommittees = await getApplicationSubcommitteeIds(db, existing.id);
 	}
 
-
 	log('info', 'apply', 'load_form', {
 		userId: event.locals.user.id,
 		existingApplication: !!existing,
 		formData: form.data
 	});
-
 
 	const isEdit = !!existing;
 	const isDraft = existing?.status === 'draft';
@@ -62,7 +61,11 @@ export const load: PageServerLoad = async (event) => {
 		subcommitteeOptions,
 		cycleName: cycle.name,
 		isEdit,
-		routeTitle: isEdit ? isDraft ? 'Edit Application (Draft)' : 'Edit Application' : 'New Application'
+		routeTitle: isEdit
+			? isDraft
+				? 'Edit Application (Draft)'
+				: 'Edit Application'
+			: 'New Application'
 	};
 };
 
@@ -136,6 +139,6 @@ export const actions: Actions = {
 			return message(formResult, msg, { status: 400 });
 		}
 
-		redirect(303, '/');
+		redirect(303, '/', 'Application submitted successfully!', event);
 	}
 };

@@ -29,7 +29,9 @@ declare global {
 
 		// interface Error {}
 		// interface Locals {}
-		// interface PageData {}
+		interface PageData {
+			flash?: string;
+		}
 		// interface PageState {}
 		// interface Platform {}
 	}
