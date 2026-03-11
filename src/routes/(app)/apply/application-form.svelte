@@ -9,7 +9,9 @@
 	import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
 	import { valibotClient } from 'sveltekit-superforms/adapters';
 	import { createApplicationSchema, type ApplicationSchema } from './schema';
-	import { Separator } from '$lib/components/ui/separator';
+	import { toast } from 'svelte-sonner';
+	import { ResponsiveAlertDialog } from '$lib/components/responsive-alert-dialog/index.js';
+	import { page } from '$app/state';
 
 	let {
 		data,
@@ -20,8 +22,18 @@
 	} = $props();
 
 	const subcommitteeIds = $derived(subcommitteeOptions.map((option) => option.id));
-
 	const validationSchema = (() => createApplicationSchema(subcommitteeIds))();
+
+	let alertOpen = $state(false);
+	let pendingResolve: ((shouldLeave: boolean) => void) | null = null;
+
+	// When dialog closes without explicit action, resolve as cancel
+	$effect(() => {
+		if (!alertOpen && pendingResolve) {
+			pendingResolve(false);
+			pendingResolve = null;
+		}
+	});
 
 	// svelte-ignore state_referenced_locally
 	const form = superForm(data, {
@@ -31,18 +43,43 @@
 		onError: ({ result }) => {
 			if (result.error) {
 				$message = result.error.message || 'Unknown error';
+				toast.error($message);
 			}
+		},
+		onUpdated: ({ form }) => {
+			if (form.message) {
+				if (page.status >= 400) {
+					toast.error(form.message);
+				} else {
+					toast.success(form.message);
+				}
+			}
+		},
+		taintedMessage: () => {
+			return new Promise((resolve) => {
+				pendingResolve?.(false);
+				pendingResolve = resolve;
+				alertOpen = true;
+			});
 		}
 	});
 
-	const { form: formData, enhance, message, submitting } = form;
+	const { form: formData, enhance, message, delayed } = form;
 </script>
 
-<form method="POST" class="space-y-6" use:enhance>
-	{#if $message}
-		<p class="text-sm text-muted-foreground">{$message}</p>
-	{/if}
+<ResponsiveAlertDialog
+	bind:open={alertOpen}
+	title="You have unsaved changes"
+	description="Leaving now will discard all unsaved changes. Are you sure you want to exit?"
+	onAction={() => {
+		const resolve = pendingResolve;
+		pendingResolve = null;
+		alertOpen = false;
+		resolve?.(true);
+	}}
+/>
 
+<form method="POST" class="space-y-6" use:enhance>
 	<fieldset class="flex flex-col gap-6">
 		<legend class="mb-3 font-medium">Personal Information</legend>
 		<Form.Field {form} name="fullName">
@@ -138,14 +175,14 @@
 	</fieldset>
 
 	<div class="flex gap-3">
-		<Form.Button class="flex-1" variant="outline" formaction="?/save" disabled={$submitting}>
-			{#if $submitting}
+		<Form.Button class="flex-1" variant="outline" formaction="?/save" disabled={$delayed}>
+			{#if $delayed}
 				<Spinner />
 			{/if}
 			Save Draft
 		</Form.Button>
-		<Form.Button class="flex-1" formaction="?/submit" disabled={$submitting}>
-			{#if $submitting}
+		<Form.Button class="flex-1" formaction="?/submit" disabled={$delayed}>
+			{#if $delayed}
 				<Spinner />
 			{/if}
 			Submit
