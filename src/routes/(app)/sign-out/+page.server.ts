@@ -4,15 +4,12 @@ import { auth } from '$lib/server/auth';
 import { enforceRateLimit } from '$lib/server/rate-limit';
 import { log } from '$lib/log';
 
-export const load: PageServerLoad = async (event) => {
-	if (!event.locals.user) {
-		return redirect(302, '/login');
-	}
-	return { user: event.locals.user };
-};
-
 export const actions: Actions = {
-	signOut: async (event) => {
+	default: async (event) => {
+        if (!event.locals.user) {
+            return redirect(302, '/login');
+        }
+
 		const limit = await enforceRateLimit(event, 'AUTH_RATE_LIMIT');
 		if (!limit.allowed) {
 			error(limit.status, { message: limit.message });
