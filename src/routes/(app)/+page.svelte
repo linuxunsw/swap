@@ -4,18 +4,11 @@
 	import ApplicationStatus from './application-status.svelte';
 	import ApplicationTimeline from './application-timeline.svelte';
 	import DashboardFaq from './dashboard-faq.svelte';
-	import DashboardQuickLinks from './dashboard-quick-links.svelte';
+	import { formatDate } from '$lib/utils';
 
 	let { data }: { data: PageServerData } = $props();
 
-	const closesAt = $derived(data.cycle?.closesAt ?? null);
-	const closesFormatted = $derived(
-		closesAt
-			? new Intl.DateTimeFormat('en-AU', { dateStyle: 'medium', timeStyle: 'short' }).format(
-					closesAt
-				)
-			: null
-	);
+	const closesFormatted = $derived(formatDate(data.cycle?.closesAt));
 </script>
 
 {#if !data.application}
@@ -24,16 +17,11 @@
 	</section>
 {:else}
 	<div class="mx-auto w-full max-w-3xl space-y-6">
-		<div class="flex flex-wrap items-center justify-between gap-4">
-			{#if closesFormatted}
-				<p class="text-sm text-muted-foreground">
-					Applications close <span class="font-medium text-foreground">{closesFormatted}</span>
-				</p>
-			{/if}
-				<DashboardQuickLinks
-			canEdit={data.application.status === 'draft' || data.application.status === 'submitted'}
-		/>
-		</div>
+		{#if closesFormatted}
+			<p class="text-sm text-muted-foreground">
+				Applications close <span class="font-medium text-foreground">{closesFormatted}</span>
+			</p>
+		{/if}
 
 		<div class="grid gap-6 sm:grid-cols-[1fr_auto]">
 			<ApplicationStatus

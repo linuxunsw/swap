@@ -4,6 +4,7 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Separator } from '$lib/components/ui/separator/index.js';
 	import { STATUS_DISPLAY, type ApplicationStatus } from '$lib/constants';
+	import { formatDate } from '$lib/utils';
 	import PenLineIcon from '@lucide/svelte/icons/pen-line';
 
 	type Props = {
@@ -17,14 +18,7 @@
 
 	const canEdit = $derived(status === 'draft' || status === 'submitted');
 	const display = $derived(STATUS_DISPLAY[status]);
-
-	const formattedDate = $derived(
-		submittedAt
-			? new Intl.DateTimeFormat('en-AU', { dateStyle: 'medium', timeStyle: 'short' }).format(
-					submittedAt
-				)
-			: null
-	);
+	const formattedDate = $derived(formatDate(submittedAt));
 </script>
 
 <Card.Root class="h-fit self-start">
