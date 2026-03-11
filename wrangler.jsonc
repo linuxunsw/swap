@@ -22,7 +22,7 @@
 		{
 			"binding": "DB",
 			"database_name": "swap-db",
-			"database_id": "820fe50c-3e2d-4d79-b4f5-1c1a9b0d16a1",
+			"database_id": "2d827e06-2f5a-4e8c-8c12-4372f9de63b5",
 			"migrations_dir": "./src/lib/server/db/migrations"
 		}
 	],
@@ -85,8 +85,8 @@
 	 */
 	// "vars": {  "MY_VARIABLE": "production_value" }
 	"env": {
-    	"production": {
-      		"vars": {},
+		"production": {
+			"vars": {},
 			"kv_namespaces": [
 				{
 					"binding": "SECONDARY_STORAGE_KV",
@@ -97,7 +97,7 @@
 				{
 					"binding": "DB",
 					"database_name": "swap-db",
-					"database_id": "820fe50c-3e2d-4d79-b4f5-1c1a9b0d16a1",
+					"database_id": "2d827e06-2f5a-4e8c-8c12-4372f9de63b5",
 					"migrations_dir": "./src/lib/server/db/migrations"
 				}
 			],
@@ -136,7 +136,7 @@
 				}
 			]
 		}
-    }
+	}
 	/**
 	 * Service Bindings (communicate between multiple Workers)
 	 * https://developers.cloudflare.com/workers/wrangler/configuration/#service-bindings
