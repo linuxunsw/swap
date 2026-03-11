@@ -27,7 +27,7 @@ export const load: PageServerLoad = async (event) => {
 	const applicationSchema = createApplicationSchema(subcommitteeOptions.map((row) => row.id));
 	const cycle = await getCurrentApplicationCycle(db);
 	if (!cycle) {
-		redirect(302, '/');
+		redirect(302, '/closed');
 	}
 
 	const existing = await getApplication(db, event.locals.user.id, cycle);

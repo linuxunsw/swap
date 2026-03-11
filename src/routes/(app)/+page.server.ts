@@ -12,7 +12,11 @@ export const load: PageServerLoad = async (event) => {
 
 	const db = getDb();
 	const cycle = await getCurrentApplicationCycle(db);
-	const app = await getApplication(db, event.locals.user.id);
+	if (!cycle) {
+		return redirect(302, '/closed');
+	}
+
+	const app = await getApplication(db, event.locals.user.id, cycle);
 
 	const subcommitteeNames = app ? await getApplicationSubcommitteeNames(db, app.id) : [];
 
