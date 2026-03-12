@@ -39,7 +39,10 @@
 				<Sidebar.Menu>
 					{#each APPLICANT_NAV as item (item.href)}
 						<Sidebar.MenuItem>
-							<Sidebar.MenuButton isActive={page.url.pathname === item.href}>
+							<Sidebar.MenuButton
+								size={sidebar.isMobile ? 'lg' : 'default'}
+								isActive={page.url.pathname === item.href}
+							>
 								{#snippet child({ props })}
 									<a
 										href={resolve(item.href)}
