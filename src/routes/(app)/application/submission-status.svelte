@@ -1,6 +1,6 @@
 <script lang="ts">
-	import * as Card from '$lib/components/ui/card/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
+	import * as Card from '$lib/components/ui/card/index.js';
 	import { STATUS_DISPLAY, type ApplicationStatus } from '$lib/constants';
 	import { formatDate } from '$lib/utils';
 

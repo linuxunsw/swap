@@ -1,11 +1,11 @@
 <script lang="ts">
-	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
+	import { page } from '$app/state';
 	import AppSidebar from '$lib/components/app-sidebar.svelte';
 	import SiteHeader from '$lib/components/site-header.svelte';
-	import { page } from '$app/state';
+	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
+	import { navTitle } from '$lib/nav';
 	import { toast } from 'svelte-sonner';
 	import { getFlash } from 'sveltekit-flash-message';
-	import { navTitle } from '$lib/nav';
 
 	let { children, data } = $props();
 	const title = $derived(page.data.routeTitle ?? navTitle(page.url.pathname));

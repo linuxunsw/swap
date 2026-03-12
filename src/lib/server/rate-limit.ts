@@ -1,7 +1,7 @@
 import { env } from '$env/dynamic/private';
 import { RATE_LIMIT_BYPASS } from '$env/static/private';
-import type { RequestEvent } from '@sveltejs/kit';
 import { devOnly, log } from '$lib/log';
+import type { RequestEvent } from '@sveltejs/kit';
 
 /**
  * Cloudflare rate-limit binding names (declared in wrangler.jsonc)
@@ -63,7 +63,11 @@ export async function enforceRateLimit(
 	const { success } = await limiter.limit({ key: limitKey });
 	if (!success) {
 		log('warn', 'rate_limit', 'denied', { binding, ip: devOnly(ip), key: devOnly(key) });
-		return { allowed: false, status: 429, message: message || 'Too many requests. Please try again later.' };
+		return {
+			allowed: false,
+			status: 429,
+			message: message || 'Too many requests. Please try again later.'
+		};
 	}
 
 	return { allowed: true };

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import * as Empty from '$lib/components/ui/empty/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
+	import * as Empty from '$lib/components/ui/empty/index.js';
 </script>
 
 <main class="flex min-h-svh items-center justify-center px-4">

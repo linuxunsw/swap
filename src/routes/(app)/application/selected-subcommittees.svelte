@@ -14,7 +14,7 @@
 			<Card.Title>Selected subcommittees</Card.Title>
 		</Card.Header>
 		<Card.Content class="space-y-2">
-			{#each names as name}
+			{#each names as name (name)}
 				<div class="rounded-md border px-3 py-2 text-sm">{name}</div>
 			{/each}
 		</Card.Content>

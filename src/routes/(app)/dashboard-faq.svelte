@@ -1,7 +1,7 @@
 <script lang="ts">
+	import { PUBLIC_SOCIETY_EMAIL } from '$env/static/public';
 	import * as Accordion from '$lib/components/ui/accordion/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
-    import { PUBLIC_SOCIETY_EMAIL } from '$env/static/public';
 
 	const faqs = [
 		{
@@ -21,8 +21,7 @@
 		},
 		{
 			question: 'Who can I contact if I have questions?',
-			answer:
-				`Reach out to us on Discord or email us at ${PUBLIC_SOCIETY_EMAIL}. We are happy to help with any questions about the application process.`
+			answer: `Reach out to us on Discord or email us at ${PUBLIC_SOCIETY_EMAIL}. We are happy to help with any questions about the application process.`
 		}
 	];
 </script>
@@ -33,7 +32,7 @@
 	</Card.Header>
 	<Card.Content>
 		<Accordion.Root type="multiple">
-			{#each faqs as faq, i}
+			{#each faqs as faq, i (faq.question)}
 				<Accordion.Item value="faq-{i}">
 					<Accordion.Trigger>{faq.question}</Accordion.Trigger>
 					<Accordion.Content>

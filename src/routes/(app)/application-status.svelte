@@ -1,7 +1,7 @@
 <script lang="ts">
-	import * as Card from '$lib/components/ui/card/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
+	import * as Card from '$lib/components/ui/card/index.js';
 	import { Separator } from '$lib/components/ui/separator/index.js';
 	import { STATUS_DISPLAY, type ApplicationStatus } from '$lib/constants';
 	import { formatDate } from '$lib/utils';
@@ -44,7 +44,7 @@
 			<div class="flex items-center justify-between gap-4">
 				<span class="shrink-0 text-muted-foreground">Subcommittees</span>
 				<div class="flex flex-wrap justify-end gap-1.5">
-					{#each subcommitteeNames as name}
+					{#each subcommitteeNames as name (name)}
 						<Badge variant="outline">{name}</Badge>
 					{/each}
 				</div>

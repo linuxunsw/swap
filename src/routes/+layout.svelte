@@ -1,13 +1,10 @@
 <script lang="ts">
-	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
-	import { ModeWatcher } from 'mode-watcher';
 	import { Toaster } from '$lib/components/ui/sonner/index.js';
-	import { IsMobile } from '$lib/hooks/is-mobile.svelte.js';
+	import { ModeWatcher } from 'mode-watcher';
+	import './layout.css';
 
 	let { children } = $props();
-
-	const isMobile = new IsMobile();
 </script>
 
 <svelte:head>

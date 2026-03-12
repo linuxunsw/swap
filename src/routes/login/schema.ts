@@ -1,4 +1,4 @@
-import * as v from "valibot";
+import * as v from 'valibot';
 
 export const sendOTPSchema = v.object({
 	zid: v.pipe(v.string(), v.regex(/^z\d{7}$/, 'Please enter a valid zID'))

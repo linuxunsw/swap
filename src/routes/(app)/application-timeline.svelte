@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { APPLICATION_STATUSES, APPLICATION_STAGES, type ApplicationStatus } from '$lib/constants';
+	import * as Card from '$lib/components/ui/card/index.js';
+	import { APPLICATION_STAGES, APPLICATION_STATUSES, type ApplicationStatus } from '$lib/constants';
 	import CheckIcon from '@lucide/svelte/icons/check';
 	import CircleIcon from '@lucide/svelte/icons/circle';
 	import CircleDotIcon from '@lucide/svelte/icons/circle-dot';
-	import * as Card from '$lib/components/ui/card/index.js';
 
 	type Props = {
 		status: ApplicationStatus;
@@ -15,11 +15,11 @@
 		stage: (typeof APPLICATION_STAGES)[number],
 		currentStatus: ApplicationStatus
 	) {
-        const stageIdxs = stage.key.map((k) => APPLICATION_STATUSES.indexOf(k));
+		const stageIdxs = stage.key.map((k) => APPLICATION_STATUSES.indexOf(k));
 		const stageMinIdx = Math.min(...stageIdxs);
 		const stageMaxIdx = Math.max(...stageIdxs);
 
-        const currentIdx = APPLICATION_STATUSES.indexOf(currentStatus);
+		const currentIdx = APPLICATION_STATUSES.indexOf(currentStatus);
 
 		if (currentIdx > stageMaxIdx) return 'completed';
 		if (currentIdx >= stageMinIdx && currentIdx <= stageMaxIdx) return 'current';
@@ -34,7 +34,7 @@
 	</Card.Header>
 	<Card.Content>
 		<ol class="mx-auto w-fit space-y-0">
-			{#each APPLICATION_STAGES as stage, i}
+			{#each APPLICATION_STAGES as stage, i (stage.key)}
 				{@const state = getStageState(stage, status)}
 				<li class="relative flex gap-3 {i < APPLICATION_STAGES.length - 1 ? 'pb-5' : ''}">
 					<!-- Vertical connector line -->

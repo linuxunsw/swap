@@ -2,7 +2,6 @@ import type { getDb } from '$lib/server/db';
 import { and, eq, inArray } from 'drizzle-orm/sql/expressions/conditions';
 import { application, application_subcommittee, applicationCycle } from '../db/schema';
 import { getCurrentApplicationCycle } from './application-cycle';
-import { log } from '$lib/log';
 
 export const getApplication = async (
 	db: ReturnType<typeof getDb>,

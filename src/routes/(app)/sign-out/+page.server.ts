@@ -1,14 +1,14 @@
-import { error, redirect } from '@sveltejs/kit';
-import type { Actions, PageServerLoad } from './$types';
+import { log } from '$lib/log';
 import { auth } from '$lib/server/auth';
 import { enforceRateLimit } from '$lib/server/rate-limit';
-import { log } from '$lib/log';
+import { error, redirect } from '@sveltejs/kit';
+import type { Actions } from './$types';
 
 export const actions: Actions = {
 	default: async (event) => {
-        if (!event.locals.user) {
-            return redirect(302, '/login');
-        }
+		if (!event.locals.user) {
+			return redirect(302, '/login');
+		}
 
 		const limit = await enforceRateLimit(event, 'AUTH_RATE_LIMIT');
 		if (!limit.allowed) {

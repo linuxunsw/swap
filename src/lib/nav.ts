@@ -1,9 +1,10 @@
-import HouseIcon from '@lucide/svelte/icons/house';
+import type { Pathname, RouteId } from '$app/types';
 import ApplicationIcon from '@lucide/svelte/icons/file-text';
+import HouseIcon from '@lucide/svelte/icons/house';
 import type { Component } from 'svelte';
 
 export type NavItem = {
-	href: string;
+	href: Pathname | RouteId;
 	title: string;
 	icon: Component;
 };

@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import ModeToggle from '$lib/components/mode-toggle.svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Separator } from '$lib/components/ui/separator/index.js';
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
 	import { navTitle } from '$lib/nav';
-	import ModeToggle from '$lib/components/mode-toggle.svelte';
 
 	const title = $derived(page.data.routeTitle ?? navTitle(page.url.pathname));
 </script>

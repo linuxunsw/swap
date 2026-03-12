@@ -1,11 +1,11 @@
 <script lang="ts">
-	import type { PageServerData } from './$types';
-	import * as Empty from '$lib/components/ui/empty/index.js';
+	import { PUBLIC_SOCIETY_WEBSITE } from '$env/static/public';
+	import ModeToggle from '$lib/components/mode-toggle.svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
+	import * as Empty from '$lib/components/ui/empty/index.js';
 	import CalendarOffIcon from '@lucide/svelte/icons/calendar-off';
 	import LogOutIcon from '@lucide/svelte/icons/log-out';
-	import ModeToggle from '$lib/components/mode-toggle.svelte';
-    import { PUBLIC_SOCIETY_WEBSITE } from '$env/static/public';
+	import type { PageServerData } from './$types';
 
 	let { data }: { data: PageServerData } = $props();
 </script>
@@ -50,7 +50,7 @@
 						target="_blank"
 						rel="noopener"
 					>
-                        Go to Main Site
+						Go to Main Site
 					</Button>
 				</div>
 			</Empty.Content>

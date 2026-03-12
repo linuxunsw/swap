@@ -1,17 +1,17 @@
 <script lang="ts">
+	import { page } from '$app/state';
+	import { ResponsiveAlertDialog } from '$lib/components/responsive-alert-dialog/index.js';
+	import * as Checkbox from '$lib/components/ui/checkbox/index.js';
 	import * as Form from '$lib/components/ui/form/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
-	import { Textarea } from '$lib/components/ui/textarea/index.js';
-	import * as Checkbox from '$lib/components/ui/checkbox/index.js';
 	import { Label } from '$lib/components/ui/label/index.js';
 	import { Spinner } from '$lib/components/ui/spinner/index.js';
-	import type { PageData } from './$types';
+	import { Textarea } from '$lib/components/ui/textarea/index.js';
+	import { toast } from 'svelte-sonner';
 	import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
 	import { valibotClient } from 'sveltekit-superforms/adapters';
+	import type { PageData } from './$types';
 	import { createApplicationSchema, type ApplicationSchema } from './schema';
-	import { toast } from 'svelte-sonner';
-	import { ResponsiveAlertDialog } from '$lib/components/responsive-alert-dialog/index.js';
-	import { page } from '$app/state';
 
 	let {
 		data,
@@ -79,7 +79,7 @@
 	}}
 />
 
-<form method="POST" class="space-y-6" use:enhance>
+<form method="POST" class="mx-auto w-full max-w-3xl space-y-6" use:enhance>
 	<fieldset class="flex flex-col gap-6">
 		<legend class="mb-3 font-medium">Personal Information</legend>
 		<Form.Field {form} name="fullName">
@@ -127,7 +127,7 @@
 		<Form.Control>
 			{#snippet children({ props })}
 				<Checkbox.Group {...props} class="flex flex-col gap-4" bind:value={$formData.subcommittees}>
-					{#each subcommitteeOptions as subcommitteeOption}
+					{#each subcommitteeOptions as subcommitteeOption (subcommitteeOption.id)}
 						<div class="flex w-full flex-row items-center gap-3">
 							<Checkbox.Root {...props} value={subcommitteeOption.id} id={subcommitteeOption.id} />
 							<Label for={subcommitteeOption.id}>{subcommitteeOption.name}</Label>

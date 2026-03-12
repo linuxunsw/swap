@@ -1,6 +1,3 @@
-import Root from "./responsive-alert-dialog.svelte";
+import Root from './responsive-alert-dialog.svelte';
 
-export {
-	Root,
-	Root as ResponsiveAlertDialog,
-};
+export { Root as ResponsiveAlertDialog, Root };

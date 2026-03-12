@@ -1,5 +1,13 @@
 import { relations, sql } from 'drizzle-orm';
-import { sqliteTable, text, integer, uniqueIndex, index, check, primaryKey, unique } from 'drizzle-orm/sqlite-core';
+import {
+	check,
+	index,
+	integer,
+	primaryKey,
+	sqliteTable,
+	text,
+	uniqueIndex
+} from 'drizzle-orm/sqlite-core';
 import { APPLICATION_STATUSES } from '../../constants';
 import { user } from './auth.schema';
 
@@ -7,9 +15,9 @@ export * from './auth.schema';
 
 // reused columns
 const timestamps = {
-	createdAt: integer('created_at', { mode: 'timestamp_ms' }).default(
-		sql`(cast(unixepoch('subsecond') * 1000 as integer))`
-	).notNull(),
+	createdAt: integer('created_at', { mode: 'timestamp_ms' })
+		.default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
+		.notNull(),
 	updatedAt: integer('updated_at', { mode: 'timestamp_ms' })
 		.default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
 		.$onUpdate(() => new Date())
@@ -31,8 +39,7 @@ export const applicationCycle = sqliteTable(
 	(table) => [
 		index('application_cycle_opensAt_idx').on(table.opensAt),
 		index('application_cycle_closesAt_idx').on(table.closesAt),
-        check('opens_before_closes', sql`${table.opensAt} < ${table.closesAt}`),
-        
+		check('opens_before_closes', sql`${table.opensAt} < ${table.closesAt}`)
 	]
 );
 
@@ -58,14 +65,15 @@ export const application = sqliteTable(
 		experience: text('experience').notNull().default(''),
 		submittedAt: integer('submitted_at', { mode: 'timestamp_ms' }),
 		...timestamps
-
 	},
 	(table) => [
 		uniqueIndex('application_user_cycle_idx').on(table.userId, table.cycleId),
 		index('application_cycleId_idx').on(table.cycleId),
 		index('application_status_idx').on(table.status),
-		check('submitted_at_required_when_not_draft', sql`${table.status} = 'draft' OR ${table.submittedAt} IS NOT NULL`),
-
+		check(
+			'submitted_at_required_when_not_draft',
+			sql`${table.status} = 'draft' OR ${table.submittedAt} IS NOT NULL`
+		)
 	]
 );
 
@@ -75,19 +83,23 @@ export const subcommittee = sqliteTable('subcommittee', {
 	description: text('description').notNull().default('')
 });
 
-export const application_subcommittee = sqliteTable('application_subcommittee', {
-	applicationId: text('application_id')
-		.notNull()
-		.references(() => application.id, { onDelete: 'cascade' }),
-	subcommitteeId: text('subcommittee_id')
-		.notNull()
-		.references(() => subcommittee.id, { onDelete: 'cascade' }),
-	...timestamps
-}, (table) => [
-	primaryKey({ columns: [table.applicationId, table.subcommitteeId] }),
-	index('app_sub_appId_idx').on(table.applicationId),
-	index('app_sub_subcomId_idx').on(table.subcommitteeId)
-]);
+export const application_subcommittee = sqliteTable(
+	'application_subcommittee',
+	{
+		applicationId: text('application_id')
+			.notNull()
+			.references(() => application.id, { onDelete: 'cascade' }),
+		subcommitteeId: text('subcommittee_id')
+			.notNull()
+			.references(() => subcommittee.id, { onDelete: 'cascade' }),
+		...timestamps
+	},
+	(table) => [
+		primaryKey({ columns: [table.applicationId, table.subcommitteeId] }),
+		index('app_sub_appId_idx').on(table.applicationId),
+		index('app_sub_subcomId_idx').on(table.subcommitteeId)
+	]
+);
 
 // relations
 export const applicationCycleRelations = relations(applicationCycle, ({ many }) => ({

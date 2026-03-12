@@ -1,6 +1,6 @@
 import { env } from '$env/dynamic/private';
-import type { SecondaryStorage } from 'better-auth';
 import { log } from '$lib/log';
+import type { SecondaryStorage } from 'better-auth';
 
 // NOTE: binding name is defined in wrangler.jsonc
 function getBinding(): KVNamespace | null {

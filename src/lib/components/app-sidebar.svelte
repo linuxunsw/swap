@@ -1,9 +1,10 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
 	import { APPLICANT_NAV } from '$lib/nav';
-	import Separator from './ui/separator/separator.svelte';
 	import SignOutButton from './sign-out-button.svelte';
+	import Separator from './ui/separator/separator.svelte';
 
 	const { zid }: { zid: string | null } = $props();
 </script>
@@ -39,7 +40,7 @@
 						<Sidebar.MenuItem>
 							<Sidebar.MenuButton isActive={page.url.pathname === item.href}>
 								{#snippet child({ props })}
-									<a href={item.href} {...props}>
+									<a href={resolve(item.href)} {...props}>
 										<item.icon />
 										<span>{item.title}</span>
 									</a>

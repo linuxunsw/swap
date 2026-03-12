@@ -1,20 +1,23 @@
-import { betterAuth } from 'better-auth/minimal';
-import { drizzleAdapter } from 'better-auth/adapters/drizzle';
-import { sveltekitCookies } from 'better-auth/svelte-kit';
-import { env } from '$env/dynamic/private';
 import { getRequestEvent } from '$app/server';
-import { emailOTP } from 'better-auth/plugins';
+import { env } from '$env/dynamic/private';
+import {
+	BETTER_AUTH_SESSION_EXPIRES_IN,
+	BETTER_AUTH_SESSION_UPDATE_AGE
+} from '$env/static/private';
+import { devOnly, log } from '$lib/log';
 import { getDb } from '$lib/server/db';
-import { APIError, type User } from 'better-auth';
-import { ZID_REGEX, zidIsAdmin } from '$lib/server/utils';
-import { getSecondaryStorage } from '$lib/server/secondary-storage';
-import { log, devOnly } from '$lib/log';
 import { otpExpirySecs, sendOTP } from '$lib/server/otp-mailer';
-import { BETTER_AUTH_SESSION_EXPIRES_IN, BETTER_AUTH_SESSION_UPDATE_AGE } from '$env/static/private';
+import { getSecondaryStorage } from '$lib/server/secondary-storage';
+import { ZID_REGEX, zidIsAdmin } from '$lib/server/utils';
+import { APIError } from 'better-auth';
+import { drizzleAdapter } from 'better-auth/adapters/drizzle';
+import { betterAuth } from 'better-auth/minimal';
+import { emailOTP } from 'better-auth/plugins';
+import { sveltekitCookies } from 'better-auth/svelte-kit';
 
 export type Role = 'user' | 'admin';
 
-export type SwapUser = typeof auth.$Infer.Session.user
+export type SwapUser = typeof auth.$Infer.Session.user;
 
 export type SwapSession = typeof auth.$Infer.Session.session;
 
@@ -67,7 +70,10 @@ export const auth = betterAuth({
 				before: async (user, _) => {
 					const zid = user.email.split('@')[0];
 					if (!ZID_REGEX.test(zid)) {
-						log('error', 'auth', 'user_create_rejected', { email: user.email, reason: 'invalid zid' });
+						log('error', 'auth', 'user_create_rejected', {
+							email: user.email,
+							reason: 'invalid zid'
+						});
 						throw new APIError('BAD_REQUEST', { message: 'invalid zid' });
 					}
 					const role: Role = zidIsAdmin(zid) ? 'admin' : 'user';

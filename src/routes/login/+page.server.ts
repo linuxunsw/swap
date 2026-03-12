@@ -1,14 +1,14 @@
-import { error, fail, redirect } from '@sveltejs/kit';
-import type { Actions, PageServerLoad } from './$types';
+import { log } from '$lib/log';
 import { auth } from '$lib/server/auth';
-import { APIError } from 'better-auth';
-import { superValidate, message } from 'sveltekit-superforms';
-import { valibot } from 'sveltekit-superforms/adapters';
-import { sendOTPSchema, signInSchema } from './schema';
-import { ZID_REGEX } from '$lib/server/utils';
 import { enforceRateLimit } from '$lib/server/rate-limit';
 import { verifyTurnstileToken } from '$lib/server/turnstile';
-import { log } from '$lib/log';
+import { ZID_REGEX } from '$lib/server/utils';
+import { error, fail, redirect } from '@sveltejs/kit';
+import { APIError } from 'better-auth';
+import { message, superValidate } from 'sveltekit-superforms';
+import { valibot } from 'sveltekit-superforms/adapters';
+import type { Actions, PageServerLoad } from './$types';
+import { sendOTPSchema, signInSchema } from './schema';
 
 export const load: PageServerLoad = async (event) => {
 	if (event.locals.user) {
@@ -49,7 +49,12 @@ export const actions: Actions = {
 			return message(form, 'Captcha verification failed', { status: 400 });
 		}
 
-		const mailLimit = await enforceRateLimit(event, 'MAIL_RATE_LIMIT', undefined, 'Please wait before requesting another OTP.');
+		const mailLimit = await enforceRateLimit(
+			event,
+			'MAIL_RATE_LIMIT',
+			undefined,
+			'Please wait before requesting another OTP.'
+		);
 		if (!mailLimit.allowed) {
 			return message(form, mailLimit.message, { status: mailLimit.status });
 		}

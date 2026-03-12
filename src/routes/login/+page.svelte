@@ -1,8 +1,8 @@
 <script lang="ts">
+	import * as Card from '$lib/components/ui/card/index.js';
 	import type { PageProps } from './$types';
 	import SendOtpForm from './send-otp-form.svelte';
 	import SignInOtpForm from './sign-in-otp-form.svelte';
-	import * as Card from '$lib/components/ui/card/index.js';
 
 	let { data }: PageProps = $props();
 </script>
@@ -26,6 +26,3 @@
 		{/if}
 	</Card.Content>
 </Card.Root>
-
-
-

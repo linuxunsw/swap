@@ -1,9 +1,9 @@
-import { redirect } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
-import { getDb } from '$lib/server/db';
 import { getApplication } from '$lib/server/controllers/application';
 import { getCurrentApplicationCycle } from '$lib/server/controllers/application-cycle';
 import { getApplicationSubcommitteeNames } from '$lib/server/controllers/subcommittee';
+import { getDb } from '$lib/server/db';
+import { redirect } from '@sveltejs/kit';
+import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async (event) => {
 	if (!event.locals.user) {

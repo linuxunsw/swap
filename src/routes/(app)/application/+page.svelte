@@ -1,13 +1,13 @@
 <script lang="ts">
-	import type { PageServerData } from './$types';
+	import EmptyApplication from '$lib/components/empty-application.svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Separator } from '$lib/components/ui/separator/index.js';
-	import EmptyApplication from '$lib/components/empty-application.svelte';
 	import PenLineIcon from '@lucide/svelte/icons/pen-line';
-	import SubmissionStatus from './submission-status.svelte';
-	import SelectedSubcommittees from './selected-subcommittees.svelte';
-	import PersonalInfo from './personal-info.svelte';
+	import type { PageServerData } from './$types';
 	import ApplicationResponses from './application-responses.svelte';
+	import PersonalInfo from './personal-info.svelte';
+	import SelectedSubcommittees from './selected-subcommittees.svelte';
+	import SubmissionStatus from './submission-status.svelte';
 
 	let { data }: { data: PageServerData } = $props();
 

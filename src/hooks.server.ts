@@ -1,9 +1,9 @@
-import type { Handle } from '@sveltejs/kit';
 import { building } from '$app/environment';
 import { auth } from '$lib/server/auth';
-import { svelteKitHandler } from 'better-auth/svelte-kit';
 import { enforceRateLimit } from '$lib/server/rate-limit';
+import type { Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
+import { svelteKitHandler } from 'better-auth/svelte-kit';
 
 const rateLimitHandler: Handle = async ({ event, resolve }) => {
 	const limit = await enforceRateLimit(event, 'API_RATE_LIMIT');
@@ -14,7 +14,7 @@ const rateLimitHandler: Handle = async ({ event, resolve }) => {
 	}
 
 	return resolve(event);
-}
+};
 
 const handleBetterAuth: Handle = async ({ event, resolve }) => {
 	const session = await auth.api.getSession({ headers: event.request.headers });

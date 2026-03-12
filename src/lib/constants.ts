@@ -30,4 +30,3 @@ export const APPLICATION_STAGES: { key: ApplicationStatus[]; label: string }[] =
 	{ key: ['under_review'], label: 'Under Review' },
 	{ key: ['offered', 'rejected'], label: 'Decision' }
 ];
-

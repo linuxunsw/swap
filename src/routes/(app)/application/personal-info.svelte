@@ -22,7 +22,7 @@
 		</div>
 		<div>
 			<p class="text-muted-foreground">Discord</p>
-			<p class="font-medium truncate">{discord}</p>
+			<p class="truncate font-medium">{discord}</p>
 		</div>
 		<div>
 			<p class="text-muted-foreground">Account email</p>
@@ -31,7 +31,7 @@
 		{#if preferredEmail}
 			<div>
 				<p class="text-muted-foreground">Preferred email</p>
-				<p class="font-medium truncate">{preferredEmail}</p>
+				<p class="truncate font-medium">{preferredEmail}</p>
 			</div>
 		{/if}
 	</Card.Content>

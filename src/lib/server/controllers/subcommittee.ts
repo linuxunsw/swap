@@ -1,5 +1,5 @@
 import type { getDb } from '$lib/server/db';
-import { application_subcommittee, subcommittee } from '$lib/server/db/schema';
+import { application_subcommittee } from '$lib/server/db/schema';
 import { eq } from 'drizzle-orm';
 
 export type SubcommitteeOption = {

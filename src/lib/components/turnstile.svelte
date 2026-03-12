@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { PUBLIC_TURNSTILE_SITE_KEY } from '$env/static/public';
-	import { onMount } from 'svelte';
 	import { Skeleton } from '$lib/components/ui/skeleton';
 	import { mode } from 'mode-watcher';
+	import { onMount } from 'svelte';
 
 	// bindable prop so parent can read whether the challenge is solved
 	let { solved = $bindable(false) }: { solved?: boolean } = $props();
@@ -27,7 +27,9 @@
 			const existing = document.getElementById('cf-turnstile-script');
 			if (existing) {
 				existing.addEventListener('load', () => resolve());
-				existing.addEventListener('error', () => reject(new Error('Turnstile script failed to load')));
+				existing.addEventListener('error', () =>
+					reject(new Error('Turnstile script failed to load'))
+				);
 				return;
 			}
 			// inject the script tag for the first time
@@ -60,6 +62,7 @@
 
 	$effect(() => {
 		// re-render when theme changes
+		// eslint-disable-next-line @typescript-eslint/no-unused-expressions
 		mode.current;
 		if (!scriptLoaded || currentSize === null || !container) {
 			return;
@@ -115,7 +118,7 @@
 
 <div
 	bind:this={wrapper}
-	class="relative mt-4 w-full transition-[height] duration-150 mx-auto"
+	class="relative mx-auto mt-4 w-full transition-[height] duration-150"
 	class:h-35={compact}
 	class:h-16.25={!compact}
 >

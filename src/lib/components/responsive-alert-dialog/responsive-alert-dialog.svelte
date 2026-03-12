@@ -1,16 +1,16 @@
 <script lang="ts">
-	import { IsMobile } from "$lib/hooks/is-mobile.svelte.js";
-	import * as AlertDialog from "$lib/components/ui/alert-dialog/index.js";
-	import * as Drawer from "$lib/components/ui/drawer/index.js";
-	import { buttonVariants } from "$lib/components/ui/button/index.js";
+	import * as AlertDialog from '$lib/components/ui/alert-dialog/index.js';
+	import { buttonVariants } from '$lib/components/ui/button/index.js';
+	import * as Drawer from '$lib/components/ui/drawer/index.js';
+	import { IsMobile } from '$lib/hooks/is-mobile.svelte.js';
 
 	let {
 		open = $bindable(false),
 		title,
 		description,
 		onAction,
-		cancelLabel = "Cancel",
-		actionLabel = "Continue",
+		cancelLabel = 'Cancel',
+		actionLabel = 'Continue'
 	}: {
 		open: boolean;
 		title: string;
@@ -32,7 +32,7 @@
 			</Drawer.Header>
 			<Drawer.Footer class="pt-2">
 				<button class={buttonVariants()} onclick={onAction}>{actionLabel}</button>
-				<Drawer.Close class={buttonVariants({ variant: "outline" })}>{cancelLabel}</Drawer.Close>
+				<Drawer.Close class={buttonVariants({ variant: 'outline' })}>{cancelLabel}</Drawer.Close>
 			</Drawer.Footer>
 		</Drawer.Content>
 	</Drawer.Root>

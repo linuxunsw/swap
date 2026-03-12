@@ -1,5 +1,5 @@
-import { CONSOLE_MAILER, MAILER_FROM_EMAIL, OTP_EXPIRY_MINS } from '$env/static/private';
 import { env } from '$env/dynamic/private';
+import { CONSOLE_MAILER, MAILER_FROM_EMAIL, OTP_EXPIRY_MINS } from '$env/static/private';
 import { devOnly, log } from '$lib/log';
 import { Resend } from 'resend';
 

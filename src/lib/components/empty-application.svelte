@@ -1,7 +1,7 @@
 <script lang="ts">
-    import * as Empty from '$lib/components/ui/empty/index.js';
-    import { FileSearchCornerIcon } from '@lucide/svelte';
-    import { Button } from '$lib/components/ui/button/index.js';
+	import { Button } from '$lib/components/ui/button/index.js';
+	import * as Empty from '$lib/components/ui/empty/index.js';
+	import { FileSearchCornerIcon } from '@lucide/svelte';
 </script>
 
 <Empty.Root class="border border-dashed">

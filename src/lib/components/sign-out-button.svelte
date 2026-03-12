@@ -1,7 +1,7 @@
 <script lang="ts">
+	import { Button } from '$lib/components/ui/button';
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
 	import SignOutIcon from '@lucide/svelte/icons/log-out';
-	import { Button } from '$lib/components/ui/button';
 </script>
 
 <Sidebar.Menu>

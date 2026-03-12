@@ -1,11 +1,11 @@
 <script lang="ts">
+	import Turnstile from '$lib/components/turnstile.svelte';
 	import * as Form from '$lib/components/ui/form/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
-	import Turnstile from '$lib/components/turnstile.svelte';
-	import { sendOTPSchema, type SendOTPSchema } from './schema';
-	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
-	import { valibotClient } from 'sveltekit-superforms/adapters';
 	import { Spinner } from '$lib/components/ui/spinner';
+	import { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
+	import { valibotClient } from 'sveltekit-superforms/adapters';
+	import { sendOTPSchema, type SendOTPSchema } from './schema';
 
 	let { data }: { data: SuperValidated<Infer<SendOTPSchema>> } = $props();
 

@@ -1,21 +1,21 @@
-import { error, fail } from '@sveltejs/kit';
-import type { Actions, PageServerLoad } from './$types';
-import { superValidate, message } from 'sveltekit-superforms';
-import { valibot } from 'sveltekit-superforms/adapters';
-import { createApplicationSchema } from './schema';
-import { getDb } from '$lib/server/db';
 import { log } from '$lib/log';
-import { getCurrentApplicationCycle } from '$lib/server/controllers/application-cycle';
 import {
-	getApplication,
 	createOrUpdateApplication,
+	getApplication,
 	submitApplication
 } from '$lib/server/controllers/application';
+import { getCurrentApplicationCycle } from '$lib/server/controllers/application-cycle';
 import {
 	getApplicationSubcommitteeIds,
 	getSubcommitteeOptions
 } from '$lib/server/controllers/subcommittee';
+import { getDb } from '$lib/server/db';
+import { error, fail } from '@sveltejs/kit';
 import { redirect } from 'sveltekit-flash-message/server';
+import { message, superValidate } from 'sveltekit-superforms';
+import { valibot } from 'sveltekit-superforms/adapters';
+import type { Actions, PageServerLoad } from './$types';
+import { createApplicationSchema } from './schema';
 
 export const load: PageServerLoad = async (event) => {
 	if (!event.locals.user) {

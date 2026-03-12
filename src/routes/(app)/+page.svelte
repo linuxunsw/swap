@@ -1,10 +1,10 @@
 <script lang="ts">
-	import type { PageServerData } from './$types';
 	import EmptyApplication from '$lib/components/empty-application.svelte';
+	import { formatDate } from '$lib/utils';
+	import type { PageServerData } from './$types';
 	import ApplicationStatus from './application-status.svelte';
 	import ApplicationTimeline from './application-timeline.svelte';
 	import DashboardFaq from './dashboard-faq.svelte';
-	import { formatDate } from '$lib/utils';
 
 	let { data }: { data: PageServerData } = $props();
 
@@ -32,7 +32,7 @@
 			/>
 			<ApplicationTimeline status={data.application.status} />
 		</div>
-		
+
 		<DashboardFaq />
 	</div>
 {/if}
