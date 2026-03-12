@@ -7,6 +7,7 @@
 	import Separator from './ui/separator/separator.svelte';
 
 	const { zid }: { zid: string | null } = $props();
+	const sidebar = Sidebar.useSidebar();
 </script>
 
 <Sidebar.Root variant="inset">
@@ -40,7 +41,11 @@
 						<Sidebar.MenuItem>
 							<Sidebar.MenuButton isActive={page.url.pathname === item.href}>
 								{#snippet child({ props })}
-									<a href={resolve(item.href)} {...props}>
+									<a
+										href={resolve(item.href)}
+										onclick={() => sidebar.setOpenMobile(false)}
+										{...props}
+									>
 										<item.icon />
 										<span>{item.title}</span>
 									</a>
