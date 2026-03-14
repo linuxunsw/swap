@@ -4,11 +4,15 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@import './fonts.css';
+
 /* Colour choices are influenced by our linuxunsw branding and oxocarbon/ibm carbon color schemes */
 /* Hex codes are commented because I can't read oklch well enough yet */
 
 /* prettier-ignore */
 :root {
+	--font-sans: 'IBM Plex Sans Var', 'Inter', sans-serif;
+	--font-mono: 'IBM Plex Mono', monospace;
 	--radius: 0rem;
 	--sidebar-width: calc(var(--spacing) * 72);
 	--header-height: calc(var(--spacing) * 12);
