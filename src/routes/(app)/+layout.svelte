@@ -8,7 +8,7 @@
 	import { getFlash } from 'sveltekit-flash-message';
 
 	let { children, data } = $props();
-	const title = $derived(page.data.routeTitle ?? navTitle(page.url.pathname));
+	const title = $derived(page.data.routeTitle ?? navTitle(page.url.pathname, page.data.role));
 
 	const flash = getFlash(page);
 	$effect(() => {
@@ -25,7 +25,7 @@
 <Sidebar.Provider>
 	<AppSidebar zid={data.zid} />
 	<Sidebar.Inset>
-		<SiteHeader />
+		<SiteHeader {title} />
 		<div class="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-4 px-4 py-10">
 			{@render children?.()}
 		</div>

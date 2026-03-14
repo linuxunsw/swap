@@ -2,12 +2,14 @@
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
-	import { APPLICANT_NAV } from '$lib/nav';
+	import { getNavGroups } from '$lib/nav';
 	import SignOutButton from './sign-out-button.svelte';
 	import Separator from './ui/separator/separator.svelte';
 
 	const { zid }: { zid: string | null } = $props();
 	const sidebar = Sidebar.useSidebar();
+
+	const navGroups = $derived(getNavGroups(page.data.role));
 </script>
 
 <Sidebar.Root variant="inset">
@@ -33,32 +35,34 @@
 	</Sidebar.Header>
 
 	<Sidebar.Content>
-		<Sidebar.Group>
-			<Sidebar.GroupLabel>Applicant</Sidebar.GroupLabel>
-			<Sidebar.GroupContent>
-				<Sidebar.Menu>
-					{#each APPLICANT_NAV as item (item.href)}
-						<Sidebar.MenuItem>
-							<Sidebar.MenuButton
-								size={sidebar.isMobile ? 'lg' : 'default'}
-								isActive={page.url.pathname === item.href}
-							>
-								{#snippet child({ props })}
-									<a
-										href={resolve(item.href)}
-										onclick={() => sidebar.setOpenMobile(false)}
-										{...props}
-									>
-										<item.icon />
-										<span>{item.title}</span>
-									</a>
-								{/snippet}
-							</Sidebar.MenuButton>
-						</Sidebar.MenuItem>
-					{/each}
-				</Sidebar.Menu>
-			</Sidebar.GroupContent>
-		</Sidebar.Group>
+		{#each navGroups as { title: groupLabel, items: navOptions } (groupLabel)}
+			<Sidebar.Group>
+				<Sidebar.GroupLabel>{groupLabel}</Sidebar.GroupLabel>
+				<Sidebar.GroupContent>
+					<Sidebar.Menu>
+						{#each navOptions as item (item.href)}
+							<Sidebar.MenuItem>
+								<Sidebar.MenuButton
+									size={sidebar.isMobile ? 'lg' : 'default'}
+									isActive={page.url.pathname === item.href}
+								>
+									{#snippet child({ props })}
+										<a
+											href={resolve(item.href)}
+											onclick={() => sidebar.setOpenMobile(false)}
+											{...props}
+										>
+											<item.icon />
+											<span>{item.title}</span>
+										</a>
+									{/snippet}
+								</Sidebar.MenuButton>
+							</Sidebar.MenuItem>
+						{/each}
+					</Sidebar.Menu>
+				</Sidebar.GroupContent>
+			</Sidebar.Group>
+		{/each}
 	</Sidebar.Content>
 
 	<Sidebar.Footer>

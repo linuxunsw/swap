@@ -10,6 +10,10 @@ export const load: PageServerLoad = async (event) => {
 		return redirect(302, '/login');
 	}
 
+	if (event.locals.user.role === 'admin') {
+		return redirect(302, '/admin');
+	}
+
 	const db = getDb();
 	const cycle = await getCurrentApplicationCycle(db);
 	if (!cycle) {
@@ -21,7 +25,6 @@ export const load: PageServerLoad = async (event) => {
 	const subcommitteeNames = app ? await getApplicationSubcommitteeNames(db, app.id) : [];
 
 	return {
-		user: event.locals.user,
 		cycle: cycle ?? null,
 		application: app ?? null,
 		subcommitteeNames

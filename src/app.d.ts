@@ -1,3 +1,4 @@
+import type { Role } from '$lib/constants';
 import type { SwapSession, SwapUser } from '$lib/server/auth';
 
 // See https://svelte.dev/docs/kit/types#app.d.ts
@@ -31,6 +32,7 @@ declare global {
 		// interface Locals {}
 		interface PageData {
 			flash?: string;
+			role?: Role;
 		}
 		// interface PageState {}
 		// interface Platform {}

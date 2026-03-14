@@ -4,21 +4,19 @@ import {
 	BETTER_AUTH_SESSION_EXPIRES_IN,
 	BETTER_AUTH_SESSION_UPDATE_AGE
 } from '$env/static/private';
+import { ZID_REGEX, type Role } from '$lib/constants';
 import { devOnly, log } from '$lib/log';
 import { getDb } from '$lib/server/db';
 import { otpExpirySecs, sendOTP } from '$lib/server/otp-mailer';
 import { getSecondaryStorage } from '$lib/server/secondary-storage';
-import { ZID_REGEX, zidIsAdmin } from '$lib/server/utils';
+import { zidIsAdmin } from '$lib/server/utils';
 import { APIError } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { betterAuth } from 'better-auth/minimal';
 import { emailOTP } from 'better-auth/plugins';
 import { sveltekitCookies } from 'better-auth/svelte-kit';
 
-export type Role = 'user' | 'admin';
-
 export type SwapUser = typeof auth.$Infer.Session.user;
-
 export type SwapSession = typeof auth.$Infer.Session.session;
 
 export const auth = betterAuth({

@@ -1,7 +1,5 @@
 import { ADMIN_ZIDS } from '$env/static/private';
 
-export const ZID_REGEX = /^z\d{7}$/;
-
 function getAdminZids() {
 	return ADMIN_ZIDS.split(',').map((s) => s.trim());
 }
