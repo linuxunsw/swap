@@ -26,9 +26,9 @@
 	];
 </script>
 
-<Card.Root>
+<Card.Root class="gap-2">
 	<Card.Header>
-		<Card.Title>Frequently Asked Questions</Card.Title>
+		<Card.Title class="text-base @sm:text-2xl">Frequently Asked Questions</Card.Title>
 	</Card.Header>
 	<Card.Content>
 		<Accordion.Root type="multiple">
