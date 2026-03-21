@@ -1,22 +1,48 @@
-import type { getDb } from '$lib/server/db';
-import { application_subcommittee } from '$lib/server/db/schema';
-import { eq } from 'drizzle-orm';
+import type { SwapDb } from '$lib/server/db';
+import {
+	application_subcommittee,
+	applicationCycle_subcommittee,
+	subcommittee
+} from '$lib/server/db/schema';
+import { eq, getTableColumns } from 'drizzle-orm';
+import type { DrizzleD1Database } from 'drizzle-orm/d1';
 
-export type SubcommitteeOption = {
-	id: string;
-	name: string;
-};
+export type SubcommitteeOption = typeof subcommittee.$inferSelect;
 
-export async function getSubcommitteeOptions(
-	db: ReturnType<typeof getDb>
-): Promise<SubcommitteeOption[]> {
+export async function createSubcommittee(
+	db: SwapDb,
+	id: string,
+	name: string,
+	description?: string
+): Promise<SubcommitteeOption> {
+	const entry = await db.insert(subcommittee).values({ id, name, description }).returning();
+	return entry[0];
+}
+
+export async function getAllSubcommitteeOptions(db: SwapDb): Promise<SubcommitteeOption[]> {
 	return db.query.subcommittee.findMany({
-		columns: {
-			id: true,
-			name: true
-		},
 		orderBy: (table, { asc }) => [asc(table.name)]
 	});
+}
+
+export async function getSubcommitteeOptionsByCycle(
+	db: SwapDb,
+	cycleId: string
+): Promise<SubcommitteeOption[]> {
+	// force cast to fix type error on the partial select. this is because SelectedFields is
+	// incompatible between the drizzle adapters, and prevents proper inference for select()
+	const dbD1 = db as unknown as DrizzleD1Database;
+
+	const cols = getTableColumns(subcommittee);
+	return dbD1
+		.select({ ...cols })
+		.from(subcommittee)
+		.innerJoin(
+			applicationCycle_subcommittee,
+			eq(subcommittee.id, applicationCycle_subcommittee.subcommitteeId)
+		)
+		.where(eq(applicationCycle_subcommittee.cycleId, cycleId))
+		.orderBy(subcommittee.name);
 }
 
 export function toSubcommitteeNameMap(options: SubcommitteeOption[]): Record<string, string> {
@@ -24,7 +50,7 @@ export function toSubcommitteeNameMap(options: SubcommitteeOption[]): Record<str
 }
 
 export async function getApplicationSubcommitteeIds(
-	db: ReturnType<typeof getDb>,
+	db: SwapDb,
 	applicationId: string
 ): Promise<string[]> {
 	const rows = await db.query.application_subcommittee.findMany({
@@ -38,7 +64,7 @@ export async function getApplicationSubcommitteeIds(
 }
 
 export async function getApplicationSubcommitteeNames(
-	db: ReturnType<typeof getDb>,
+	db: SwapDb,
 	applicationId: string
 ): Promise<string[]> {
 	const rows = await db.query.application_subcommittee.findMany({

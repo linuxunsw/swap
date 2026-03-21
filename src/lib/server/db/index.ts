@@ -20,3 +20,5 @@ export function getDb() {
 	log('error', 'db', 'init_failed', { message: 'No valid db config' });
 	throw new Error('No valid db config!');
 }
+
+export type SwapDb = ReturnType<typeof getDb>;

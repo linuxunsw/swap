@@ -12,7 +12,9 @@
 	let { data }: { data: PageServerData } = $props();
 
 	const app = $derived(data.application);
-	const canEdit = $derived(app?.status === 'draft' || app?.status === 'submitted');
+	const canEdit = $derived(
+		data.isWithinSubmissionWindow && (app?.status === 'draft' || app?.status === 'submitted')
+	);
 </script>
 
 {#if !app}

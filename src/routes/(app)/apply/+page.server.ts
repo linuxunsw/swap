@@ -4,10 +4,13 @@ import {
 	getApplication,
 	submitApplication
 } from '$lib/server/controllers/application';
-import { getCurrentApplicationCycle } from '$lib/server/controllers/application-cycle';
+import {
+	getApplicantCycleAccess,
+	getCurrentApplicationCycle
+} from '$lib/server/controllers/application-cycle';
 import {
 	getApplicationSubcommitteeIds,
-	getSubcommitteeOptions
+	getSubcommitteeOptionsByCycle
 } from '$lib/server/controllers/subcommittee';
 import { getDb } from '$lib/server/db';
 import { error, fail } from '@sveltejs/kit';
@@ -23,12 +26,22 @@ export const load: PageServerLoad = async (event) => {
 	}
 
 	const db = getDb();
-	const subcommitteeOptions = await getSubcommitteeOptions(db);
-	const applicationSchema = createApplicationSchema(subcommitteeOptions.map((row) => row.id));
-	const cycle = await getCurrentApplicationCycle(db);
-	if (!cycle) {
+	const access = await getApplicantCycleAccess(db, event.locals.user.id);
+	if (!access.effectiveCycleForUser) {
 		redirect(302, '/closed');
 	}
+
+	if (!access.isWithinSubmissionWindow) {
+		if (access.hasApplicationInLatestCycle) {
+			redirect(302, '/');
+		}
+
+		redirect(302, '/closed');
+	}
+
+	const cycle = access.effectiveCycleForUser;
+	const subcommitteeOptions = await getSubcommitteeOptionsByCycle(db, cycle.id);
+	const applicationSchema = createApplicationSchema(subcommitteeOptions.map((row) => row.id));
 
 	const existing = await getApplication(db, event.locals.user.id, cycle);
 
@@ -76,7 +89,12 @@ export const actions: Actions = {
 		}
 
 		const db = getDb();
-		const subcommitteeOptions = await getSubcommitteeOptions(db);
+		const cycle = await getCurrentApplicationCycle(db);
+		if (!cycle) {
+			error(400, { message: 'Applications are not open for submission' });
+		}
+
+		const subcommitteeOptions = await getSubcommitteeOptionsByCycle(db, cycle.id);
 		const applicationSchema = createApplicationSchema(subcommitteeOptions.map((row) => row.id));
 		const formResult = await superValidate(event, valibot(applicationSchema));
 		if (!formResult.valid) {
@@ -111,7 +129,12 @@ export const actions: Actions = {
 		}
 
 		const db = getDb();
-		const subcommitteeOptions = await getSubcommitteeOptions(db);
+		const cycle = await getCurrentApplicationCycle(db);
+		if (!cycle) {
+			error(400, { message: 'Applications are not open for submission' });
+		}
+
+		const subcommitteeOptions = await getSubcommitteeOptionsByCycle(db, cycle.id);
 		const applicationSchema = createApplicationSchema(subcommitteeOptions.map((row) => row.id));
 		const formResult = await superValidate(event, valibot(applicationSchema));
 		if (!formResult.valid) {

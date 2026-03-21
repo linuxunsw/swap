@@ -12,11 +12,11 @@
 		submittedAt: Date | null;
 		subcommitteeNames: string[];
 		cycleName: string | null;
+		canEdit: boolean;
 	};
 
-	let { status, submittedAt, subcommitteeNames, cycleName }: Props = $props();
+	let { status, submittedAt, subcommitteeNames, cycleName, canEdit }: Props = $props();
 
-	const canEdit = $derived(status === 'draft' || status === 'submitted');
 	const display = $derived(STATUS_DISPLAY[status]);
 	const formattedDate = $derived(formatDate(submittedAt));
 </script>

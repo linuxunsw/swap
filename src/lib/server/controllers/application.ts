@@ -1,25 +1,57 @@
-import type { getDb } from '$lib/server/db';
+import type { SwapDb } from '$lib/server/db';
 import { and, eq, inArray } from 'drizzle-orm/sql/expressions/conditions';
-import { application, application_subcommittee, applicationCycle } from '../db/schema';
-import { getCurrentApplicationCycle } from './application-cycle';
+import { application, application_subcommittee } from '../db/schema';
+import { getCurrentApplicationCycle, type ApplicationCycleRecord } from './application-cycle';
 
-export const getApplication = async (
-	db: ReturnType<typeof getDb>,
-	userId: string,
-	cycle?: typeof applicationCycle.$inferSelect
-) => {
+export async function getApplications(db: SwapDb, cycle?: ApplicationCycleRecord | null) {
 	if (!cycle) {
 		cycle = await getCurrentApplicationCycle(db);
-		if (!cycle) return null;
+		if (!cycle) return [];
 	}
 
+	const apps = await db.query.application.findMany({
+		where: eq(application.cycleId, cycle.id),
+		with: {
+			subcommittees: {
+				with: {
+					subcommittee: {
+						columns: {
+							id: true
+						}
+					}
+				}
+			}
+		}
+	});
+
+	return apps;
+}
+
+export const getApplication = async (db: SwapDb, userId: string, cycle: ApplicationCycleRecord) => {
 	return db.query.application.findFirst({
 		where: and(eq(application.userId, userId), eq(application.cycleId, cycle.id))
 	});
 };
 
+export const getApplicationById = async (db: SwapDb, id: string) => {
+	return db.query.application.findFirst({
+		where: eq(application.id, id),
+		with: {
+			subcommittees: {
+				with: {
+					subcommittee: {
+						columns: {
+							id: true
+						}
+					}
+				}
+			}
+		}
+	});
+};
+
 export const createOrUpdateApplication = async (
-	db: ReturnType<typeof getDb>,
+	db: SwapDb,
 	userId: string,
 	data: {
 		fullName: string;
@@ -31,7 +63,7 @@ export const createOrUpdateApplication = async (
 	}
 ) => {
 	const cycle = await getCurrentApplicationCycle(db);
-	if (!cycle) throw new Error('No active application cycle');
+	if (!cycle) throw new Error('Applications are closed');
 
 	const app = await db.transaction(async (tx) => {
 		const existing = await tx.query.application.findFirst({
@@ -105,7 +137,8 @@ export const createOrUpdateApplication = async (
 			await tx.insert(application_subcommittee).values(
 				toInsert.map((subcommitteeId) => ({
 					applicationId: savedApp.id,
-					subcommitteeId
+					subcommitteeId,
+					cycleId: cycle.id
 				}))
 			);
 		}
@@ -116,8 +149,11 @@ export const createOrUpdateApplication = async (
 	return app;
 };
 
-export const submitApplication = async (db: ReturnType<typeof getDb>, userId: string) => {
-	const draft = await getApplication(db, userId);
+export const submitApplication = async (db: SwapDb, userId: string) => {
+	const cycle = await getCurrentApplicationCycle(db);
+	if (!cycle) throw new Error('Applications are closed');
+
+	const draft = await getApplication(db, userId, cycle);
 	if (!draft) throw new Error('No application to submit');
 	if (draft.status !== 'draft') throw new Error('Only draft applications can be submitted');
 

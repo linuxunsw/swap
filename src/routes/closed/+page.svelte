@@ -37,8 +37,8 @@
 				</Empty.Media>
 				<Empty.Title>Applications are closed</Empty.Title>
 				<Empty.Description>
-					There is no active application cycle at the moment. Check back later when applications
-					reopen. Keep an eye out on our socials!
+					New applications are currently closed. Check back later when applications reopen. Keep an
+					eye out on our socials!
 				</Empty.Description>
 			</Empty.Header>
 			<Empty.Content>
