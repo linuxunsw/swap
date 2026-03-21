@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { PUBLIC_SWAP_GITHUB } from '$env/static/public';
 	import ModeToggle from '$lib/components/mode-toggle.svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Separator } from '$lib/components/ui/separator/index.js';
@@ -16,7 +17,7 @@
 		<h1 class="text-base font-medium">{title}</h1>
 		<div class="ms-auto flex items-center gap-2">
 			<Button
-				href="https://github.com/linuxunsw/swap"
+				href={PUBLIC_SWAP_GITHUB}
 				variant="ghost"
 				size="sm"
 				class="hidden sm:flex dark:text-foreground"
