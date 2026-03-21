@@ -17,7 +17,7 @@ export const user = sqliteTable('user', {
 	role: text({ enum: ['user', 'admin'] })
 		.default('user')
 		.notNull(),
-	zid: text('zid').notNull()
+	zid: text('zid').notNull().unique()
 });
 
 export const session = sqliteTable(
