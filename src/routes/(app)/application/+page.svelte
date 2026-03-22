@@ -35,7 +35,7 @@
 			</div>
 
 			<!-- main column -->
-			<div class="space-y-6">
+			<div class="min-w-0 space-y-6">
 				<PersonalInfo
 					fullName={app.fullName}
 					discord={app.discord}
