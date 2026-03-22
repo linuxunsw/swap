@@ -49,7 +49,15 @@
 									{#snippet child({ props })}
 										<a
 											href={resolve(item.href)}
-											onclick={() => sidebar.setOpenMobile(false)}
+											onclick={() => {
+												sidebar.setOpenMobile(false);
+												// there's a bug where the screen lock gets reapplied after opening a drawer at the same time
+												// as the onclick on mobile, e.g when handling a tainted form state on mobile with a responsive dialog.
+												// the issue doesn't happen with the alert dialog.
+												// similar (but not identical) issue: https://github.com/huntabyte/shadcn-svelte/issues/1549
+												document.body.style.pointerEvents = '';
+												document.body.style.overflow = '';
+											}}
 											{...props}
 										>
 											<item.icon />
