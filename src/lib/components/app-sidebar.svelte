@@ -19,9 +19,9 @@
 				<Sidebar.MenuItem>
 					<Sidebar.MenuButton class="data-[slot=sidebar-menu-button]:p-1.5!">
 						{#snippet child({ props })}
-							<div class="flex flex-row items-center">
+							<div class="flex h-8 items-center space-x-2">
 								<span class="text-4xl font-bold">SWAP</span>
-								<Separator class="mx-2 h-8" orientation="vertical" />
+								<Separator orientation="vertical" />
 								<div {...props} class="flex flex-col items-start">
 									<span class="text-sm font-medium">Logged in:</span>
 									<span class="text-sm text-muted-foreground">{zid}</span>
