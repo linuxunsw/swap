@@ -36,3 +36,16 @@ export const APPLICATION_STAGES: { key: ApplicationStatus[]; label: string }[] =
 	{ key: ['under_review'], label: 'Under Review' },
 	{ key: ['offered', 'rejected'], label: 'Decision' }
 ];
+
+export const swapBadgeVariants = [
+	'bg-badge-1 text-badge-foreground',
+	'bg-badge-2 text-badge-foreground',
+	'bg-badge-3 text-badge-foreground',
+	'bg-badge-4 text-badge-foreground',
+	'bg-badge-5 text-badge-foreground',
+	'bg-badge-6 text-badge-foreground',
+	'bg-badge-7 text-badge-foreground',
+	'bg-badge-8 text-badge-foreground'
+] as const;
+export type SwapBadgeVariant = (typeof swapBadgeVariants)[number];
+

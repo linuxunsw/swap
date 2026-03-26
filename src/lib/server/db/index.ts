@@ -14,7 +14,7 @@ export function getDb() {
 	if (env.DATABASE_URL) {
 		log('debug', 'db', 'get', { provider: 'libsql' });
 		const client = createClient({ url: env.DATABASE_URL });
-		return drizzleLibSql(client, { schema });
+		return drizzleLibSql(client, { schema, casing: 'snake_case' });
 	}
 
 	log('error', 'db', 'init_failed', { message: 'No valid db config' });

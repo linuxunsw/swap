@@ -84,6 +84,7 @@ export const application = sqliteTable(
 export const subcommittee = sqliteTable('subcommittee', {
 	id: text('id').notNull().primaryKey(), // raw name id e.g. "tech", "events", "marketing"
 	name: text('name').notNull().unique(), // Formatted display name e.g. "Tech", "Events", "Marketing"
+	colour: integer('colour').notNull().default(1), // key into badgeVariants see $lib/constants.ts
 	description: text('description').notNull().default('')
 });
 
