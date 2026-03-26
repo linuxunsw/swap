@@ -1,6 +1,7 @@
-import { and, eq, gte, lte } from 'drizzle-orm/sql/expressions/conditions';
+import { log } from '$lib/log';
+import { and, eq, gte, inArray, lte } from 'drizzle-orm/sql/expressions/conditions';
 import type { SwapDb } from '../db';
-import { application, applicationCycle } from '../db/schema';
+import { application, applicationCycle, applicationCycle_subcommittee } from '../db/schema';
 
 export type ApplicationCycleRecord = typeof applicationCycle.$inferSelect;
 
@@ -10,6 +11,40 @@ export type ApplicantCycleAccess = {
 	effectiveCycleForUser: ApplicationCycleRecord | null;
 	isWithinSubmissionWindow: boolean;
 	hasApplicationInLatestCycle: boolean;
+};
+
+export const getApplicationCycles = async (db: SwapDb) => {
+	const cycles = await db.query.applicationCycle.findMany({
+		with: {
+			subcommittees: {
+				columns: {},
+				with: {
+					subcommittee: true
+				}
+			}
+		},
+		orderBy: (table, { desc }) => [desc(table.opensAt)]
+	});
+
+	return cycles;
+};
+
+export type ApplicationCycleWithSubcommittees = Awaited<
+	ReturnType<typeof getApplicationCycles>
+>[number];
+
+export const getApplicationCycleById = async (db: SwapDb, id: string) => {
+	return db.query.applicationCycle.findFirst({
+		where: eq(applicationCycle.id, id),
+		with: {
+			subcommittees: {
+				columns: {},
+				with: {
+					subcommittee: true
+				}
+			}
+		}
+	});
 };
 
 export const getCurrentApplicationCycle = async (db: SwapDb) => {
@@ -79,20 +114,93 @@ export const getApplicantCycleAccess = async (
 	};
 };
 
-export const createApplicationCycle = async (
+export const createCycleWithSubcommittees = async (
 	db: SwapDb,
-	name: string,
-	opensAt: Date,
-	closesAt: Date
+	data: typeof applicationCycle.$inferInsert & { subcommitteeIds: string[] }
 ) => {
-	const [cycle] = await db
-		.insert(applicationCycle)
-		.values({
-			name,
-			opensAt,
-			closesAt
-		})
-		.returning();
+	const cycle = await db.transaction(async (tx) => {
+		const [cycle] = await tx
+			.insert(applicationCycle)
+			.values({
+				name: data.name,
+				opensAt: data.opensAt,
+				closesAt: data.closesAt
+			})
+			.returning();
+
+		if (data.subcommitteeIds.length > 0) {
+			await tx.insert(applicationCycle_subcommittee).values(
+				data.subcommitteeIds.map((subcommitteeId) => ({
+					cycleId: cycle.id,
+					subcommitteeId
+				}))
+			);
+		}
+		return cycle;
+	});
 
 	return cycle;
+};
+
+export const updateCycleWithSubcommittees = async (
+	db: SwapDb,
+	cycleId: string,
+	data: typeof applicationCycle.$inferInsert & { subcommitteeIds: string[] }
+) => {
+	const cycle = await db.transaction(async (tx) => {
+		const [cycle] = await tx
+			.update(applicationCycle)
+			.set({
+				name: data.name,
+				opensAt: data.opensAt,
+				closesAt: data.closesAt
+			})
+			.where(eq(applicationCycle.id, cycleId))
+			.returning();
+
+		// Sync join-table rows (only delete/insert what changed)
+		const existingLinks = await tx.query.applicationCycle_subcommittee.findMany({
+			where: eq(applicationCycle_subcommittee.cycleId, cycleId),
+			columns: { subcommitteeId: true }
+		});
+
+		log('debug', 'cycle', 'update_cycle_subcommittees', {
+			cycleId,
+			existingSubcommitteeIds: existingLinks.map((r) => r.subcommitteeId).toString(),
+			newSubcommitteeIds: data.subcommitteeIds.toString()
+		});
+		const existingIds = new Set(existingLinks.map((r) => r.subcommitteeId));
+		const nextIds = new Set(data.subcommitteeIds);
+
+		const toAdd = data.subcommitteeIds.filter((id) => !existingIds.has(id));
+		const toRemove = existingLinks.map((r) => r.subcommitteeId).filter((id) => !nextIds.has(id));
+
+		if (toRemove.length > 0) {
+			await tx
+				.delete(applicationCycle_subcommittee)
+				.where(
+					and(
+						eq(applicationCycle_subcommittee.cycleId, cycleId),
+						inArray(applicationCycle_subcommittee.subcommitteeId, toRemove)
+					)
+				);
+		}
+
+		if (toAdd.length > 0) {
+			await tx.insert(applicationCycle_subcommittee).values(
+				toAdd.map((subcommitteeId) => ({
+					cycleId,
+					subcommitteeId
+				}))
+			);
+		}
+
+		return cycle;
+	});
+
+	return cycle;
+};
+
+export const deleteApplicationCycle = async (db: SwapDb, cycleId: string) => {
+	return db.delete(applicationCycle).where(eq(applicationCycle.id, cycleId));
 };
