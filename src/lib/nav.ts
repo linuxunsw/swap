@@ -1,4 +1,5 @@
-import type { Pathname, RouteId } from '$app/types';
+import type { Pathname } from '$app/types';
+import { CalendarCogIcon, FileStackIcon, UsersIcon } from '@lucide/svelte';
 import ApplicationIcon from '@lucide/svelte/icons/file-text';
 import HouseIcon from '@lucide/svelte/icons/house';
 import type { Component } from 'svelte';
@@ -11,7 +12,7 @@ export type NavGroup = {
 };
 
 export type NavItem = {
-	href: Pathname | RouteId;
+	href: Pathname;
 	title: string;
 	icon: Component;
 };
@@ -31,6 +32,12 @@ export const ADMIN_NAV: NavGroup[] = [
 	{
 		title: 'Admin',
 		items: [{ href: '/admin', title: 'Dashboard', icon: HouseIcon }]
+	},
+	{
+		title: 'Applications',
+		items: [
+			{ href: '/admin/applicants', title: 'Applicants', icon: FileStackIcon },
+		]
 	}
 ];
 
