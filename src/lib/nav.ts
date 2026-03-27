@@ -37,6 +37,7 @@ export const ADMIN_NAV: NavGroup[] = [
 		title: 'Applications',
 		items: [
 			{ href: '/admin/applicants', title: 'Applicants', icon: FileStackIcon },
+			{ href: '/admin/cycles', title: 'Cycles', icon: CalendarCogIcon },
 		]
 	}
 ];
