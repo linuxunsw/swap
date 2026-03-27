@@ -38,6 +38,7 @@ export const ADMIN_NAV: NavGroup[] = [
 		items: [
 			{ href: '/admin/applicants', title: 'Applicants', icon: FileStackIcon },
 			{ href: '/admin/cycles', title: 'Cycles', icon: CalendarCogIcon },
+			{ href: '/admin/subcommittees', title: 'Subcommittees', icon: UsersIcon }
 		]
 	}
 ];
