@@ -22,10 +22,24 @@ export const load: PageServerLoad = async (event) => {
 	}
 
 	const application = await getApplicationById(db, event.params.slug);
+	if (!application) {
+		error(404, 'Application not found');
+	}
+
+	const subcommitteeNames = application.subcommittees.map((row) => row.subcommittee.name);
+	const yesVotes = application.votes.filter((vote) => vote.value === 1).length;
+	const noVotes = application.votes.filter((vote) => vote.value === 0).length;
 
 	return {
 		role: event.locals.user.role,
+		routeTitle: 'Applicant Info',
 		slug: event.params.slug,
-		application
+		application,
+		subcommitteeNames,
+		voteSummary: {
+			yes: yesVotes,
+			no: noVotes,
+			total: application.votes.length
+		}
 	};
 };

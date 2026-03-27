@@ -1,6 +1,5 @@
 import { getApplications } from '$lib/server/controllers/application';
 import { getLatestApplicationCycle } from '$lib/server/controllers/application-cycle';
-import { getApplicationSubcommittees } from '$lib/server/controllers/subcommittee';
 import { getDb } from '$lib/server/db';
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
@@ -26,17 +25,15 @@ export const load: PageServerLoad = async (event) => {
 	}
 
 	const applicants = await getApplications(db, cycle);
-	const mappedApplicants = await Promise.all(
-		applicants.map(async (app) => {
-			const subcommittees = await getApplicationSubcommittees(db, app.id);
-			return {
-				id: app.id,
-				name: app.fullName,
-				status: app.status,
-				subcommittees: subcommittees
-			};
-		})
-	);
+	const mappedApplicants = applicants.map((app) => ({
+		id: app.id,
+		name: app.fullName,
+		status: app.status,
+		submittedAt: app.submittedAt,
+		preferredEmail: app.preferredEmail ?? app.user.email,
+		discord: app.discord,
+		subcommittees: app.subcommittees.map((row) => row.subcommittee)
+	}));
 
 	return {
 		cycle: cycle,

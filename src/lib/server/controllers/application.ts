@@ -12,11 +12,20 @@ export async function getApplications(db: SwapDb, cycle?: ApplicationCycleRecord
 	const apps = await db.query.application.findMany({
 		where: eq(application.cycleId, cycle.id),
 		with: {
+			user: {
+				columns: {
+					email: true,
+					zid: true
+				}
+			},
 			subcommittees: {
 				with: {
 					subcommittee: {
 						columns: {
-							id: true
+							id: true,
+							name: true,
+							colour: true,
+							description: true
 						}
 					}
 				}
@@ -37,11 +46,55 @@ export const getApplicationById = async (db: SwapDb, id: string) => {
 	return db.query.application.findFirst({
 		where: eq(application.id, id),
 		with: {
+			user: {
+				columns: {
+					name: true,
+					email: true,
+					zid: true
+				}
+			},
+			cycle: true,
 			subcommittees: {
 				with: {
 					subcommittee: {
 						columns: {
-							id: true
+							id: true,
+							name: true,
+							colour: true,
+							description: true
+						}
+					}
+				}
+			},
+			interview: {
+				with: {
+					interviewer: {
+						columns: {
+							name: true,
+							email: true,
+							zid: true
+						}
+					},
+					feedback: {
+						with: {
+							reviewer: {
+								columns: {
+									name: true,
+									email: true,
+									zid: true
+								}
+							}
+						}
+					}
+				}
+			},
+			votes: {
+				with: {
+					voter: {
+						columns: {
+							name: true,
+							email: true,
+							zid: true
 						}
 					}
 				}
