@@ -22,7 +22,7 @@
 		{
 			"binding": "DB",
 			"database_name": "swap-db",
-			"database_id": "2d827e06-2f5a-4e8c-8c12-4372f9de63b5",
+			"database_id": "607cbe84-7a54-4c41-9c15-34483586f9ca",
 			"migrations_dir": "./src/lib/server/db/migrations"
 		}
 	],
@@ -97,7 +97,7 @@
 				{
 					"binding": "DB",
 					"database_name": "swap-db",
-					"database_id": "2d827e06-2f5a-4e8c-8c12-4372f9de63b5",
+					"database_id": "607cbe84-7a54-4c41-9c15-34483586f9ca",
 					"migrations_dir": "./src/lib/server/db/migrations"
 				}
 			],

@@ -56,7 +56,7 @@ export const auth = betterAuth({
 			},
 			zid: {
 				type: 'string',
-				required: true,
+				required: false,
 				input: false,
 				unique: true
 			}

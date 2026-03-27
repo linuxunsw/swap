@@ -33,9 +33,7 @@
 	</header>
 
 	{#if data.applicants.length === 0}
-		<div class="rounded-lg border p-6">
-			<EmptyApplication />
-		</div>
+		<EmptyApplication />
 	{:else}
 		<DataTable
 			{columns}

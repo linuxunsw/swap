@@ -44,8 +44,6 @@ async function checkIdExists(
 	db: SwapDb,
 	form: SuperValidated<Infer<typeof subcommitteeIdSchema>>
 ): Promise<boolean> {
-	// simulate delay
-	await new Promise((resolve) => setTimeout(resolve, 2000));
 	return Boolean(await getSubcommitteeById(db, form.data.id));
 }
 

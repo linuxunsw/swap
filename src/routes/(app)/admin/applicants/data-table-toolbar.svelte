@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
+	import { APPLICATION_STATUSES } from '$lib/constants/application-status';
+	import { STATUS_DISPLAY_ICON } from '$lib/constants/status-icon';
 	import XIcon from '@lucide/svelte/icons/x';
 	import type { Table } from '@tanstack/table-core';
 	import type { Applicant } from './columns';
@@ -18,6 +20,12 @@
 	const isFiltered = $derived(
 		table.getState().columnFilters.length > 0 || !!table.getState().globalFilter
 	);
+
+	const statusOptions = APPLICATION_STATUSES.map((status) => ({
+		label: STATUS_DISPLAY_ICON[status].label,
+		value: status,
+		icon: STATUS_DISPLAY_ICON[status].icon
+	}));
 </script>
 
 <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
@@ -32,15 +40,7 @@
 			<DataTableFacetedFilter
 				column={table.getColumn('status')!}
 				title="Status"
-				options={[
-					{ label: 'Draft', value: 'draft' },
-					{ label: 'Submitted', value: 'submitted' },
-					{ label: 'Interview Scheduled', value: 'interview_scheduled' },
-					{ label: 'Interviewed', value: 'interviewed' },
-					{ label: 'Under Review', value: 'under_review' },
-					{ label: 'Offered', value: 'offered' },
-					{ label: 'Rejected', value: 'rejected' }
-				]}
+				options={statusOptions}
 			/>
 			<DataTableFacetedFilter
 				column={table.getColumn('subcommittees')!}

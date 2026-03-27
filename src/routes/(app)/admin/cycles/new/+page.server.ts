@@ -63,6 +63,11 @@ export const actions: Actions = {
 			});
 		} catch (e) {
 			const msg = e instanceof Error ? e.message : 'Unable to create cycle';
+			log('error', 'admin', 'create_cycle_failed', {
+				zid: event.locals.user.zid,
+				cycleData: form.data,
+				error: msg
+			});
 			return message(form, msg, { status: 400 });
 		}
 

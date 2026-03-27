@@ -7,11 +7,13 @@
 	import CheckIcon from '@lucide/svelte/icons/check';
 	import PlusCircleIcon from '@lucide/svelte/icons/plus-circle';
 	import type { Column } from '@tanstack/table-core';
+	import type { Component } from 'svelte';
 	import type { Applicant } from './columns';
 
 	type Option = {
 		label: string;
 		value: string;
+		icon?: Component;
 	};
 
 	let {
@@ -59,6 +61,9 @@
 						{:else}
 							{#each selectedOptions as option (option.value)}
 								<Badge variant="secondary" class="rounded-sm px-1 font-normal">
+									{#if option.icon}
+										<option.icon class="mr-1 size-3" />
+									{/if}
 									{option.label}
 								</Badge>
 							{/each}
@@ -86,6 +91,9 @@
 							>
 								<CheckIcon class="size-3.5" />
 							</div>
+							{#if option.icon}
+								<option.icon class="mr-2 size-4 text-muted-foreground" />
+							{/if}
 							<span>{option.label}</span>
 						</Command.Item>
 					{/each}

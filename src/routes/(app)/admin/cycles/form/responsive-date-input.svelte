@@ -19,11 +19,11 @@
 		id: string;
 		name: string;
 
-		value: string | undefined;
+		value?: string;
 		description?: string;
 	};
 
-	let { id, name, value = $bindable<string | undefined>(undefined), description }: Props = $props();
+	let { id, name, value = $bindable(''), description }: Props = $props();
 	let open = $state(false);
 
 	const df = new DateFormatter('en-AU', { dateStyle: 'medium' });
@@ -109,4 +109,4 @@
 	</Popover.Root>
 {/if}
 
-<input hidden {name} value={value ?? ''} />
+<input type="hidden" {name} bind:value />
