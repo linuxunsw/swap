@@ -2,7 +2,7 @@
 	const { data } = $props();
 
 	import * as Item from '$lib/components/ui/item/index.js';
-	import { swapBadgeVariants } from '$lib/constants.js';
+	import { swapBadgeVariants } from '$lib/constants';
 	import { PlusIcon, SquarePenIcon } from '@lucide/svelte';
 	import SubcommitteeDialog from './subcommittee-dialog.svelte';
 </script>
