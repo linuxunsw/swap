@@ -7,6 +7,7 @@
 	import { Label } from '$lib/components/ui/label/index.js';
 	import { Spinner } from '$lib/components/ui/spinner/index.js';
 	import { Textarea } from '$lib/components/ui/textarea/index.js';
+	import { checkboxVariants, choiceCardVariants } from '$lib/constants';
 	import { toast } from 'svelte-sonner';
 	import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
 	import { valibotClient } from 'sveltekit-superforms/adapters';
@@ -126,12 +127,30 @@
 		<Form.Description>Select the subcommittees you're interested in.</Form.Description>
 		<Form.Control>
 			{#snippet children({ props })}
-				<Checkbox.Group {...props} class="flex flex-col gap-4" bind:value={$formData.subcommittees}>
+				<Checkbox.Group
+					{...props}
+					class="grid grid-cols-1 gap-4 sm:grid-cols-2"
+					bind:value={$formData.subcommittees}
+				>
 					{#each subcommitteeOptions as subcommitteeOption (subcommitteeOption.id)}
-						<div class="flex w-full flex-row items-center gap-3">
-							<Checkbox.Root {...props} value={subcommitteeOption.id} id={subcommitteeOption.id} />
-							<Label for={subcommitteeOption.id}>{subcommitteeOption.name}</Label>
-						</div>
+						{@const choiceCardVariant =
+							choiceCardVariants[subcommitteeOption.colour % choiceCardVariants.length]}
+						<Label for={subcommitteeOption.id} class={`${choiceCardVariant} p-4`}>
+							<div class="flex w-full flex-row items-start gap-3">
+								<Checkbox.Root
+									{...props}
+									value={subcommitteeOption.id}
+									id={subcommitteeOption.id}
+									class={checkboxVariants[subcommitteeOption.colour % checkboxVariants.length]}
+								/>
+								<div class="grid gap-1.5 font-normal">
+									<p class="h-fit leading-none font-semibold">{subcommitteeOption.name}</p>
+									<p class="text-sm">
+										{subcommitteeOption.description}
+									</p>
+								</div>
+							</div>
+						</Label>
 					{/each}
 				</Checkbox.Group>
 			{/snippet}
