@@ -9,8 +9,8 @@ import {
 } from '@lucide/svelte';
 import type { Component } from 'svelte';
 import type { ButtonVariant } from '../components/ui/button';
-import { APPLICATION_STATUSES, type ApplicationStatus } from './application-status';
 import { cn } from '../utils';
+import { type ApplicationStatus } from './application-status';
 
 // Auth related
 export type Role = 'user' | 'admin';

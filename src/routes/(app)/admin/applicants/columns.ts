@@ -1,5 +1,5 @@
 import { renderComponent, renderSnippet } from '$lib/components/ui/data-table';
-import type { ApplicationStatus } from '$lib/constants';
+import type { ApplicationStatus } from '$lib/constants/application-status';
 import type { SubcommitteeOption } from '$lib/server/controllers/subcommittee';
 import type { ColumnDef } from '@tanstack/table-core';
 import { createRawSnippet } from 'svelte';

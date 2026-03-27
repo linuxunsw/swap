@@ -1,6 +1,7 @@
 <script lang="ts">
 	import * as Card from '$lib/components/ui/card/index.js';
-	import { APPLICATION_STAGES, APPLICATION_STATUSES, type ApplicationStatus } from '$lib/constants';
+	import { APPLICATION_STAGES } from '$lib/constants';
+	import { APPLICATION_STATUSES, type ApplicationStatus } from '$lib/constants/application-status';
 	import CheckIcon from '@lucide/svelte/icons/check';
 	import CircleIcon from '@lucide/svelte/icons/circle';
 	import CircleDotIcon from '@lucide/svelte/icons/circle-dot';
