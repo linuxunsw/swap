@@ -9,6 +9,7 @@ import {
 } from '@lucide/svelte';
 import type { Component } from 'svelte';
 import type { ButtonVariant } from './components/ui/button';
+import { cn } from './utils';
 
 export const APPLICATION_STATUSES = [
 	'draft',
@@ -76,3 +77,88 @@ export const swapBadgeVariants = [
 ] as const;
 export type SwapBadgeVariant = (typeof swapBadgeVariants)[number];
 
+const checkboxBaseVariant = 'border-foreground';
+const choiceCardBaseVariant = cn(
+	'flex items-start gap-3 w-full rounded-md border p-4 shadow-sm transition-colors',
+	'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
+);
+
+export const checkboxVariants = [
+	cn(
+		checkboxBaseVariant,
+		'data-[state=checked]:border-badge-1 data-[state=checked]:bg-badge-1 data-[state=checked]:text-badge-foreground',
+		'dark:data-[state=checked]:border-badge-1 dark:data-[state=checked]:bg-badge-1 dark:data-[state=checked]:text-badge-foreground'
+	),
+	cn(
+		checkboxBaseVariant,
+		'data-[state=checked]:border-badge-2 data-[state=checked]:bg-badge-2 data-[state=checked]:text-badge-foreground',
+		'dark:data-[state=checked]:border-badge-2 dark:data-[state=checked]:bg-badge-2 dark:data-[state=checked]:text-badge-foreground'
+	),
+	cn(
+		checkboxBaseVariant,
+		'data-[state=checked]:border-badge-3 data-[state=checked]:bg-badge-3 data-[state=checked]:text-badge-foreground',
+		'dark:data-[state=checked]:border-badge-3 dark:data-[state=checked]:bg-badge-3 dark:data-[state=checked]:text-badge-foreground'
+	),
+	cn(
+		checkboxBaseVariant,
+		'data-[state=checked]:border-badge-4 data-[state=checked]:bg-badge-4 data-[state=checked]:text-badge-foreground',
+		'dark:data-[state=checked]:border-badge-4 dark:data-[state=checked]:bg-badge-4 dark:data-[state=checked]:text-badge-foreground'
+	),
+	cn(
+		checkboxBaseVariant,
+		'data-[state=checked]:border-badge-5 data-[state=checked]:bg-badge-5 data-[state=checked]:text-badge-foreground',
+		'dark:data-[state=checked]:border-badge-5 dark:data-[state=checked]:bg-badge-5 dark:data-[state=checked]:text-badge-foreground'
+	),
+	cn(
+		checkboxBaseVariant,
+		'data-[state=checked]:border-badge-6 data-[state=checked]:bg-badge-6 data-[state=checked]:text-badge-foreground',
+		'dark:data-[state=checked]:border-badge-6 dark:data-[state=checked]:bg-badge-6 dark:data-[state=checked]:text-badge-foreground'
+	),
+	cn(
+		checkboxBaseVariant,
+		'data-[state=checked]:border-badge-7 data-[state=checked]:bg-badge-7 data-[state=checked]:text-badge-foreground',
+		'dark:data-[state=checked]:border-badge-7 dark:data-[state=checked]:bg-badge-7 dark:data-[state=checked]:text-badge-foreground'
+	),
+	cn(
+		checkboxBaseVariant,
+		'data-[state=checked]:border-badge-8 data-[state=checked]:bg-badge-8 data-[state=checked]:text-badge-foreground',
+		'dark:data-[state=checked]:border-badge-8 dark:data-[state=checked]:bg-badge-8 dark:data-[state=checked]:text-badge-foreground'
+	)
+] as const;
+
+export const choiceCardVariants = [
+	cn(
+		choiceCardBaseVariant,
+		'bg-badge-1/20 hover:bg-badge-1/30 has-[aria-checked=true]:border-badge-1 has-[aria-checked=true]:bg-badge-1/50'
+	),
+	cn(
+		choiceCardBaseVariant,
+		'bg-badge-2/20 hover:bg-badge-2/30 has-[aria-checked=true]:border-badge-2 has-[aria-checked=true]:bg-badge-2/50'
+	),
+	cn(
+		choiceCardBaseVariant,
+		'bg-badge-3/20 hover:bg-badge-3/30 has-[aria-checked=true]:border-badge-3 has-[aria-checked=true]:bg-badge-3/50'
+	),
+	cn(
+		choiceCardBaseVariant,
+		'bg-badge-4/20 hover:bg-badge-4/30 has-[aria-checked=true]:border-badge-4 has-[aria-checked=true]:bg-badge-4/50'
+	),
+	cn(
+		choiceCardBaseVariant,
+		'bg-badge-5/20 hover:bg-badge-5/30 has-[aria-checked=true]:border-badge-5 has-[aria-checked=true]:bg-badge-5/50'
+	),
+	cn(
+		choiceCardBaseVariant,
+		'bg-badge-6/20 hover:bg-badge-6/30 has-[aria-checked=true]:border-badge-6 has-[aria-checked=true]:bg-badge-6/50'
+	),
+	cn(
+		choiceCardBaseVariant,
+		'bg-badge-7/20 hover:bg-badge-7/30 has-[aria-checked=true]:border-badge-7 has-[aria-checked=true]:bg-badge-7/50'
+	),
+	cn(
+		choiceCardBaseVariant,
+		'bg-badge-8/20 hover:bg-badge-8/30 has-[aria-checked=true]:border-badge-8 has-[aria-checked=true]:bg-badge-8/50'
+	)
+] as const;
+
+export type ChoiceCardVariant = (typeof choiceCardVariants)[number];
