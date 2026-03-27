@@ -9,7 +9,7 @@ import {
 	text,
 	uniqueIndex
 } from 'drizzle-orm/sqlite-core';
-import { APPLICATION_STATUSES } from '../../constants';
+import { APPLICATION_STATUSES } from '../../constants/application-status';
 import { user } from './auth.schema';
 
 export * from './auth.schema';

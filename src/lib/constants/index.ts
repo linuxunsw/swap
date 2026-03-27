@@ -8,19 +8,9 @@ import {
 	UserRoundCheckIcon
 } from '@lucide/svelte';
 import type { Component } from 'svelte';
-import type { ButtonVariant } from './components/ui/button';
-import { cn } from './utils';
-
-export const APPLICATION_STATUSES = [
-	'draft',
-	'submitted',
-	'interview_scheduled',
-	'interviewed',
-	'under_review',
-	'offered',
-	'rejected'
-] as const;
-export type ApplicationStatus = (typeof APPLICATION_STATUSES)[number];
+import type { ButtonVariant } from '../components/ui/button';
+import { APPLICATION_STATUSES, type ApplicationStatus } from './application-status';
+import { cn } from '../utils';
 
 // Auth related
 export type Role = 'user' | 'admin';
