@@ -1,9 +1,852 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "8d7891aa-de2a-4525-97f1-097628425c61",
+  "id": "8457034f-9ea4-4e62-9d4d-9c040a2c1b77",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
+    "application": {
+      "name": "application",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "cycle_id": {
+          "name": "cycle_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'draft'"
+        },
+        "full_name": {
+          "name": "full_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "''"
+        },
+        "discord": {
+          "name": "discord",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "''"
+        },
+        "preferred_email": {
+          "name": "preferred_email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "reason": {
+          "name": "reason",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "''"
+        },
+        "experience": {
+          "name": "experience",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "''"
+        },
+        "submitted_at": {
+          "name": "submitted_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(cast(unixepoch('subsecond') * 1000 as integer))"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(cast(unixepoch('subsecond') * 1000 as integer))"
+        }
+      },
+      "indexes": {
+        "application_user_cycle_idx": {
+          "name": "application_user_cycle_idx",
+          "columns": [
+            "user_id",
+            "cycle_id"
+          ],
+          "isUnique": true
+        },
+        "application_id_cycle_idx": {
+          "name": "application_id_cycle_idx",
+          "columns": [
+            "id",
+            "cycle_id"
+          ],
+          "isUnique": true
+        },
+        "application_cycleId_idx": {
+          "name": "application_cycleId_idx",
+          "columns": [
+            "cycle_id"
+          ],
+          "isUnique": false
+        },
+        "application_status_idx": {
+          "name": "application_status_idx",
+          "columns": [
+            "status"
+          ],
+          "isUnique": false
+        },
+        "application_cycleId_status_idx": {
+          "name": "application_cycleId_status_idx",
+          "columns": [
+            "cycle_id",
+            "status"
+          ],
+          "isUnique": false
+        },
+        "application_cycleId_submittedAt_idx": {
+          "name": "application_cycleId_submittedAt_idx",
+          "columns": [
+            "cycle_id",
+            "submitted_at"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "application_user_id_user_id_fk": {
+          "name": "application_user_id_user_id_fk",
+          "tableFrom": "application",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "application_cycle_id_application_cycle_id_fk": {
+          "name": "application_cycle_id_application_cycle_id_fk",
+          "tableFrom": "application",
+          "tableTo": "application_cycle",
+          "columnsFrom": [
+            "cycle_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "submitted_at_required_when_not_draft": {
+          "name": "submitted_at_required_when_not_draft",
+          "value": "\"application\".\"status\" = 'draft' OR \"application\".\"submitted_at\" IS NOT NULL"
+        }
+      }
+    },
+    "application_cycle": {
+      "name": "application_cycle",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "opens_at": {
+          "name": "opens_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "closes_at": {
+          "name": "closes_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(cast(unixepoch('subsecond') * 1000 as integer))"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(cast(unixepoch('subsecond') * 1000 as integer))"
+        }
+      },
+      "indexes": {
+        "application_cycle_name_unique": {
+          "name": "application_cycle_name_unique",
+          "columns": [
+            "name"
+          ],
+          "isUnique": true
+        },
+        "application_cycle_opensAt_idx": {
+          "name": "application_cycle_opensAt_idx",
+          "columns": [
+            "opens_at"
+          ],
+          "isUnique": false
+        },
+        "application_cycle_closesAt_idx": {
+          "name": "application_cycle_closesAt_idx",
+          "columns": [
+            "closes_at"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "opens_before_closes": {
+          "name": "opens_before_closes",
+          "value": "\"application_cycle\".\"opens_at\" < \"application_cycle\".\"closes_at\""
+        }
+      }
+    },
+    "application_cycle_subcommittee": {
+      "name": "application_cycle_subcommittee",
+      "columns": {
+        "cycle_id": {
+          "name": "cycle_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "subcommittee_id": {
+          "name": "subcommittee_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(cast(unixepoch('subsecond') * 1000 as integer))"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(cast(unixepoch('subsecond') * 1000 as integer))"
+        }
+      },
+      "indexes": {
+        "cycle_sub_cycleId_idx": {
+          "name": "cycle_sub_cycleId_idx",
+          "columns": [
+            "cycle_id"
+          ],
+          "isUnique": false
+        },
+        "cycle_sub_subcomId_idx": {
+          "name": "cycle_sub_subcomId_idx",
+          "columns": [
+            "subcommittee_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "application_cycle_subcommittee_cycle_id_application_cycle_id_fk": {
+          "name": "application_cycle_subcommittee_cycle_id_application_cycle_id_fk",
+          "tableFrom": "application_cycle_subcommittee",
+          "tableTo": "application_cycle",
+          "columnsFrom": [
+            "cycle_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "application_cycle_subcommittee_subcommittee_id_subcommittee_id_fk": {
+          "name": "application_cycle_subcommittee_subcommittee_id_subcommittee_id_fk",
+          "tableFrom": "application_cycle_subcommittee",
+          "tableTo": "subcommittee",
+          "columnsFrom": [
+            "subcommittee_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "application_cycle_subcommittee_cycle_id_subcommittee_id_pk": {
+          "columns": [
+            "cycle_id",
+            "subcommittee_id"
+          ],
+          "name": "application_cycle_subcommittee_cycle_id_subcommittee_id_pk"
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "application_subcommittee": {
+      "name": "application_subcommittee",
+      "columns": {
+        "application_id": {
+          "name": "application_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "cycle_id": {
+          "name": "cycle_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "subcommittee_id": {
+          "name": "subcommittee_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(cast(unixepoch('subsecond') * 1000 as integer))"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(cast(unixepoch('subsecond') * 1000 as integer))"
+        }
+      },
+      "indexes": {
+        "app_sub_appId_idx": {
+          "name": "app_sub_appId_idx",
+          "columns": [
+            "application_id"
+          ],
+          "isUnique": false
+        },
+        "app_sub_cycleId_idx": {
+          "name": "app_sub_cycleId_idx",
+          "columns": [
+            "cycle_id"
+          ],
+          "isUnique": false
+        },
+        "app_sub_subcomId_idx": {
+          "name": "app_sub_subcomId_idx",
+          "columns": [
+            "subcommittee_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "application_subcommittee_application_id_application_id_fk": {
+          "name": "application_subcommittee_application_id_application_id_fk",
+          "tableFrom": "application_subcommittee",
+          "tableTo": "application",
+          "columnsFrom": [
+            "application_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "application_subcommittee_subcommittee_id_subcommittee_id_fk": {
+          "name": "application_subcommittee_subcommittee_id_subcommittee_id_fk",
+          "tableFrom": "application_subcommittee",
+          "tableTo": "subcommittee",
+          "columnsFrom": [
+            "subcommittee_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "app_sub_application_cycle_fk": {
+          "name": "app_sub_application_cycle_fk",
+          "tableFrom": "application_subcommittee",
+          "tableTo": "application",
+          "columnsFrom": [
+            "application_id",
+            "cycle_id"
+          ],
+          "columnsTo": [
+            "id",
+            "cycle_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "app_sub_cycle_subcommittee_fk": {
+          "name": "app_sub_cycle_subcommittee_fk",
+          "tableFrom": "application_subcommittee",
+          "tableTo": "application_cycle_subcommittee",
+          "columnsFrom": [
+            "cycle_id",
+            "subcommittee_id"
+          ],
+          "columnsTo": [
+            "cycle_id",
+            "subcommittee_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "application_subcommittee_application_id_subcommittee_id_pk": {
+          "columns": [
+            "application_id",
+            "subcommittee_id"
+          ],
+          "name": "application_subcommittee_application_id_subcommittee_id_pk"
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "feedback": {
+      "name": "feedback",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "interview_id": {
+          "name": "interview_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "reviewer_id": {
+          "name": "reviewer_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "comments": {
+          "name": "comments",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "''"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(cast(unixepoch('subsecond') * 1000 as integer))"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(cast(unixepoch('subsecond') * 1000 as integer))"
+        }
+      },
+      "indexes": {
+        "feedback_interviewId_idx": {
+          "name": "feedback_interviewId_idx",
+          "columns": [
+            "interview_id"
+          ],
+          "isUnique": false
+        },
+        "feedback_reviewerId_idx": {
+          "name": "feedback_reviewerId_idx",
+          "columns": [
+            "reviewer_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "feedback_interview_id_interview_id_fk": {
+          "name": "feedback_interview_id_interview_id_fk",
+          "tableFrom": "feedback",
+          "tableTo": "interview",
+          "columnsFrom": [
+            "interview_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "feedback_reviewer_id_user_id_fk": {
+          "name": "feedback_reviewer_id_user_id_fk",
+          "tableFrom": "feedback",
+          "tableTo": "user",
+          "columnsFrom": [
+            "reviewer_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "interview": {
+      "name": "interview",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "application_id": {
+          "name": "application_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "scheduled_at": {
+          "name": "scheduled_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "location": {
+          "name": "location",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "''"
+        },
+        "interviewer": {
+          "name": "interviewer",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(cast(unixepoch('subsecond') * 1000 as integer))"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(cast(unixepoch('subsecond') * 1000 as integer))"
+        }
+      },
+      "indexes": {
+        "interview_applicationId_idx": {
+          "name": "interview_applicationId_idx",
+          "columns": [
+            "application_id"
+          ],
+          "isUnique": true
+        },
+        "interview_scheduledAt_idx": {
+          "name": "interview_scheduledAt_idx",
+          "columns": [
+            "scheduled_at"
+          ],
+          "isUnique": false
+        },
+        "interview_interviewer_idx": {
+          "name": "interview_interviewer_idx",
+          "columns": [
+            "interviewer"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "interview_application_id_application_id_fk": {
+          "name": "interview_application_id_application_id_fk",
+          "tableFrom": "interview",
+          "tableTo": "application",
+          "columnsFrom": [
+            "application_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "interview_interviewer_user_id_fk": {
+          "name": "interview_interviewer_user_id_fk",
+          "tableFrom": "interview",
+          "tableTo": "user",
+          "columnsFrom": [
+            "interviewer"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "subcommittee": {
+      "name": "subcommittee",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "colour": {
+          "name": "colour",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 1
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "''"
+        }
+      },
+      "indexes": {
+        "subcommittee_name_unique": {
+          "name": "subcommittee_name_unique",
+          "columns": [
+            "name"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "vote": {
+      "name": "vote",
+      "columns": {
+        "application_id": {
+          "name": "application_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "voter_id": {
+          "name": "voter_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "value": {
+          "name": "value",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(cast(unixepoch('subsecond') * 1000 as integer))"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(cast(unixepoch('subsecond') * 1000 as integer))"
+        }
+      },
+      "indexes": {
+        "vote_applicationId_idx": {
+          "name": "vote_applicationId_idx",
+          "columns": [
+            "application_id"
+          ],
+          "isUnique": false
+        },
+        "vote_voterId_idx": {
+          "name": "vote_voterId_idx",
+          "columns": [
+            "voter_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "vote_application_id_application_id_fk": {
+          "name": "vote_application_id_application_id_fk",
+          "tableFrom": "vote",
+          "tableTo": "application",
+          "columnsFrom": [
+            "application_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "vote_voter_id_user_id_fk": {
+          "name": "vote_voter_id_user_id_fk",
+          "tableFrom": "vote",
+          "tableTo": "user",
+          "columnsFrom": [
+            "voter_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "vote_application_id_voter_id_pk": {
+          "columns": [
+            "application_id",
+            "voter_id"
+          ],
+          "name": "vote_application_id_voter_id_pk"
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "binary_vote_value": {
+          "name": "binary_vote_value",
+          "value": "\"vote\".\"value\" IN (1, 0)"
+        }
+      }
+    },
     "account": {
       "name": "account",
       "columns": {
@@ -300,6 +1143,13 @@
           "name": "user_email_unique",
           "columns": [
             "email"
+          ],
+          "isUnique": true
+        },
+        "user_zid_unique": {
+          "name": "user_zid_unique",
+          "columns": [
+            "zid"
           ],
           "isUnique": true
         }
