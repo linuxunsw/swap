@@ -20,6 +20,7 @@
 		"db:migrate": "drizzle-kit migrate",
 		"db:migrate:miniflare": "wrangler d1 migrations apply swap-db",
 		"db:migrate:remote": "wrangler d1 migrations apply swap-db --remote",
+		"db:migrate:neon": "tsx ./src/migrate.ts",
 		"db:studio": "drizzle-kit studio",
 		"auth:schema": "auth generate --config src/lib/server/auth.ts --output src/lib/server/db/auth.schema.ts --yes",
 		"deploy": "pnpm run build && wrangler deploy --env production",
@@ -74,6 +75,8 @@
 	},
 	"packageManager": "pnpm@10.28.2",
 	"dependencies": {
-		"mode-watcher": "^1.1.0"
+		"@neondatabase/serverless": "^1.0.2",
+		"mode-watcher": "^1.1.0",
+		"postgres": "^3.4.8"
 	}
 }
