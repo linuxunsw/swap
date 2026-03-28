@@ -5,7 +5,6 @@ import {
 	subcommittee
 } from '$lib/server/db/schema';
 import { eq, getTableColumns } from 'drizzle-orm';
-import type { DrizzleD1Database } from 'drizzle-orm/d1';
 
 export type SubcommitteeOption = typeof subcommittee.$inferSelect;
 
@@ -43,12 +42,8 @@ export async function getSubcommitteeOptionsByCycle(
 	db: SwapDb,
 	cycleId: string
 ): Promise<SubcommitteeOption[]> {
-	// force cast to fix type error on the partial select. this is because SelectedFields is
-	// incompatible between the drizzle adapters, and prevents proper inference for select()
-	const dbD1 = db as unknown as DrizzleD1Database;
-
 	const cols = getTableColumns(subcommittee);
-	return dbD1
+	return db
 		.select({ ...cols })
 		.from(subcommittee)
 		.innerJoin(

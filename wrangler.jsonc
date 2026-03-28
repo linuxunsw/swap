@@ -93,6 +93,13 @@
 					"id": "44dbf586534c4d68bf5b348bddbb002f"
 				}
 			],
+			"hyperdrive": [
+				{
+					"binding": "HYPERDRIVE",
+					"id": "04c9682e9b1b402780b8c73f1fb542e7",
+					"localConnectionString": "${CLOUDFLARE_HYPERDRIVE_LOCAL_CONNECTION_STRING_HYPERDRIVE}"
+				}
+			],
 			"d1_databases": [
 				{
 					"binding": "DB",
@@ -136,7 +143,7 @@
 				}
 			]
 		}
-	}
+	},
 	/**
 	 * Service Bindings (communicate between multiple Workers)
 	 * https://developers.cloudflare.com/workers/wrangler/configuration/#service-bindings
