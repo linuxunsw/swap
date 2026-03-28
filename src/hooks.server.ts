@@ -1,5 +1,5 @@
 import { building } from '$app/environment';
-import { auth } from '$lib/server/auth';
+import { getAuth } from '$lib/server/auth';
 import { enforceRateLimit } from '$lib/server/rate-limit';
 import type { Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
@@ -17,6 +17,7 @@ const rateLimitHandler: Handle = async ({ event, resolve }) => {
 };
 
 const handleBetterAuth: Handle = async ({ event, resolve }) => {
+	const auth = getAuth();
 	const session = await auth.api.getSession({ headers: event.request.headers });
 
 	if (session) {

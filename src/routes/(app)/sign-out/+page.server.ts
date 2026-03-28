@@ -1,5 +1,5 @@
 import { log } from '$lib/log';
-import { auth } from '$lib/server/auth';
+import { getAuth } from '$lib/server/auth';
 import { enforceRateLimit } from '$lib/server/rate-limit';
 import { error, redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
@@ -14,6 +14,8 @@ export const actions: Actions = {
 		if (!limit.allowed) {
 			error(limit.status, { message: limit.message });
 		}
+
+		const auth = getAuth();
 
 		await auth.api.signOut({
 			headers: event.request.headers

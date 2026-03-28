@@ -1,6 +1,6 @@
 import { ZID_REGEX } from '$lib/constants';
 import { log } from '$lib/log';
-import { auth } from '$lib/server/auth';
+import { getAuth } from '$lib/server/auth';
 import { enforceRateLimit } from '$lib/server/rate-limit';
 import { verifyTurnstileToken } from '$lib/server/turnstile';
 import { error, fail, redirect } from '@sveltejs/kit';
@@ -60,6 +60,7 @@ export const actions: Actions = {
 		}
 
 		const zid = form.data.zid;
+		const auth = getAuth();
 
 		try {
 			await auth.api.sendVerificationOTP({
@@ -92,6 +93,7 @@ export const actions: Actions = {
 		}
 
 		const { zid, otp } = form.data;
+		const auth = getAuth();
 
 		try {
 			await auth.api.signInEmailOTP({
