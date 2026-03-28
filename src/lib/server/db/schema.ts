@@ -4,11 +4,12 @@ import {
 	foreignKey,
 	index,
 	integer,
+	pgTable,
 	primaryKey,
-	sqliteTable,
+	timestamp,
 	text,
 	uniqueIndex
-} from 'drizzle-orm/sqlite-core';
+} from 'drizzle-orm/pg-core';
 import { APPLICATION_STATUSES } from '../../constants/application-status';
 import { user } from './auth.schema';
 
@@ -16,25 +17,23 @@ export * from './auth.schema';
 
 // reused columns
 const timestamps = {
-	createdAt: integer('created_at', { mode: 'timestamp_ms' })
-		.default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
-		.notNull(),
-	updatedAt: integer('updated_at', { mode: 'timestamp_ms' })
-		.default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
+	createdAt: timestamp('created_at', { withTimezone: true, mode: 'date' }).defaultNow().notNull(),
+	updatedAt: timestamp('updated_at', { withTimezone: true, mode: 'date' })
+		.defaultNow()
 		.$onUpdate(() => new Date())
 		.notNull()
 };
 
 // main swap schema
-export const applicationCycle = sqliteTable(
+export const applicationCycle = pgTable(
 	'application_cycle',
 	{
 		id: text('id')
 			.primaryKey()
 			.$defaultFn(() => crypto.randomUUID()),
 		name: text('name').notNull().unique(), // e.g. "2026 T1"
-		opensAt: integer('opens_at', { mode: 'timestamp_ms' }).notNull(),
-		closesAt: integer('closes_at', { mode: 'timestamp_ms' }).notNull(),
+		opensAt: timestamp('opens_at', { withTimezone: true, mode: 'date' }).notNull(),
+		closesAt: timestamp('closes_at', { withTimezone: true, mode: 'date' }).notNull(),
 		...timestamps
 	},
 	(table) => [
@@ -44,7 +43,7 @@ export const applicationCycle = sqliteTable(
 	]
 );
 
-export const application = sqliteTable(
+export const application = pgTable(
 	'application',
 	{
 		id: text('id')
@@ -64,7 +63,7 @@ export const application = sqliteTable(
 		preferredEmail: text('preferred_email'),
 		reason: text('reason').notNull().default(''),
 		experience: text('experience').notNull().default(''),
-		submittedAt: integer('submitted_at', { mode: 'timestamp_ms' }),
+		submittedAt: timestamp('submitted_at', { withTimezone: true, mode: 'date' }),
 		...timestamps
 	},
 	(table) => [
@@ -81,14 +80,14 @@ export const application = sqliteTable(
 	]
 );
 
-export const subcommittee = sqliteTable('subcommittee', {
+export const subcommittee = pgTable('subcommittee', {
 	id: text('id').notNull().primaryKey(), // raw name id e.g. "tech", "events", "marketing"
 	name: text('name').notNull().unique(), // Formatted display name e.g. "Tech", "Events", "Marketing"
 	colour: integer('colour').notNull().default(1), // key into badgeVariants see $lib/constants.ts
 	description: text('description').notNull().default('')
 });
 
-export const applicationCycle_subcommittee = sqliteTable(
+export const applicationCycle_subcommittee = pgTable(
 	'application_cycle_subcommittee',
 	{
 		cycleId: text('cycle_id')
@@ -106,7 +105,7 @@ export const applicationCycle_subcommittee = sqliteTable(
 	]
 );
 
-export const application_subcommittee = sqliteTable(
+export const application_subcommittee = pgTable(
 	'application_subcommittee',
 	{
 		applicationId: text('application_id')
@@ -139,7 +138,7 @@ export const application_subcommittee = sqliteTable(
 	]
 );
 
-export const interview = sqliteTable(
+export const interview = pgTable(
 	'interview',
 	{
 		id: text('id')
@@ -148,7 +147,7 @@ export const interview = sqliteTable(
 		applicationId: text('application_id')
 			.notNull()
 			.references(() => application.id, { onDelete: 'cascade' }),
-		scheduledAt: integer('scheduled_at', { mode: 'timestamp_ms' }).notNull(),
+		scheduledAt: timestamp('scheduled_at', { withTimezone: true, mode: 'date' }).notNull(),
 		location: text('location').notNull().default(''),
 		interviewer: text('interviewer').references(() => user.id, {
 			onDelete: 'set null'
@@ -162,7 +161,7 @@ export const interview = sqliteTable(
 	]
 );
 
-export const feedback = sqliteTable(
+export const feedback = pgTable(
 	'feedback',
 	{
 		id: text('id')
@@ -183,7 +182,7 @@ export const feedback = sqliteTable(
 	]
 );
 
-export const vote = sqliteTable(
+export const vote = pgTable(
 	'vote',
 	{
 		applicationId: text('application_id')
