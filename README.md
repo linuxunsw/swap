@@ -50,7 +50,7 @@ pnpm run preview:mode:dev
 
 ## Database Workflow
 
-Drizzle uses `DATABASE_URL` from your environment.
+Drizzle reads `DATABASE_URL` from the environment (`.env`), so ensure it targets the correct database before running commands. For now, Neon branch management is done through environment variables. In development, the DB connection fallback also uses `DATABASE_URL`, so it can point to either local Postgres or a Neon dev branch.
 
 ```sh
 # create migration files from schema changes
