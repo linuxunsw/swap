@@ -1,5 +1,5 @@
 {
-  "id": "1362ea97-4c20-44d7-b808-0881641d3a1d",
+  "id": "e046c229-e45f-46f7-a6df-79d67dec235c",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -15,14 +15,14 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "userId": {
-          "name": "userId",
+        "user_id": {
+          "name": "user_id",
           "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "cycleId": {
-          "name": "cycleId",
+        "cycle_id": {
+          "name": "cycle_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
@@ -34,8 +34,8 @@
           "notNull": true,
           "default": "'draft'"
         },
-        "fullName": {
-          "name": "fullName",
+        "full_name": {
+          "name": "full_name",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -48,8 +48,8 @@
           "notNull": true,
           "default": "''"
         },
-        "preferredEmail": {
-          "name": "preferredEmail",
+        "preferred_email": {
+          "name": "preferred_email",
           "type": "text",
           "primaryKey": false,
           "notNull": false
@@ -68,21 +68,21 @@
           "notNull": true,
           "default": "''"
         },
-        "submittedAt": {
-          "name": "submittedAt",
+        "submitted_at": {
+          "name": "submitted_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": false
         },
-        "createdAt": {
-          "name": "createdAt",
+        "created_at": {
+          "name": "created_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
         },
-        "updatedAt": {
-          "name": "updatedAt",
+        "updated_at": {
+          "name": "updated_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": true,
@@ -94,34 +94,13 @@
           "name": "application_user_cycle_idx",
           "columns": [
             {
-              "expression": "userId",
+              "expression": "user_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
             },
             {
-              "expression": "cycleId",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "application_id_cycle_idx": {
-          "name": "application_id_cycle_idx",
-          "columns": [
-            {
-              "expression": "id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "cycleId",
+              "expression": "cycle_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -136,7 +115,7 @@
           "name": "application_cycleId_idx",
           "columns": [
             {
-              "expression": "cycleId",
+              "expression": "cycle_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -166,7 +145,7 @@
           "name": "application_cycleId_status_idx",
           "columns": [
             {
-              "expression": "cycleId",
+              "expression": "cycle_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -187,13 +166,13 @@
           "name": "application_cycleId_submittedAt_idx",
           "columns": [
             {
-              "expression": "cycleId",
+              "expression": "cycle_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
             },
             {
-              "expression": "submittedAt",
+              "expression": "submitted_at",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -206,12 +185,12 @@
         }
       },
       "foreignKeys": {
-        "application_userId_user_id_fk": {
-          "name": "application_userId_user_id_fk",
+        "application_user_id_user_id_fk": {
+          "name": "application_user_id_user_id_fk",
           "tableFrom": "application",
           "tableTo": "user",
           "columnsFrom": [
-            "userId"
+            "user_id"
           ],
           "columnsTo": [
             "id"
@@ -219,12 +198,12 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "application_cycleId_application_cycle_id_fk": {
-          "name": "application_cycleId_application_cycle_id_fk",
+        "application_cycle_id_application_cycle_id_fk": {
+          "name": "application_cycle_id_application_cycle_id_fk",
           "tableFrom": "application",
           "tableTo": "application_cycle",
           "columnsFrom": [
-            "cycleId"
+            "cycle_id"
           ],
           "columnsTo": [
             "id"
@@ -234,12 +213,21 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
+      "uniqueConstraints": {
+        "application_id_cycle_unique": {
+          "name": "application_id_cycle_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "id",
+            "cycle_id"
+          ]
+        }
+      },
       "policies": {},
       "checkConstraints": {
         "submitted_at_required_when_not_draft": {
           "name": "submitted_at_required_when_not_draft",
-          "value": "\"application\".\"status\" = 'draft' OR \"application\".\"submittedAt\" IS NOT NULL"
+          "value": "\"application\".\"status\" = 'draft' OR \"application\".\"submitted_at\" IS NOT NULL"
         }
       },
       "isRLSEnabled": false
@@ -261,27 +249,27 @@
           "primaryKey": false,
           "notNull": true
         },
-        "opensAt": {
-          "name": "opensAt",
+        "opens_at": {
+          "name": "opens_at",
           "type": "date",
           "primaryKey": false,
           "notNull": true
         },
-        "closesAt": {
-          "name": "closesAt",
+        "closes_at": {
+          "name": "closes_at",
           "type": "date",
           "primaryKey": false,
           "notNull": true
         },
-        "createdAt": {
-          "name": "createdAt",
+        "created_at": {
+          "name": "created_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
         },
-        "updatedAt": {
-          "name": "updatedAt",
+        "updated_at": {
+          "name": "updated_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": true,
@@ -293,7 +281,7 @@
           "name": "application_cycle_opensAt_idx",
           "columns": [
             {
-              "expression": "opensAt",
+              "expression": "opens_at",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -308,7 +296,7 @@
           "name": "application_cycle_closesAt_idx",
           "columns": [
             {
-              "expression": "closesAt",
+              "expression": "closes_at",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -335,7 +323,7 @@
       "checkConstraints": {
         "opens_before_closes": {
           "name": "opens_before_closes",
-          "value": "\"application_cycle\".\"opensAt\" < \"application_cycle\".\"closesAt\""
+          "value": "\"application_cycle\".\"opens_at\" < \"application_cycle\".\"closes_at\""
         }
       },
       "isRLSEnabled": false
@@ -344,27 +332,27 @@
       "name": "application_cycle_subcommittee",
       "schema": "",
       "columns": {
-        "cycleId": {
-          "name": "cycleId",
+        "cycle_id": {
+          "name": "cycle_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
-        "subcommitteeId": {
-          "name": "subcommitteeId",
+        "subcommittee_id": {
+          "name": "subcommittee_id",
           "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "createdAt": {
-          "name": "createdAt",
+        "created_at": {
+          "name": "created_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
         },
-        "updatedAt": {
-          "name": "updatedAt",
+        "updated_at": {
+          "name": "updated_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": true,
@@ -376,7 +364,7 @@
           "name": "cycle_sub_cycleId_idx",
           "columns": [
             {
-              "expression": "cycleId",
+              "expression": "cycle_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -391,7 +379,7 @@
           "name": "cycle_sub_subcomId_idx",
           "columns": [
             {
-              "expression": "subcommitteeId",
+              "expression": "subcommittee_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -404,12 +392,12 @@
         }
       },
       "foreignKeys": {
-        "application_cycle_subcommittee_cycleId_application_cycle_id_fk": {
-          "name": "application_cycle_subcommittee_cycleId_application_cycle_id_fk",
+        "application_cycle_subcommittee_cycle_id_application_cycle_id_fk": {
+          "name": "application_cycle_subcommittee_cycle_id_application_cycle_id_fk",
           "tableFrom": "application_cycle_subcommittee",
           "tableTo": "application_cycle",
           "columnsFrom": [
-            "cycleId"
+            "cycle_id"
           ],
           "columnsTo": [
             "id"
@@ -417,12 +405,12 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "application_cycle_subcommittee_subcommitteeId_subcommittee_id_fk": {
-          "name": "application_cycle_subcommittee_subcommitteeId_subcommittee_id_fk",
+        "application_cycle_subcommittee_subcommittee_id_subcommittee_id_fk": {
+          "name": "application_cycle_subcommittee_subcommittee_id_subcommittee_id_fk",
           "tableFrom": "application_cycle_subcommittee",
           "tableTo": "subcommittee",
           "columnsFrom": [
-            "subcommitteeId"
+            "subcommittee_id"
           ],
           "columnsTo": [
             "id"
@@ -432,11 +420,11 @@
         }
       },
       "compositePrimaryKeys": {
-        "application_cycle_subcommittee_cycleId_subcommitteeId_pk": {
-          "name": "application_cycle_subcommittee_cycleId_subcommitteeId_pk",
+        "application_cycle_subcommittee_cycle_id_subcommittee_id_pk": {
+          "name": "application_cycle_subcommittee_cycle_id_subcommittee_id_pk",
           "columns": [
-            "cycleId",
-            "subcommitteeId"
+            "cycle_id",
+            "subcommittee_id"
           ]
         }
       },
@@ -449,33 +437,33 @@
       "name": "application_subcommittee",
       "schema": "",
       "columns": {
-        "applicationId": {
-          "name": "applicationId",
+        "application_id": {
+          "name": "application_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
-        "cycleId": {
-          "name": "cycleId",
+        "cycle_id": {
+          "name": "cycle_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
-        "subcommitteeId": {
-          "name": "subcommitteeId",
+        "subcommittee_id": {
+          "name": "subcommittee_id",
           "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "createdAt": {
-          "name": "createdAt",
+        "created_at": {
+          "name": "created_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
         },
-        "updatedAt": {
-          "name": "updatedAt",
+        "updated_at": {
+          "name": "updated_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": true,
@@ -487,7 +475,7 @@
           "name": "app_sub_appId_idx",
           "columns": [
             {
-              "expression": "applicationId",
+              "expression": "application_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -502,7 +490,7 @@
           "name": "app_sub_cycleId_idx",
           "columns": [
             {
-              "expression": "cycleId",
+              "expression": "cycle_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -517,7 +505,7 @@
           "name": "app_sub_subcomId_idx",
           "columns": [
             {
-              "expression": "subcommitteeId",
+              "expression": "subcommittee_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -530,12 +518,12 @@
         }
       },
       "foreignKeys": {
-        "application_subcommittee_applicationId_application_id_fk": {
-          "name": "application_subcommittee_applicationId_application_id_fk",
+        "application_subcommittee_application_id_application_id_fk": {
+          "name": "application_subcommittee_application_id_application_id_fk",
           "tableFrom": "application_subcommittee",
           "tableTo": "application",
           "columnsFrom": [
-            "applicationId"
+            "application_id"
           ],
           "columnsTo": [
             "id"
@@ -543,12 +531,12 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "application_subcommittee_subcommitteeId_subcommittee_id_fk": {
-          "name": "application_subcommittee_subcommitteeId_subcommittee_id_fk",
+        "application_subcommittee_subcommittee_id_subcommittee_id_fk": {
+          "name": "application_subcommittee_subcommittee_id_subcommittee_id_fk",
           "tableFrom": "application_subcommittee",
           "tableTo": "subcommittee",
           "columnsFrom": [
-            "subcommitteeId"
+            "subcommittee_id"
           ],
           "columnsTo": [
             "id"
@@ -561,12 +549,12 @@
           "tableFrom": "application_subcommittee",
           "tableTo": "application",
           "columnsFrom": [
-            "applicationId",
-            "cycleId"
+            "application_id",
+            "cycle_id"
           ],
           "columnsTo": [
             "id",
-            "cycleId"
+            "cycle_id"
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -576,23 +564,23 @@
           "tableFrom": "application_subcommittee",
           "tableTo": "application_cycle_subcommittee",
           "columnsFrom": [
-            "cycleId",
-            "subcommitteeId"
+            "cycle_id",
+            "subcommittee_id"
           ],
           "columnsTo": [
-            "cycleId",
-            "subcommitteeId"
+            "cycle_id",
+            "subcommittee_id"
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
-        "application_subcommittee_applicationId_subcommitteeId_pk": {
-          "name": "application_subcommittee_applicationId_subcommitteeId_pk",
+        "application_subcommittee_application_id_subcommittee_id_pk": {
+          "name": "application_subcommittee_application_id_subcommittee_id_pk",
           "columns": [
-            "applicationId",
-            "subcommitteeId"
+            "application_id",
+            "subcommittee_id"
           ]
         }
       },
@@ -612,14 +600,14 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "interviewId": {
-          "name": "interviewId",
+        "interview_id": {
+          "name": "interview_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
-        "reviewerId": {
-          "name": "reviewerId",
+        "reviewer_id": {
+          "name": "reviewer_id",
           "type": "text",
           "primaryKey": false,
           "notNull": true
@@ -631,15 +619,15 @@
           "notNull": true,
           "default": "''"
         },
-        "createdAt": {
-          "name": "createdAt",
+        "created_at": {
+          "name": "created_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
         },
-        "updatedAt": {
-          "name": "updatedAt",
+        "updated_at": {
+          "name": "updated_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": true,
@@ -651,7 +639,7 @@
           "name": "feedback_interviewId_idx",
           "columns": [
             {
-              "expression": "interviewId",
+              "expression": "interview_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -666,7 +654,7 @@
           "name": "feedback_reviewerId_idx",
           "columns": [
             {
-              "expression": "reviewerId",
+              "expression": "reviewer_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -679,12 +667,12 @@
         }
       },
       "foreignKeys": {
-        "feedback_interviewId_interview_id_fk": {
-          "name": "feedback_interviewId_interview_id_fk",
+        "feedback_interview_id_interview_id_fk": {
+          "name": "feedback_interview_id_interview_id_fk",
           "tableFrom": "feedback",
           "tableTo": "interview",
           "columnsFrom": [
-            "interviewId"
+            "interview_id"
           ],
           "columnsTo": [
             "id"
@@ -692,12 +680,12 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "feedback_reviewerId_user_id_fk": {
-          "name": "feedback_reviewerId_user_id_fk",
+        "feedback_reviewer_id_user_id_fk": {
+          "name": "feedback_reviewer_id_user_id_fk",
           "tableFrom": "feedback",
           "tableTo": "user",
           "columnsFrom": [
-            "reviewerId"
+            "reviewer_id"
           ],
           "columnsTo": [
             "id"
@@ -723,14 +711,14 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "applicationId": {
-          "name": "applicationId",
+        "application_id": {
+          "name": "application_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
-        "scheduledAt": {
-          "name": "scheduledAt",
+        "scheduled_at": {
+          "name": "scheduled_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": true
@@ -748,15 +736,15 @@
           "primaryKey": false,
           "notNull": false
         },
-        "createdAt": {
-          "name": "createdAt",
+        "created_at": {
+          "name": "created_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
         },
-        "updatedAt": {
-          "name": "updatedAt",
+        "updated_at": {
+          "name": "updated_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": true,
@@ -768,7 +756,7 @@
           "name": "interview_applicationId_idx",
           "columns": [
             {
-              "expression": "applicationId",
+              "expression": "application_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -783,7 +771,7 @@
           "name": "interview_scheduledAt_idx",
           "columns": [
             {
-              "expression": "scheduledAt",
+              "expression": "scheduled_at",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -811,12 +799,12 @@
         }
       },
       "foreignKeys": {
-        "interview_applicationId_application_id_fk": {
-          "name": "interview_applicationId_application_id_fk",
+        "interview_application_id_application_id_fk": {
+          "name": "interview_application_id_application_id_fk",
           "tableFrom": "interview",
           "tableTo": "application",
           "columnsFrom": [
-            "applicationId"
+            "application_id"
           ],
           "columnsTo": [
             "id"
@@ -895,14 +883,14 @@
       "name": "vote",
       "schema": "",
       "columns": {
-        "applicationId": {
-          "name": "applicationId",
+        "application_id": {
+          "name": "application_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
-        "voterId": {
-          "name": "voterId",
+        "voter_id": {
+          "name": "voter_id",
           "type": "text",
           "primaryKey": false,
           "notNull": true
@@ -913,15 +901,15 @@
           "primaryKey": false,
           "notNull": true
         },
-        "createdAt": {
-          "name": "createdAt",
+        "created_at": {
+          "name": "created_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
         },
-        "updatedAt": {
-          "name": "updatedAt",
+        "updated_at": {
+          "name": "updated_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": true,
@@ -933,7 +921,7 @@
           "name": "vote_applicationId_idx",
           "columns": [
             {
-              "expression": "applicationId",
+              "expression": "application_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -948,7 +936,7 @@
           "name": "vote_voterId_idx",
           "columns": [
             {
-              "expression": "voterId",
+              "expression": "voter_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -961,12 +949,12 @@
         }
       },
       "foreignKeys": {
-        "vote_applicationId_application_id_fk": {
-          "name": "vote_applicationId_application_id_fk",
+        "vote_application_id_application_id_fk": {
+          "name": "vote_application_id_application_id_fk",
           "tableFrom": "vote",
           "tableTo": "application",
           "columnsFrom": [
-            "applicationId"
+            "application_id"
           ],
           "columnsTo": [
             "id"
@@ -974,12 +962,12 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "vote_voterId_user_id_fk": {
-          "name": "vote_voterId_user_id_fk",
+        "vote_voter_id_user_id_fk": {
+          "name": "vote_voter_id_user_id_fk",
           "tableFrom": "vote",
           "tableTo": "user",
           "columnsFrom": [
-            "voterId"
+            "voter_id"
           ],
           "columnsTo": [
             "id"
@@ -989,11 +977,11 @@
         }
       },
       "compositePrimaryKeys": {
-        "vote_applicationId_voterId_pk": {
-          "name": "vote_applicationId_voterId_pk",
+        "vote_application_id_voter_id_pk": {
+          "name": "vote_application_id_voter_id_pk",
           "columns": [
-            "applicationId",
-            "voterId"
+            "application_id",
+            "voter_id"
           ]
         }
       },
