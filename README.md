@@ -2,8 +2,6 @@
 
 Linux Society's portal for managing subcommittee applications.
 
-SWAP is a SvelteKit app used to run subcommittee application cycles, from applicant submission to admin review and status tracking.
-
 ## Features
 
 - zID email OTP authentication
@@ -44,7 +42,7 @@ pnpm run dev
 
 ## Running with Worker Bindings Locally
 
-Use this when you want to test against a simulated Cloudflare Worker runtime and local bindings. e.g testing rate limits.
+Run a preview against the development environment. This provides a simulated Cloudflare Worker runtime and local bindings (miniflare):
 
 ```sh
 pnpm run preview:mode:dev
