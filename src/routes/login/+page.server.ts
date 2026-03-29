@@ -1,0 +1,119 @@
+import { ZID_REGEX } from '$lib/constants';
+import { log } from '$lib/log';
+import { getAuth } from '$lib/server/auth';
+import { enforceRateLimit } from '$lib/server/rate-limit';
+import { verifyTurnstileToken } from '$lib/server/turnstile';
+import { error, fail, redirect } from '@sveltejs/kit';
+import { APIError } from 'better-auth';
+import { message, superValidate } from 'sveltekit-superforms';
+import { valibot } from 'sveltekit-superforms/adapters';
+import type { Actions, PageServerLoad } from './$types';
+import { sendOTPSchema, signInSchema } from './schema';
+
+export const load: PageServerLoad = async (event) => {
+	if (event.locals.user) {
+		return redirect(302, '/');
+	}
+
+	const zid = event.url.searchParams.get('zid') ?? '';
+	const hasValidZid = ZID_REGEX.test(zid);
+
+	const sendOTPForm = await superValidate(valibot(sendOTPSchema));
+	const signInForm = await superValidate(valibot(signInSchema));
+
+	if (hasValidZid) {
+		sendOTPForm.data.zid = zid;
+		signInForm.data.zid = zid;
+	}
+
+	return { sendOTPForm, signInForm, step: hasValidZid ? 2 : 1 };
+};
+
+export const actions: Actions = {
+	sendOTP: async (event) => {
+		const limit = await enforceRateLimit(event, 'AUTH_RATE_LIMIT');
+		if (!limit.allowed) {
+			error(limit.status, { message: limit.message });
+		}
+
+		const formData = await event.request.formData();
+		const captchaToken = formData.get('cf-turnstile-response') as string | null;
+
+		const form = await superValidate(formData, valibot(sendOTPSchema));
+		if (!form.valid) {
+			return fail(400, { form });
+		}
+
+		if (!captchaToken || !(await verifyTurnstileToken(captchaToken))) {
+			log('warn', 'login', 'otp_send_failed', { zid: form.data.zid, error: 'captcha_failed' });
+			return message(form, 'Captcha verification failed', { status: 400 });
+		}
+
+		const mailLimit = await enforceRateLimit(
+			event,
+			'MAIL_RATE_LIMIT',
+			undefined,
+			'Please wait before requesting another OTP.'
+		);
+		if (!mailLimit.allowed) {
+			return message(form, mailLimit.message, { status: mailLimit.status });
+		}
+
+		const zid = form.data.zid;
+		const db = event.locals.db;
+		const auth = getAuth(db);
+
+		try {
+			await auth.api.sendVerificationOTP({
+				body: {
+					email: `${zid}@unsw.edu.au`,
+					type: 'sign-in'
+				}
+			});
+			log('info', 'login', 'otp_sent', { zid });
+		} catch (error) {
+			if (error instanceof APIError) {
+				log('warn', 'login', 'otp_send_failed', { zid, error: error.message });
+				return message(form, error.message || 'Failed to send OTP', { status: 400 });
+			}
+			log('error', 'login', 'otp_send_error', { zid, error: String(error) });
+			return message(form, 'Unexpected error', { status: 500 });
+		}
+
+		redirect(303, `/login?zid=${zid}`);
+	},
+	signInOTP: async (event) => {
+		const limit = await enforceRateLimit(event, 'AUTH_RATE_LIMIT');
+		if (!limit.allowed) {
+			error(limit.status, { message: limit.message });
+		}
+
+		const form = await superValidate(event, valibot(signInSchema));
+		if (!form.valid) {
+			return fail(400, { form });
+		}
+
+		const { zid, otp } = form.data;
+		const db = event.locals.db;
+		const auth = getAuth(db);
+
+		try {
+			await auth.api.signInEmailOTP({
+				body: {
+					email: `${zid}@unsw.edu.au`,
+					otp
+				}
+			});
+			log('info', 'login', 'sign_in_success', { zid });
+		} catch (error) {
+			if (error instanceof APIError) {
+				log('warn', 'login', 'sign_in_failed', { zid, error: error.message });
+				return message(form, error.message || 'Failed to sign in', { status: 400 });
+			}
+			log('error', 'login', 'sign_in_error', { zid, error: String(error) });
+			return message(form, 'Unexpected error', { status: 500 });
+		}
+
+		redirect(302, '/');
+	}
+};

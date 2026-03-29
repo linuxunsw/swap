@@ -8,3 +8,12 @@ bun.lockb
 # Miscellaneous
 /static/
 /drizzle/
+
+# migrations
+src/lib/server/db/migrations/
+src/worker-configuration.d.ts
+
+wrangler.jsonc
+
+# shadcn-svelte
+src/lib/components/ui/
