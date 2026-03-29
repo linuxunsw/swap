@@ -1,8 +1,8 @@
 <script lang="ts">
-	import EmptyApplication from '$lib/components/empty-application.svelte';
 	import { SvelteMap } from 'svelte/reactivity';
 	import { columns } from './columns';
 	import DataTable from './data-table.svelte';
+	import EmptyApplicants from './empty-applicants.svelte';
 
 	let { data } = $props();
 
@@ -33,7 +33,7 @@
 	</header>
 
 	{#if data.applicants.length === 0}
-		<EmptyApplication />
+		<EmptyApplicants />
 	{:else}
 		<DataTable
 			{columns}
