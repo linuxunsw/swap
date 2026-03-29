@@ -1,5 +1,4 @@
 import { getApplicantCycleAccess } from '$lib/server/controllers/application-cycle';
-import { getDb } from '$lib/server/db';
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
@@ -8,7 +7,7 @@ export const load: PageServerLoad = async (event) => {
 		return redirect(302, '/login');
 	}
 
-	const db = getDb();
+	const db = event.locals.db;
 	const access = await getApplicantCycleAccess(db, event.locals.user.id);
 	if (access.effectiveCycleForUser) {
 		return redirect(302, '/');

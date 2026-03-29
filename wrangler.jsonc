@@ -18,14 +18,6 @@
 	"observability": {
 		"enabled": true
 	},
-	"d1_databases": [
-		{
-			"binding": "DB",
-			"database_name": "swap-db",
-			"database_id": "607cbe84-7a54-4c41-9c15-34483586f9ca",
-			"migrations_dir": "./src/lib/server/db/migrations"
-		}
-	],
 	"ratelimits": [
 		{
 			"name": "MAIL_RATE_LIMIT",
@@ -58,6 +50,12 @@
 				"limit": 30,
 				"period": 60
 			}
+		}
+	],
+	"hyperdrive": [
+		{
+			"binding": "HYPERDRIVE",
+			"id": "d922798557da466893a0a15fd9a4d7c1"
 		}
 	],
 	"kv_namespaces": [
@@ -96,16 +94,7 @@
 			"hyperdrive": [
 				{
 					"binding": "HYPERDRIVE",
-					"id": "04c9682e9b1b402780b8c73f1fb542e7",
-					"localConnectionString": "${CLOUDFLARE_HYPERDRIVE_LOCAL_CONNECTION_STRING_HYPERDRIVE}"
-				}
-			],
-			"d1_databases": [
-				{
-					"binding": "DB",
-					"database_name": "swap-db",
-					"database_id": "607cbe84-7a54-4c41-9c15-34483586f9ca",
-					"migrations_dir": "./src/lib/server/db/migrations"
+					"id": "d922798557da466893a0a15fd9a4d7c1"
 				}
 			],
 			"ratelimits": [

@@ -1,6 +1,5 @@
 import { getApplications } from '$lib/server/controllers/application';
 import { getLatestApplicationCycle } from '$lib/server/controllers/application-cycle';
-import { getDb } from '$lib/server/db';
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
@@ -13,7 +12,7 @@ export const load: PageServerLoad = async (event) => {
 		return redirect(302, '/');
 	}
 
-	const db = getDb();
+	const db = event.locals.db;
 
 	const cycle = await getLatestApplicationCycle(db);
 	if (!cycle) {

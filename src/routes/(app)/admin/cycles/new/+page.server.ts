@@ -1,7 +1,6 @@
 import { log } from '$lib/log';
 import { createCycleWithSubcommittees } from '$lib/server/controllers/application-cycle';
 import { getAllSubcommitteeOptions } from '$lib/server/controllers/subcommittee';
-import { getDb } from '$lib/server/db';
 import { parseDate } from '@internationalized/date';
 import { error, fail } from '@sveltejs/kit';
 import { redirect } from 'sveltekit-flash-message/server';
@@ -19,7 +18,7 @@ export const load: PageServerLoad = async (event) => {
 		return redirect(302, '/');
 	}
 
-	const db = getDb();
+	const db = event.locals.db;
 	const subcommitteeOptions = await getAllSubcommitteeOptions(db);
 	const cycleSchema = createCycleSchema(subcommitteeOptions.map((row) => row.id));
 	const form = await superValidate(valibot(cycleSchema));
@@ -42,7 +41,7 @@ export const actions: Actions = {
 			error(403, 'Not authorised');
 		}
 
-		const db = getDb();
+		const db = event.locals.db;
 		const subcommitteeOptions = await getAllSubcommitteeOptions(db);
 		const cycleSchema = createCycleSchema(subcommitteeOptions.map((row) => row.id));
 

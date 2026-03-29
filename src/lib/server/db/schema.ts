@@ -1,14 +1,17 @@
 import { relations, sql } from 'drizzle-orm';
 import {
 	check,
+	date,
 	foreignKey,
 	index,
 	integer,
 	pgTable,
 	primaryKey,
-	timestamp,
 	text,
-	uniqueIndex
+	timestamp,
+	unique,
+	uniqueIndex,
+	uuid
 } from 'drizzle-orm/pg-core';
 import { APPLICATION_STATUSES } from '../../constants/application-status';
 import { user } from './auth.schema';
@@ -17,8 +20,8 @@ export * from './auth.schema';
 
 // reused columns
 const timestamps = {
-	createdAt: timestamp('created_at', { withTimezone: true, mode: 'date' }).defaultNow().notNull(),
-	updatedAt: timestamp('updated_at', { withTimezone: true, mode: 'date' })
+	createdAt: timestamp({ withTimezone: true, mode: 'date' }).defaultNow().notNull(),
+	updatedAt: timestamp({ withTimezone: true, mode: 'date' })
 		.defaultNow()
 		.$onUpdate(() => new Date())
 		.notNull()
@@ -28,12 +31,10 @@ const timestamps = {
 export const applicationCycle = pgTable(
 	'application_cycle',
 	{
-		id: text('id')
-			.primaryKey()
-			.$defaultFn(() => crypto.randomUUID()),
-		name: text('name').notNull().unique(), // e.g. "2026 T1"
-		opensAt: timestamp('opens_at', { withTimezone: true, mode: 'date' }).notNull(),
-		closesAt: timestamp('closes_at', { withTimezone: true, mode: 'date' }).notNull(),
+		id: uuid().primaryKey().defaultRandom(),
+		name: text().notNull().unique(), // e.g. "2026 T1"
+		opensAt: date({ mode: 'date' }).notNull(),
+		closesAt: date({ mode: 'date' }).notNull(),
 		...timestamps
 	},
 	(table) => [
@@ -46,29 +47,27 @@ export const applicationCycle = pgTable(
 export const application = pgTable(
 	'application',
 	{
-		id: text('id')
-			.primaryKey()
-			.$defaultFn(() => crypto.randomUUID()),
-		userId: text('user_id')
+		id: uuid().primaryKey().defaultRandom(),
+		userId: text()
 			.notNull()
 			.references(() => user.id, { onDelete: 'cascade' }),
-		cycleId: text('cycle_id')
+		cycleId: uuid()
 			.notNull()
 			.references(() => applicationCycle.id, { onDelete: 'cascade' }),
-		status: text('status', { enum: [...APPLICATION_STATUSES] })
+		status: text({ enum: [...APPLICATION_STATUSES] })
 			.default('draft')
 			.notNull(),
-		fullName: text('full_name').notNull().default(''),
-		discord: text('discord').notNull().default(''),
-		preferredEmail: text('preferred_email'),
-		reason: text('reason').notNull().default(''),
-		experience: text('experience').notNull().default(''),
-		submittedAt: timestamp('submitted_at', { withTimezone: true, mode: 'date' }),
+		fullName: text().notNull().default(''),
+		discord: text().notNull().default(''),
+		preferredEmail: text(),
+		reason: text().notNull().default(''),
+		experience: text().notNull().default(''),
+		submittedAt: timestamp({ withTimezone: true, mode: 'date' }),
 		...timestamps
 	},
 	(table) => [
 		uniqueIndex('application_user_cycle_idx').on(table.userId, table.cycleId),
-		uniqueIndex('application_id_cycle_idx').on(table.id, table.cycleId),
+		unique('application_id_cycle_unique').on(table.id, table.cycleId),
 		index('application_cycleId_idx').on(table.cycleId),
 		index('application_status_idx').on(table.status),
 		index('application_cycleId_status_idx').on(table.cycleId, table.status),
@@ -81,19 +80,19 @@ export const application = pgTable(
 );
 
 export const subcommittee = pgTable('subcommittee', {
-	id: text('id').notNull().primaryKey(), // raw name id e.g. "tech", "events", "marketing"
-	name: text('name').notNull().unique(), // Formatted display name e.g. "Tech", "Events", "Marketing"
-	colour: integer('colour').notNull().default(1), // key into badgeVariants see $lib/constants.ts
-	description: text('description').notNull().default('')
+	id: text().notNull().primaryKey(), // raw name id e.g. "tech", "events", "marketing"
+	name: text().notNull().unique(), // Formatted display name e.g. "Tech", "Events", "Marketing"
+	colour: integer().notNull().default(1), // key into badgeVariants see $lib/constants.ts
+	description: text().notNull().default('')
 });
 
 export const applicationCycle_subcommittee = pgTable(
 	'application_cycle_subcommittee',
 	{
-		cycleId: text('cycle_id')
+		cycleId: uuid()
 			.notNull()
 			.references(() => applicationCycle.id, { onDelete: 'cascade' }),
-		subcommitteeId: text('subcommittee_id')
+		subcommitteeId: text()
 			.notNull()
 			.references(() => subcommittee.id, { onDelete: 'cascade' }),
 		...timestamps
@@ -108,11 +107,11 @@ export const applicationCycle_subcommittee = pgTable(
 export const application_subcommittee = pgTable(
 	'application_subcommittee',
 	{
-		applicationId: text('application_id')
+		applicationId: uuid()
 			.notNull()
 			.references(() => application.id, { onDelete: 'cascade' }),
-		cycleId: text('cycle_id').notNull(),
-		subcommitteeId: text('subcommittee_id')
+		cycleId: uuid().notNull(),
+		subcommitteeId: text()
 			.notNull()
 			.references(() => subcommittee.id, { onDelete: 'cascade' }),
 		...timestamps
@@ -141,15 +140,13 @@ export const application_subcommittee = pgTable(
 export const interview = pgTable(
 	'interview',
 	{
-		id: text('id')
-			.primaryKey()
-			.$defaultFn(() => crypto.randomUUID()),
-		applicationId: text('application_id')
+		id: uuid().primaryKey().defaultRandom(),
+		applicationId: uuid()
 			.notNull()
 			.references(() => application.id, { onDelete: 'cascade' }),
-		scheduledAt: timestamp('scheduled_at', { withTimezone: true, mode: 'date' }).notNull(),
-		location: text('location').notNull().default(''),
-		interviewer: text('interviewer').references(() => user.id, {
+		scheduledAt: timestamp({ withTimezone: true, mode: 'date' }).notNull(),
+		location: text().notNull().default(''),
+		interviewer: text().references(() => user.id, {
 			onDelete: 'set null'
 		}),
 		...timestamps
@@ -164,16 +161,14 @@ export const interview = pgTable(
 export const feedback = pgTable(
 	'feedback',
 	{
-		id: text('id')
-			.primaryKey()
-			.$defaultFn(() => crypto.randomUUID()),
-		interviewId: text('interview_id')
+		id: uuid().primaryKey().defaultRandom(),
+		interviewId: uuid()
 			.notNull()
 			.references(() => interview.id, { onDelete: 'cascade' }),
-		reviewerId: text('reviewer_id')
+		reviewerId: text()
 			.notNull()
 			.references(() => user.id, { onDelete: 'cascade' }),
-		comments: text('comments').notNull().default(''),
+		comments: text().notNull().default(''),
 		...timestamps
 	},
 	(table) => [
@@ -185,13 +180,13 @@ export const feedback = pgTable(
 export const vote = pgTable(
 	'vote',
 	{
-		applicationId: text('application_id')
+		applicationId: uuid()
 			.notNull()
 			.references(() => application.id, { onDelete: 'cascade' }),
-		voterId: text('voter_id')
+		voterId: text()
 			.notNull()
 			.references(() => user.id, { onDelete: 'cascade' }),
-		value: integer('value').notNull(), // 1 for yes, 0 for no
+		value: integer().notNull(), // 1 for yes, 0 for no
 		...timestamps
 	},
 	(table) => [

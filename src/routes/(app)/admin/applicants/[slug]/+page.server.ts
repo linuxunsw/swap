@@ -1,5 +1,4 @@
 import { getApplicationById } from '$lib/server/controllers/application';
-import { getDb } from '$lib/server/db';
 import { error, redirect } from '@sveltejs/kit';
 import * as v from 'valibot';
 import type { PageServerLoad } from './$types';
@@ -13,7 +12,7 @@ export const load: PageServerLoad = async (event) => {
 		return redirect(302, '/');
 	}
 
-	const db = getDb();
+	const db = event.locals.db;
 
 	const validator = v.pipe(v.string(), v.uuid());
 	const result = v.safeParse(validator, event.params.slug);

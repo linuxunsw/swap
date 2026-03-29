@@ -1,34 +1,37 @@
-import { getRequestEvent } from '$app/server';
 import { env } from '$env/dynamic/private';
+import { drizzle as drizzlePostgres } from 'drizzle-orm/node-postgres';
+import { Client } from 'pg';
 import { log } from '../../log';
-import { drizzle as drizzlePostgres } from 'drizzle-orm/postgres-js';
-import postgres from 'postgres';
 import * as schema from './schema';
 
-export function getDb() {
-	let hyperdrive: { connectionString?: string } | undefined;
+export async function getDb() {
+	if (env.HYPERDRIVE) {
+		log('debug', 'db', 'get', { provider: 'hyperdrive' });
+		const db = env.HYPERDRIVE as unknown as Hyperdrive;
 
-	try {
-		// get the hyperdrive db connection string
-		const event = getRequestEvent();
-		const platformEnv = event.platform?.env as Record<string, unknown> | undefined;
-		hyperdrive = platformEnv?.HYPERDRIVE as { connectionString?: string } | undefined;
-	} catch {
-		// not an active request
-	}
+		const connectionString =
+			env.CLOUDFLARE_HYPERDRIVE_LOCAL_CONNECTION_STRING_HYPERDRIVE ?? db.connectionString;
 
-	const connectionString =
-		hyperdrive?.connectionString ?? env.CLOUDFLARE_HYPERDRIVE_LOCAL_CONNECTION_STRING_HYPERDRIVE;
-
-	if (!connectionString) {
-		log('error', 'db', 'init_failed', {
-			message: 'No DB connection available (HYPERDRIVE binding, local connection string)'
+		const client = new Client({
+			connectionString
 		});
-		throw new Error('No DB connection available (HYPERDRIVE binding, local connection string)');
+
+		await client.connect();
+		return drizzlePostgres(client, { schema, casing: 'snake_case' });
 	}
 
-	const sql = postgres(connectionString, { prepare: false, max: 1 });
-	return drizzlePostgres(sql, { schema, casing: 'snake_case' });
+	// Fallback to direct postgres if hyperdrive is not available (e.g. local non-miniflare development)
+	if (env.DATABASE_URL) {
+		log('debug', 'db', 'get', { provider: 'node-postgres' });
+		const client = new Client({
+			connectionString: env.DATABASE_URL
+		});
+		await client.connect();
+		return drizzlePostgres(client, { schema, casing: 'snake_case' });
+	}
+
+	log('error', 'db', 'init_failed', { message: 'No db config available' });
+	throw new Error('No db config available');
 }
 
-export type SwapDb = ReturnType<typeof getDb>;
+export type SwapDb = Awaited<ReturnType<typeof getDb>>;

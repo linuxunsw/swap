@@ -12,7 +12,6 @@ import {
 	getApplicationSubcommitteeIds,
 	getSubcommitteeOptionsByCycle
 } from '$lib/server/controllers/subcommittee';
-import { getDb } from '$lib/server/db';
 import { error, fail } from '@sveltejs/kit';
 import { redirect } from 'sveltekit-flash-message/server';
 import { message, superValidate } from 'sveltekit-superforms';
@@ -25,7 +24,7 @@ export const load: PageServerLoad = async (event) => {
 		redirect(302, '/login');
 	}
 
-	const db = getDb();
+	const db = event.locals.db;
 	const access = await getApplicantCycleAccess(db, event.locals.user.id);
 	if (!access.effectiveCycleForUser) {
 		redirect(302, '/closed');
@@ -88,7 +87,7 @@ export const actions: Actions = {
 			error(401, { message: 'Not authenticated' });
 		}
 
-		const db = getDb();
+		const db = event.locals.db;
 		const cycle = await getCurrentApplicationCycle(db);
 		if (!cycle) {
 			error(400, { message: 'Applications are not open for submission' });
@@ -128,7 +127,7 @@ export const actions: Actions = {
 			error(401, { message: 'Not authenticated' });
 		}
 
-		const db = getDb();
+		const db = event.locals.db;
 		const cycle = await getCurrentApplicationCycle(db);
 		if (!cycle) {
 			error(400, { message: 'Applications are not open for submission' });

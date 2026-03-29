@@ -5,7 +5,6 @@ import {
 	updateCycleWithSubcommittees
 } from '$lib/server/controllers/application-cycle';
 import { getAllSubcommitteeOptions } from '$lib/server/controllers/subcommittee';
-import { getDb } from '$lib/server/db';
 import { parseDate } from '@internationalized/date';
 import { error, fail, type Actions } from '@sveltejs/kit';
 import { redirect } from 'sveltekit-flash-message/server';
@@ -24,7 +23,7 @@ export const load: PageServerLoad = async (event) => {
 		return redirect(302, '/');
 	}
 
-	const db = getDb();
+	const db = event.locals.db;
 
 	const validator = v.pipe(v.string(), v.uuid());
 	const result = v.safeParse(validator, event.params.slug);
@@ -71,7 +70,7 @@ export const actions: Actions = {
 			error(400, 'Missing cycle ID');
 		}
 
-		const db = getDb();
+		const db = event.locals.db;
 		const subcommitteeOptions = await getAllSubcommitteeOptions(db);
 		const cycleSchema = createCycleSchema(subcommitteeOptions.map((row) => row.id));
 
@@ -111,7 +110,7 @@ export const actions: Actions = {
 			error(400, 'Missing cycle ID');
 		}
 
-		const db = getDb();
+		const db = event.locals.db;
 		try {
 			await deleteApplicationCycle(db, event.params.slug);
 

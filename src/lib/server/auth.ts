@@ -6,7 +6,7 @@ import {
 } from '$env/static/private';
 import { ZID_REGEX, type Role } from '$lib/constants';
 import { devOnly, log } from '$lib/log';
-import { getDb } from '$lib/server/db';
+import { type SwapDb } from '$lib/server/db';
 import { otpExpirySecs, sendOTP } from '$lib/server/otp-mailer';
 import { getSecondaryStorage } from '$lib/server/secondary-storage';
 import { zidIsAdmin } from '$lib/server/utils';
@@ -16,16 +16,11 @@ import { betterAuth } from 'better-auth/minimal';
 import { emailOTP } from 'better-auth/plugins';
 import { sveltekitCookies } from 'better-auth/svelte-kit';
 
-// because we are using hyperdrive to access our db, we can't create the auth as a constant
-// so we create a function to do this every single time we need to access the auth,
-// as it creates a new connection every time
-//
-// https://developers.cloudflare.com/hyperdrive/examples/connect-to-postgres/postgres-drivers-and-libraries/drizzle-orm/
-function createAuth() {
+export function getAuth(db: SwapDb) {
 	return betterAuth({
 		baseURL: env.ORIGIN,
 		secret: env.BETTER_AUTH_SECRET,
-		database: drizzleAdapter(getDb(), { provider: 'pg' }),
+		database: drizzleAdapter(db, { provider: 'pg' }),
 		emailAndPassword: { enabled: false },
 		plugins: [
 			emailOTP({
@@ -96,18 +91,7 @@ function createAuth() {
 	});
 }
 
-export function getAuth() {
-	return createAuth();
-}
-
-// this allows us to use the auth cli
-export const auth = new Proxy({} as ReturnType<typeof createAuth>, {
-	get(_target, prop, receiver) {
-		return Reflect.get(getAuth(), prop, receiver);
-	}
-});
-
-type SwapAuth = ReturnType<typeof createAuth>;
+type SwapAuth = ReturnType<typeof getAuth>;
 
 export type SwapUser = SwapAuth['$Infer']['Session']['user'];
 export type SwapSession = SwapAuth['$Infer']['Session']['session'];

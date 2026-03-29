@@ -15,7 +15,8 @@ export const actions: Actions = {
 			error(limit.status, { message: limit.message });
 		}
 
-		const auth = getAuth();
+		const db = event.locals.db;
+		const auth = getAuth(db);
 
 		await auth.api.signOut({
 			headers: event.request.headers

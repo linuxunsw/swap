@@ -3,7 +3,6 @@ import {
 	createSubcommittee,
 	getAllSubcommitteeOptions
 } from '$lib/server/controllers/subcommittee';
-import { getDb } from '$lib/server/db';
 import { buildUniqueSubcommitteeId, hasSubcommitteeNameMatch } from '$lib/subcommittee';
 import { error, json } from '@sveltejs/kit';
 import * as v from 'valibot';
@@ -28,7 +27,7 @@ export const POST: RequestHandler = async (event) => {
 		return json({ error: 'Subcommittee name is required.' }, { status: 400 });
 	}
 
-	const db = getDb();
+	const db = event.locals.db;
 	const existingOptions = await getAllSubcommitteeOptions(db);
 	const existingNames = existingOptions.map((option) => option.name);
 	if (hasSubcommitteeNameMatch(result.output.name, existingNames)) {

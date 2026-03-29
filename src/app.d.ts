@@ -1,5 +1,6 @@
 import type { Role } from '$lib/constants';
 import type { SwapSession, SwapUser } from '$lib/server/auth';
+import type { SwapDb } from '$lib/server/db';
 
 // See https://svelte.dev/docs/kit/types#app.d.ts
 // for information about these interfaces
@@ -24,6 +25,7 @@ declare global {
 		}
 
 		interface Locals {
+			db: SwapDb;
 			user?: SwapUser;
 			session?: SwapSession;
 		}

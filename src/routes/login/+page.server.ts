@@ -60,7 +60,8 @@ export const actions: Actions = {
 		}
 
 		const zid = form.data.zid;
-		const auth = getAuth();
+		const db = event.locals.db;
+		const auth = getAuth(db);
 
 		try {
 			await auth.api.sendVerificationOTP({
@@ -93,7 +94,8 @@ export const actions: Actions = {
 		}
 
 		const { zid, otp } = form.data;
-		const auth = getAuth();
+		const db = event.locals.db;
+		const auth = getAuth(db);
 
 		try {
 			await auth.api.signInEmailOTP({

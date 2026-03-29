@@ -5,7 +5,7 @@ import {
 	getSubcommitteeById,
 	updateSubcommittee
 } from '$lib/server/controllers/subcommittee';
-import { getDb, type SwapDb } from '$lib/server/db';
+import { type SwapDb } from '$lib/server/db';
 import { error, redirect } from '@sveltejs/kit';
 import {
 	fail,
@@ -28,7 +28,7 @@ export const load: PageServerLoad = async (event) => {
 		return redirect(302, '/');
 	}
 
-	const db = getDb();
+	const db = event.locals.db;
 	const subcommittees = await getAllSubcommitteeOptions(db);
 
 	const form = await superValidate(valibot(subcommitteeSchema));
@@ -57,7 +57,7 @@ export const actions: Actions = {
 			return error(401, 'Unauthorised');
 		}
 
-		const db = getDb();
+		const db = event.locals.db;
 		const form = await superValidate(event, valibot(subcommitteeSchema));
 
 		if (!form.valid) {
@@ -88,7 +88,7 @@ export const actions: Actions = {
 			return error(401, 'Unauthorised');
 		}
 
-		const db = getDb();
+		const db = event.locals.db;
 		const form = await superValidate(event, valibot(subcommitteeSchema));
 
 		if (!form.valid) {
@@ -119,7 +119,7 @@ export const actions: Actions = {
 			return error(401, 'Unauthorised');
 		}
 
-		const db = getDb();
+		const db = event.locals.db;
 		const form = await superValidate(event, valibot(subcommitteeIdSchema));
 
 		if (!form.valid) {
@@ -150,7 +150,7 @@ export const actions: Actions = {
 			return error(401, 'Unauthorised');
 		}
 
-		const db = getDb();
+		const db = event.locals.db;
 		const form = await superValidate(event, valibot(subcommitteeIdSchema));
 
 		if (!form.valid) {
