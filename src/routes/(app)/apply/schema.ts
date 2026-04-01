@@ -1,5 +1,9 @@
 import * as v from 'valibot';
 
+const APPLICATION_TEXTAREA_MAX_LENGTH = 2000;
+export const MAX_EXPERIENCE_LENGTH = APPLICATION_TEXTAREA_MAX_LENGTH;
+export const MAX_REASON_LENGTH = APPLICATION_TEXTAREA_MAX_LENGTH;
+
 export function createApplicationSchema(allowedSubcommitteeIds: string[]) {
 	const allowedIds = new Set(allowedSubcommitteeIds);
 
@@ -33,12 +37,18 @@ export function createApplicationSchema(allowedSubcommitteeIds: string[]) {
 			v.string(),
 			v.trim(),
 			v.minLength(1, 'Please tell us why you want to join'),
-			v.maxLength(2000, 'Please keep your response under 2000 characters')
+			v.maxLength(
+				MAX_REASON_LENGTH,
+				`Please keep your response under ${MAX_REASON_LENGTH} characters`
+			)
 		),
 		experience: v.pipe(
 			v.string(),
 			v.trim(),
-			v.maxLength(2000, 'Please keep your response under 2000 characters')
+			v.maxLength(
+				MAX_EXPERIENCE_LENGTH,
+				`Please keep your response under ${MAX_EXPERIENCE_LENGTH} characters`
+			)
 		)
 	});
 }

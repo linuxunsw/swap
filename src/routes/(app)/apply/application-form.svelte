@@ -3,16 +3,21 @@
 	import { ResponsiveAlertDialog } from '$lib/components/responsive-alert-dialog/index.js';
 	import * as Checkbox from '$lib/components/ui/checkbox/index.js';
 	import * as Form from '$lib/components/ui/form/index.js';
+	import * as InputGroup from '$lib/components/ui/input-group/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
 	import { Label } from '$lib/components/ui/label/index.js';
 	import { Spinner } from '$lib/components/ui/spinner/index.js';
-	import { Textarea } from '$lib/components/ui/textarea/index.js';
 	import { checkboxVariants, choiceCardVariants } from '$lib/constants';
 	import { toast } from 'svelte-sonner';
 	import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
 	import { valibotClient } from 'sveltekit-superforms/adapters';
 	import type { PageData } from './$types';
-	import { createApplicationSchema, type ApplicationSchema } from './schema';
+	import {
+		createApplicationSchema,
+		MAX_EXPERIENCE_LENGTH,
+		MAX_REASON_LENGTH,
+		type ApplicationSchema
+	} from './schema';
 
 	let {
 		data,
@@ -66,6 +71,20 @@
 	});
 
 	const { form: formData, enhance, message, delayed } = form;
+
+	const getCharacterCounterText = (value: string, maxLength: number) => {
+		const remaining = maxLength - value.length;
+
+		if (remaining >= 0) {
+			return `${remaining} character${remaining === 1 ? '' : 's'} left`;
+		}
+
+		const overLimit = Math.abs(remaining);
+		return `${overLimit} character${overLimit === 1 ? '' : 's'} over limit`;
+	};
+
+	const getCharacterCounterClass = (value: string, maxLength: number) =>
+		value.length > maxLength ? 'text-destructive' : 'text-muted-foreground';
 </script>
 
 <ResponsiveAlertDialog
@@ -163,13 +182,26 @@
 		<Form.Field {form} name="reason">
 			<Form.Control>
 				{#snippet children({ props })}
+					{@const reasonCounterText = getCharacterCounterText($formData.reason, MAX_REASON_LENGTH)}
+
 					<Form.Label>Why do you want to join?</Form.Label>
-					<Textarea
-						{...props}
-						rows={4}
-						placeholder="Tell us what excites you about Linux Society..."
-						bind:value={$formData.reason}
-					/>
+					<InputGroup.Root>
+						<InputGroup.Textarea
+							{...props}
+							rows={4}
+							aria-describedby="reason-character-counter"
+							placeholder="Tell us what excites you about Linux Society..."
+							bind:value={$formData.reason}
+						/>
+						<InputGroup.Addon align="block-end">
+							<InputGroup.Text
+								aria-live="polite"
+								class={`ms-auto text-xs tabular-nums ${getCharacterCounterClass($formData.reason, MAX_REASON_LENGTH)}`}
+							>
+								{reasonCounterText}
+							</InputGroup.Text>
+						</InputGroup.Addon>
+					</InputGroup.Root>
 				{/snippet}
 			</Form.Control>
 			<Form.FieldErrors />
@@ -178,15 +210,30 @@
 		<Form.Field {form} name="experience">
 			<Form.Control>
 				{#snippet children({ props })}
-					<Form.Label
-						>Relevant Experience <span class="text-muted-foreground">(optional)</span></Form.Label
-					>
-					<Textarea
-						{...props}
-						rows={4}
-						placeholder="Any relevant skills, projects, or experience..."
-						bind:value={$formData.experience}
-					/>
+					{@const experienceCounterText = getCharacterCounterText(
+						$formData.experience,
+						MAX_EXPERIENCE_LENGTH
+					)}
+
+					<Form.Label>
+						Relevant Experience <span class="text-muted-foreground">(optional)</span>
+					</Form.Label>
+					<InputGroup.Root>
+						<InputGroup.Textarea
+							{...props}
+							rows={4}
+							placeholder="Any relevant skills, projects, or experience..."
+							bind:value={$formData.experience}
+						/>
+						<InputGroup.Addon align="block-end">
+							<InputGroup.Text
+								aria-live="polite"
+								class={`ms-auto text-xs tabular-nums ${getCharacterCounterClass($formData.experience, MAX_EXPERIENCE_LENGTH)}`}
+							>
+								{experienceCounterText}
+							</InputGroup.Text>
+						</InputGroup.Addon>
+					</InputGroup.Root>
 				{/snippet}
 			</Form.Control>
 			<Form.FieldErrors />
