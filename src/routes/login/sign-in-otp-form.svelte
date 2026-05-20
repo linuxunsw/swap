@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { resolve } from '$app/paths';
 	import * as Form from '$lib/components/ui/form/index.js';
 	import * as InputOTP from '$lib/components/ui/input-otp/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
@@ -24,7 +23,7 @@
 	const { form: formData, enhance, message, delayed } = form;
 </script>
 
-<form action="?/signInOTP" method="POST" use:enhance>
+<form action="?/signInOTP" method="POST" class="space-y-2" use:enhance>
 	<!-- Hidden input so zid is submitted even though the visible input is disabled -->
 	<input type="hidden" name="zid" bind:value={$formData.zid} />
 
@@ -66,14 +65,10 @@
 		<Form.FieldErrors />
 	</Form.Field>
 
-	<Form.Button class="mt-4 w-full" disabled={$delayed}>
+	<Form.Button class="mt-2 w-full" disabled={$delayed}>
 		{#if $delayed}
 			<Spinner />
 		{/if}
 		{$delayed ? 'Signing in...' : 'Sign In'}
 	</Form.Button>
 </form>
-
-<div class="mt-4 text-center text-sm text-muted-foreground">
-	<a href={resolve('/login')} class="underline underline-offset-4 hover:text-primary">Start over</a>
-</div>
