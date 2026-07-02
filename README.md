@@ -22,23 +22,38 @@ Linux Society's portal for managing subcommittee applications.
 
 1. Install dependencies:
 
-```sh
-pnpm install
-```
+    ```sh
+    pnpm install
+    ```
 
 2. Create local environment variables:
 
-```sh
-cp .env.example .env
-```
+    ```sh
+    cp .env.example .env
+    ```
 
-3. Fill in required values in `.env` (at minimum `DATABASE_URL`, auth secrets, and app origin).
+3. Fill in required values in `.env`.
 
-4. Start the dev server:
+4. Create a local database:
 
-```sh
-pnpm run dev
-```
+    ```sh
+    # Create a database named "swap" as the postgres user "postgres"
+    createdb -U postgres swap
+    # Or, do the same but in a docker container
+    docker exec -it postgres-db-1 createdb -U postgres swap
+    ```
+
+5. Apply migrations to the database so it is ready to accept data:
+
+    ```sh
+    pnpm run db:migrate
+    ```
+
+6. Start the dev server:
+
+    ```sh
+    pnpm run dev
+    ```
 
 ## Running with Worker Bindings Locally
 
