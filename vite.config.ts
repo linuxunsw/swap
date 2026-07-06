@@ -2,6 +2,12 @@ import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'vitest/config';
 import { sveltekit } from '@sveltejs/kit/vite';
 
+try {
+  process.loadEnvFile('.env');
+} catch (_e) {
+  console.log('Could not load .env file. No changes made to environment.');
+}
+
 export default defineConfig({
 	plugins: [tailwindcss(), sveltekit()],
 	test: {
