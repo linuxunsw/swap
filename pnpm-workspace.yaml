@@ -1,6 +1,8 @@
-onlyBuiltDependencies:
-  - esbuild
-  - workerd
+allowBuilds:
+  better-sqlite3: true
+  esbuild: true
+  sharp: true
+  workerd: true
 
 overrides:
   cookie@<0.7.0: '>=0.7.0 <0.8.0'

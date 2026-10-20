@@ -33,7 +33,7 @@
 		"@lucide/svelte": "^1.23.0",
 		"@sveltejs/adapter-auto": "^7.0.1",
 		"@sveltejs/adapter-cloudflare": "^7.2.9",
-		"@sveltejs/kit": "^2.69.0",
+		"@sveltejs/kit": "^2.70.3",
 		"@sveltejs/vite-plugin-svelte": "^6.2.4",
 		"@tailwindcss/vite": "^4.3.2",
 		"@tanstack/table-core": "^8.21.3",
@@ -69,10 +69,10 @@
 		"valibot": "^1.4.2",
 		"vaul-svelte": "1.0.0-next.7",
 		"vite": "^7.3.6",
-		"vitest": "^4.1.9",
+		"vitest": "^4.1.12",
 		"wrangler": "^4.106.0"
 	},
-	"packageManager": "pnpm@10.28.2",
+	"packageManager": "pnpm@12.14.0",
 	"dependencies": {
 		"mode-watcher": "^1.1.0"
 	}
