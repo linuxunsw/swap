@@ -7,14 +7,10 @@ import type { RequestEvent } from '@sveltejs/kit';
  * Cloudflare rate-limit binding names (declared in wrangler.jsonc)
  */
 export type RateLimitBinding =
-	| 'MAIL_RATE_LIMIT'
-	| 'AUTH_RATE_LIMIT'
-	| 'API_RATE_LIMIT'
-	| 'ADMIN_RATE_LIMIT';
+	'MAIL_RATE_LIMIT' | 'AUTH_RATE_LIMIT' | 'API_RATE_LIMIT' | 'ADMIN_RATE_LIMIT';
 
 export type RateLimitResult =
-	| { allowed: true }
-	| { allowed: false; status: 429 | 503; message: string };
+	{ allowed: true } | { allowed: false; status: 429 | 503; message: string };
 
 function getClientIp(event: RequestEvent): string {
 	return event.request.headers.get('cf-connecting-ip') || event.getClientAddress();
