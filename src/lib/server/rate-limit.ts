@@ -24,6 +24,8 @@ function getBinding(name: RateLimitBinding): RateLimit | null {
 	return binding as RateLimit;
 }
 
+// FIXME: This also needs to stop using `$env/dynamic/private` import.
+
 /**
  * Enforce a Cloudflare rate limit.
  *

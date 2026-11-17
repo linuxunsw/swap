@@ -1,8 +1,6 @@
-// @migration-task remove `rewriteRelativeImportExtensions` - the `#lib/*.ts` subpath imports are not relative paths, but the flag errors with TS2877
 {
 	"extends": "$app/tsconfig",
 	"compilerOptions": {
-		"rewriteRelativeImportExtensions": true,
 		"sourceMap": true,
 		"strict": true,
 		"types": ["$app/types", "./src/worker-configuration.d.ts", "node"]

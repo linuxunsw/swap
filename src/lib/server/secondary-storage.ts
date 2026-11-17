@@ -2,6 +2,15 @@ import { env } from '$env/dynamic/private';
 import { log } from '#lib/log.ts';
 import type { SecondaryStorage } from 'better-auth';
 
+// FIXME: KVNamespace is a JS object, not a string, so importing it from
+// the env is inappropriate. Based on some searching, it appears, we should
+// be building this using platform attributes given in the request object,
+// rather than relying on globals like this. This would also be good for
+// removing yucky singletons from our code. However, I don't have sufficient
+// familiarity with Cloudflare workers to be able to know for certain that I
+// am correct with this guess. Therefore, before we can fully migrate to 
+// @sveltejs/kit@3, someone else needs to fix this.
+
 // NOTE: binding name is defined in wrangler.jsonc
 function getBinding(): KVNamespace | null {
 	const binding = (env as Record<string, unknown>)['SECONDARY_STORAGE_KV'];
