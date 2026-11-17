@@ -1,5 +1,5 @@
 <script lang="ts">
-	import * as Empty from '$lib/components/ui/empty/index.js';
+	import * as Empty from '#lib/components/ui/empty/index.js';
 	import { FileSearchCornerIcon } from '@lucide/svelte';
 </script>
 

@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { Button } from '$lib/components/ui/button/index.js';
-	import * as Drawer from '$lib/components/ui/drawer/index.js';
-	import * as Popover from '$lib/components/ui/popover/index.js';
-	import { IsMobile } from '$lib/hooks/is-mobile.svelte';
-	import type { SubcommitteeOption } from '$lib/server/controllers/subcommittee';
+	import { Button } from '#lib/components/ui/button/index.js';
+	import * as Drawer from '#lib/components/ui/drawer/index.js';
+	import * as Popover from '#lib/components/ui/popover/index.js';
+	import { IsMobile } from '#lib/hooks/is-mobile.svelte.ts';
+	import type { SubcommitteeOption } from '#lib/server/controllers/subcommittee.ts';
 	import SubcommitteeCommandContent from './subcommittee-command-content.svelte';
 	import SubcommitteeTriggerContent from './subcommittee-trigger-content.svelte';
 	import type { ComboboxOption } from './utils';

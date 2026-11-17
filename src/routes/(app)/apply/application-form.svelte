@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { ResponsiveAlertDialog } from '$lib/components/responsive-alert-dialog/index.js';
-	import * as Checkbox from '$lib/components/ui/checkbox/index.js';
-	import * as Form from '$lib/components/ui/form/index.js';
-	import * as InputGroup from '$lib/components/ui/input-group/index.js';
-	import { Input } from '$lib/components/ui/input/index.js';
-	import { Label } from '$lib/components/ui/label/index.js';
-	import { Spinner } from '$lib/components/ui/spinner/index.js';
-	import { checkboxVariants, choiceCardVariants } from '$lib/constants';
+	import { ResponsiveAlertDialog } from '#lib/components/responsive-alert-dialog/index.js';
+	import * as Checkbox from '#lib/components/ui/checkbox/index.js';
+	import * as Form from '#lib/components/ui/form/index.js';
+	import * as InputGroup from '#lib/components/ui/input-group/index.js';
+	import { Input } from '#lib/components/ui/input/index.js';
+	import { Label } from '#lib/components/ui/label/index.js';
+	import { Spinner } from '#lib/components/ui/spinner/index.js';
+	import { checkboxVariants, choiceCardVariants } from '#lib/constants/index.ts';
 	import { toast } from 'svelte-sonner';
 	import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
 	import { valibotClient } from 'sveltekit-superforms/adapters';

@@ -1,8 +1,8 @@
 <script lang="ts">
-	import * as Form from '$lib/components/ui/form/index.js';
-	import * as InputOTP from '$lib/components/ui/input-otp/index.js';
-	import { Input } from '$lib/components/ui/input/index.js';
-	import { Spinner } from '$lib/components/ui/spinner';
+	import * as Form from '#lib/components/ui/form/index.js';
+	import * as InputOTP from '#lib/components/ui/input-otp/index.js';
+	import { Input } from '#lib/components/ui/input/index.js';
+	import { Spinner } from '#lib/components/ui/spinner/index.ts';
 	import { REGEXP_ONLY_DIGITS } from 'bits-ui';
 	import { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { valibotClient } from 'sveltekit-superforms/adapters';

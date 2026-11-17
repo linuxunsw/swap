@@ -1,4 +1,4 @@
-import { log } from '$lib/log';
+import { log } from '#lib/log.ts';
 import { and, eq, gte, inArray, lte } from 'drizzle-orm/sql/expressions/conditions';
 import type { SwapDb } from '../db';
 import { application, applicationCycle, applicationCycle_subcommittee } from '../db/schema';

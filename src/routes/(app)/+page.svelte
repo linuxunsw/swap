@@ -1,6 +1,6 @@
 <script lang="ts">
-	import EmptyApplication from '$lib/components/empty-application.svelte';
-	import { formatDate } from '$lib/utils';
+	import EmptyApplication from '#lib/components/empty-application.svelte';
+	import { formatDate } from '#lib/utils.ts';
 	import type { PageServerData } from './$types';
 	import ApplicationStatus from './application-status.svelte';
 	import ApplicationTimeline from './application-timeline.svelte';

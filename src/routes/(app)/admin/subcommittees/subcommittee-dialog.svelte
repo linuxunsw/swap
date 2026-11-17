@@ -1,13 +1,13 @@
 <script lang="ts">
-	import * as ResponsiveDialog from '$lib/components/responsive-dialog/index.js';
+	import * as ResponsiveDialog from '#lib/components/responsive-dialog/index.js';
 	import {
 		Button,
 		type ButtonSize,
 		type ButtonVariant,
 		buttonVariants
-	} from '$lib/components/ui/button/index.js';
-	import { Spinner } from '$lib/components/ui/spinner/index.js';
-	import type { SubcommitteeOption } from '$lib/server/controllers/subcommittee';
+	} from '#lib/components/ui/button/index.js';
+	import { Spinner } from '#lib/components/ui/spinner/index.js';
+	import type { SubcommitteeOption } from '#lib/server/controllers/subcommittee.ts';
 	import { useId } from 'bits-ui';
 	import type { Snippet } from 'svelte';
 	import type { Infer, SuperValidated } from 'sveltekit-superforms';

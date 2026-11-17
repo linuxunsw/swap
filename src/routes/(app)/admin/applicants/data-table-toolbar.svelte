@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { Button } from '$lib/components/ui/button/index.js';
-	import { Input } from '$lib/components/ui/input/index.js';
-	import { APPLICATION_STATUSES } from '$lib/constants/application-status';
-	import { STATUS_DISPLAY_ICON } from '$lib/constants/status-icon';
+	import { Button } from '#lib/components/ui/button/index.js';
+	import { Input } from '#lib/components/ui/input/index.js';
+	import { APPLICATION_STATUSES } from '#lib/constants/application-status.ts';
+	import { STATUS_DISPLAY_ICON } from '#lib/constants/status-icon.ts';
 	import XIcon from '@lucide/svelte/icons/x';
 	import type { Table } from '@tanstack/table-core';
 	import type { Applicant } from './columns';

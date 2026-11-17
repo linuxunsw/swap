@@ -1,15 +1,17 @@
 import { getRequestEvent } from '$app/server';
-import { env } from '$env/dynamic/private';
+
 import {
+	ORIGIN,
+	BETTER_AUTH_SECRET,
 	BETTER_AUTH_SESSION_EXPIRES_IN,
 	BETTER_AUTH_SESSION_UPDATE_AGE
-} from '$env/static/private';
-import { ZID_REGEX, type Role } from '$lib/constants';
-import { devOnly, log } from '$lib/log';
-import { type SwapDb } from '$lib/server/db';
-import { otpExpirySecs, sendOTP } from '$lib/server/otp-mailer';
-import { getSecondaryStorage } from '$lib/server/secondary-storage';
-import { zidIsAdmin } from '$lib/server/utils';
+} from '$app/env/private';
+import { ZID_REGEX, type Role } from '#lib/constants/index.ts';
+import { devOnly, log } from '#lib/log.ts';
+import { type SwapDb } from '#lib/server/db/index.ts';
+import { otpExpirySecs, sendOTP } from '#lib/server/otp-mailer.ts';
+import { getSecondaryStorage } from '#lib/server/secondary-storage.ts';
+import { zidIsAdmin } from '#lib/server/utils.ts';
 import { APIError } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { betterAuth } from 'better-auth/minimal';
@@ -18,8 +20,8 @@ import { sveltekitCookies } from 'better-auth/svelte-kit';
 
 export function getAuth(db: SwapDb) {
 	return betterAuth({
-		baseURL: env.ORIGIN,
-		secret: env.BETTER_AUTH_SECRET,
+		baseURL: ORIGIN,
+		secret: BETTER_AUTH_SECRET,
 		database: drizzleAdapter(db, { provider: 'pg' }),
 		emailAndPassword: { enabled: false },
 		plugins: [

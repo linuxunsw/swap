@@ -1,6 +1,6 @@
 import { env } from '$env/dynamic/private';
-import { RATE_LIMIT_BYPASS } from '$env/static/private';
-import { devOnly, log } from '$lib/log';
+import { RATE_LIMIT_BYPASS } from '$app/env/private';
+import { devOnly, log } from '#lib/log.ts';
 import type { RequestEvent } from '@sveltejs/kit';
 
 /**
@@ -23,6 +23,8 @@ function getBinding(name: RateLimitBinding): RateLimit | null {
 	}
 	return binding as RateLimit;
 }
+
+// FIXME: This also needs to stop using `$env/dynamic/private` import.
 
 /**
  * Enforce a Cloudflare rate limit.

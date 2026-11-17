@@ -1,4 +1,4 @@
-import { getApplicantCycleAccess } from '$lib/server/controllers/application-cycle';
+import { getApplicantCycleAccess } from '#lib/server/controllers/application-cycle.ts';
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 

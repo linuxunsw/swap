@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { CycleSubcommitteeCombobox } from '$lib/components/cycle-subcommittee-combobox';
-	import { ResponsiveAlertDialog } from '$lib/components/responsive-alert-dialog/index.js';
-	import * as Form from '$lib/components/ui/form/index.js';
-	import { Input } from '$lib/components/ui/input/index.js';
-	import { Spinner } from '$lib/components/ui/spinner';
-	import type { SubcommitteeOption } from '$lib/server/controllers/subcommittee';
+	import { CycleSubcommitteeCombobox } from '#lib/components/cycle-subcommittee-combobox/index.ts';
+	import { ResponsiveAlertDialog } from '#lib/components/responsive-alert-dialog/index.js';
+	import * as Form from '#lib/components/ui/form/index.js';
+	import { Input } from '#lib/components/ui/input/index.js';
+	import { Spinner } from '#lib/components/ui/spinner/index.ts';
+	import type { SubcommitteeOption } from '#lib/server/controllers/subcommittee.ts';
 	import { toast } from 'svelte-sonner';
 	import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
 	import { valibot } from 'sveltekit-superforms/adapters';

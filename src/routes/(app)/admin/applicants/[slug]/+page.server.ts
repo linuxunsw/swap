@@ -1,4 +1,4 @@
-import { getApplicationById } from '$lib/server/controllers/application';
+import { getApplicationById } from '#lib/server/controllers/application.ts';
 import { error, redirect } from '@sveltejs/kit';
 import * as v from 'valibot';
 import type { PageServerLoad } from './$types';

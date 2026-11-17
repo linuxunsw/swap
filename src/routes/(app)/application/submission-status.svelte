@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { Badge } from '$lib/components/ui/badge/index.js';
-	import * as Card from '$lib/components/ui/card/index.js';
-	import { STATUS_DISPLAY } from '$lib/constants';
-	import type { ApplicationStatus } from '$lib/constants/application-status';
-	import { formatDate } from '$lib/utils';
+	import { Badge } from '#lib/components/ui/badge/index.js';
+	import * as Card from '#lib/components/ui/card/index.js';
+	import { STATUS_DISPLAY } from '#lib/constants/index.ts';
+	import type { ApplicationStatus } from '#lib/constants/application-status.ts';
+	import { formatDate } from '#lib/utils.ts';
 
 	type Props = {
 		status: ApplicationStatus;

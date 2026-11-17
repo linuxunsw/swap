@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import * as Card from '$lib/components/ui/card/index.js';
+	import * as Card from '#lib/components/ui/card/index.js';
 	import type { PageProps } from './$types';
 	import SendOtpForm from './send-otp-form.svelte';
 	import SignInOtpForm from './sign-in-otp-form.svelte';
@@ -32,7 +32,7 @@
 			<span>
 				Please check your junk or spam folder first. Otherwise,
 				<a
-					href={resolve('/login')}
+					href={resolve('login')}
 					class="font-medium underline underline-offset-2 hover:text-foreground"
 				>
 					click here

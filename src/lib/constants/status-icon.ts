@@ -1,4 +1,4 @@
-import type { ButtonVariant } from '$lib/components/ui/button';
+import type { ButtonVariant } from '#lib/components/ui/button/index.ts';
 import {
 	BadgeCheckIcon,
 	CalendarClockIcon,

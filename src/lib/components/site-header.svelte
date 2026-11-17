@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { PUBLIC_SWAP_GITHUB } from '$env/static/public';
-	import ModeToggle from '$lib/components/mode-toggle.svelte';
-	import { Button } from '$lib/components/ui/button/index.js';
-	import { Separator } from '$lib/components/ui/separator/index.js';
-	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
+	import { PUBLIC_SWAP_GITHUB } from '$app/env/public';
+	import ModeToggle from '#lib/components/mode-toggle.svelte';
+	import { Button } from '#lib/components/ui/button/index.js';
+	import { Separator } from '#lib/components/ui/separator/index.js';
+	import * as Sidebar from '#lib/components/ui/sidebar/index.js';
 
 	const { title } = $props();
 </script>

@@ -1,17 +1,17 @@
-import { log } from '$lib/log';
+import { log } from '#lib/log.ts';
 import {
 	createOrUpdateApplication,
 	getApplication,
 	submitApplication
-} from '$lib/server/controllers/application';
+} from '#lib/server/controllers/application.ts';
 import {
 	getApplicantCycleAccess,
 	getCurrentApplicationCycle
-} from '$lib/server/controllers/application-cycle';
+} from '#lib/server/controllers/application-cycle.ts';
 import {
 	getApplicationSubcommitteeIds,
 	getSubcommitteeOptionsByCycle
-} from '$lib/server/controllers/subcommittee';
+} from '#lib/server/controllers/subcommittee.ts';
 import { error, fail } from '@sveltejs/kit';
 import { redirect } from 'sveltekit-flash-message/server';
 import { message, superValidate } from 'sveltekit-superforms';

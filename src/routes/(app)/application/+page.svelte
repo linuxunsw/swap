@@ -1,7 +1,7 @@
 <script lang="ts">
-	import EmptyApplication from '$lib/components/empty-application.svelte';
-	import { Button } from '$lib/components/ui/button/index.js';
-	import { Separator } from '$lib/components/ui/separator/index.js';
+	import EmptyApplication from '#lib/components/empty-application.svelte';
+	import { Button } from '#lib/components/ui/button/index.js';
+	import { Separator } from '#lib/components/ui/separator/index.js';
 	import PenLineIcon from '@lucide/svelte/icons/pen-line';
 	import type { PageServerData } from './$types';
 	import ApplicationResponses from './application-responses.svelte';

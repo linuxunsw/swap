@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { PUBLIC_TURNSTILE_SITE_KEY } from '$env/static/public';
-	import { Skeleton } from '$lib/components/ui/skeleton';
+	import { PUBLIC_TURNSTILE_SITE_KEY } from '$app/env/public';
+	import { Skeleton } from '#lib/components/ui/skeleton/index.ts';
 	import { mode } from 'mode-watcher';
 	import { onMount } from 'svelte';
 

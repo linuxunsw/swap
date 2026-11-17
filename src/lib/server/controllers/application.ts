@@ -1,4 +1,4 @@
-import type { SwapDb } from '$lib/server/db';
+import type { SwapDb } from '#lib/server/db/index.ts';
 import { and, eq, inArray } from 'drizzle-orm/sql/expressions/conditions';
 import { application, application_subcommittee } from '../db/schema';
 import { getCurrentApplicationCycle, type ApplicationCycleRecord } from './application-cycle';

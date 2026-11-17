@@ -1,9 +1,8 @@
-import { building } from '$app/environment';
-import { getAuth } from '$lib/server/auth';
-import { getDb } from '$lib/server/db';
-import { enforceRateLimit } from '$lib/server/rate-limit';
-import type { Handle } from '@sveltejs/kit';
-import { sequence } from '@sveltejs/kit/hooks';
+import { building } from '$app/env';
+import { getAuth } from '#lib/server/auth.ts';
+import { getDb } from '#lib/server/db/index.ts';
+import { enforceRateLimit } from '#lib/server/rate-limit.ts';
+import { sequence, type Handle } from '@sveltejs/kit/hooks';
 import { svelteKitHandler } from 'better-auth/svelte-kit';
 
 const rateLimitHandler: Handle = async ({ event, resolve }) => {

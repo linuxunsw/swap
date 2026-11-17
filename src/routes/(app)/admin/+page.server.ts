@@ -1,4 +1,4 @@
-import { getCurrentApplicationCycle } from '$lib/server/controllers/application-cycle';
+import { getCurrentApplicationCycle } from '#lib/server/controllers/application-cycle.ts';
 import { redirect } from '@sveltejs/kit';
 import { setFlash } from 'sveltekit-flash-message/server';
 import type { Actions, PageServerLoad } from './$types';

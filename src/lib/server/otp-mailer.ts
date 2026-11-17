@@ -1,6 +1,11 @@
-import { env } from '$env/dynamic/private';
-import { CONSOLE_MAILER, MAILER_FROM_EMAIL, OTP_EXPIRY_MINS } from '$env/static/private';
-import { devOnly, log } from '$lib/log';
+import {
+	RESEND_API_KEY,
+	CONSOLE_MAILER,
+	MAILER_FROM_EMAIL,
+	OTP_EXPIRY_MINS
+} from '$app/env/private';
+
+import { devOnly, log } from '#lib/log.ts';
 import { Resend } from 'resend';
 
 // 5 mins default
@@ -32,7 +37,7 @@ export async function sendOTP(toEmail: string, otp: string): Promise<void> {
 		return;
 	}
 
-	const resend = new Resend(env.RESEND_API_KEY);
+	const resend = new Resend(RESEND_API_KEY);
 
 	if (!resend) {
 		log('error', 'mailer', 'send_otp', {

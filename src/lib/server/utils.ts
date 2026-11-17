@@ -1,4 +1,4 @@
-import { ADMIN_ZIDS } from '$env/static/private';
+import { ADMIN_ZIDS } from '$app/env/private';
 
 function getAdminZids() {
 	return ADMIN_ZIDS.split(',').map((s) => s.trim());

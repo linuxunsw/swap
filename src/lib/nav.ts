@@ -1,4 +1,4 @@
-import type { Pathname } from '$app/types';
+import type { Path } from '$app/types';
 import { CalendarCogIcon, FileStackIcon, UsersIcon } from '@lucide/svelte';
 import ApplicationIcon from '@lucide/svelte/icons/file-text';
 import HouseIcon from '@lucide/svelte/icons/house';
@@ -11,11 +11,7 @@ export type NavGroup = {
 	items: NavItem[];
 };
 
-export type NavItem = {
-	href: Pathname;
-	title: string;
-	icon: Component;
-};
+export type NavItem = { href: Path; title: string; icon: Component };
 
 // route constants
 export const APPLICANT_NAV: NavGroup[] = [
@@ -52,7 +48,7 @@ export function getNavGroups(role?: Role): NavGroup[] {
 	return APPLICANT_NAV;
 }
 
-export function navTitle(pathname: Pathname | string, role?: Role): string {
+export function navTitle(pathname: Path | string, role?: Role): string {
 	const navGroups = getNavGroups(role);
 	for (const { items } of navGroups) {
 		const found = items.find(({ href }) => href === pathname);

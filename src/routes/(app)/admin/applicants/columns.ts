@@ -1,6 +1,6 @@
-import { renderComponent, renderSnippet } from '$lib/components/ui/data-table';
-import type { ApplicationStatus } from '$lib/constants/application-status';
-import type { SubcommitteeOption } from '$lib/server/controllers/subcommittee';
+import { renderComponent, renderSnippet } from '#lib/components/ui/data-table/index.ts';
+import type { ApplicationStatus } from '#lib/constants/application-status.ts';
+import type { SubcommitteeOption } from '#lib/server/controllers/subcommittee.ts';
 import type { ColumnDef } from '@tanstack/table-core';
 import { createRawSnippet } from 'svelte';
 import DataTableActions from './data-table-actions.svelte';

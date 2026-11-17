@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { PUBLIC_SOCIETY_EMAIL } from '$env/static/public';
-	import * as Accordion from '$lib/components/ui/accordion/index.js';
-	import * as Card from '$lib/components/ui/card/index.js';
+	import { PUBLIC_SOCIETY_EMAIL } from '$app/env/public';
+	import * as Accordion from '#lib/components/ui/accordion/index.js';
+	import * as Card from '#lib/components/ui/card/index.js';
 
 	const faqs = [
 		{

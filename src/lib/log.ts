@@ -1,4 +1,4 @@
-import { LOG_DEBUG, LOG_DEV_ONLY } from '$env/static/private';
+import { LOG_DEBUG, LOG_DEV_ONLY } from '$app/env/private';
 const dev = LOG_DEV_ONLY === 'true';
 const debug = LOG_DEBUG === 'true';
 
