@@ -1,9 +1,9 @@
-import { swapBadgeVariants } from '$lib/constants';
+import { swapBadgeVariants } from '#lib/constants/index.ts';
 import {
 	createSubcommittee,
 	getAllSubcommitteeOptions
-} from '$lib/server/controllers/subcommittee';
-import { buildUniqueSubcommitteeId, hasSubcommitteeNameMatch } from '$lib/subcommittee';
+} from '#lib/server/controllers/subcommittee.ts';
+import { buildUniqueSubcommitteeId, hasSubcommitteeNameMatch } from '#lib/subcommittee.ts';
 import { error, json } from '@sveltejs/kit';
 import * as v from 'valibot';
 import type { RequestHandler } from './$types';

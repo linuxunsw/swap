@@ -1,9 +1,9 @@
-import type { SwapDb } from '$lib/server/db';
+import type { SwapDb } from '#lib/server/db/index.ts';
 import {
 	application_subcommittee,
 	applicationCycle_subcommittee,
 	subcommittee
-} from '$lib/server/db/schema';
+} from '#lib/server/db/schema.ts';
 import { eq, getTableColumns } from 'drizzle-orm';
 
 export type SubcommitteeOption = typeof subcommittee.$inferSelect;

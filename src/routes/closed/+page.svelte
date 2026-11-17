@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { PUBLIC_SOCIETY_WEBSITE } from '$env/static/public';
-	import ModeToggle from '$lib/components/mode-toggle.svelte';
-	import { Button } from '$lib/components/ui/button/index.js';
-	import * as Empty from '$lib/components/ui/empty/index.js';
+	import { PUBLIC_SOCIETY_WEBSITE } from '$app/env/public';
+	import ModeToggle from '#lib/components/mode-toggle.svelte';
+	import { Button } from '#lib/components/ui/button/index.js';
+	import * as Empty from '#lib/components/ui/empty/index.js';
 	import CalendarOffIcon from '@lucide/svelte/icons/calendar-off';
 	import LogOutIcon from '@lucide/svelte/icons/log-out';
 	import type { PageServerData } from './$types';

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { Button } from '$lib/components/ui/button/index.js';
-	import * as Empty from '$lib/components/ui/empty/index.js';
+	import { Button } from '#lib/components/ui/button/index.js';
+	import * as Empty from '#lib/components/ui/empty/index.js';
 	import { CalendarSearchIcon, PlusIcon } from '@lucide/svelte/icons';
 	import CycleList from './cycle-list.svelte';
 	let { data } = $props();

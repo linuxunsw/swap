@@ -1,4 +1,4 @@
-import { swapBadgeVariants } from '$lib/constants';
+import { swapBadgeVariants } from '#lib/constants/index.ts';
 import * as v from 'valibot';
 
 export const subcommitteeSchema = v.object({

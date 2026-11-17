@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { Button } from '$lib/components/ui/button/index.js';
-	import * as Command from '$lib/components/ui/command/index.js';
-	import * as Popover from '$lib/components/ui/popover/index.js';
-	import { cn } from '$lib/utils';
+	import { Button } from '#lib/components/ui/button/index.js';
+	import * as Command from '#lib/components/ui/command/index.js';
+	import * as Popover from '#lib/components/ui/popover/index.js';
+	import { cn } from '#lib/utils.ts';
 	import CheckIcon from '@lucide/svelte/icons/check';
 	import SlidersHorizontalIcon from '@lucide/svelte/icons/sliders-horizontal';
 	import type { Table } from '@tanstack/table-core';

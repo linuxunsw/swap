@@ -1,8 +1,8 @@
-import { ZID_REGEX } from '$lib/constants';
-import { log } from '$lib/log';
-import { getAuth } from '$lib/server/auth';
-import { enforceRateLimit } from '$lib/server/rate-limit';
-import { verifyTurnstileToken } from '$lib/server/turnstile';
+import { ZID_REGEX } from '#lib/constants/index.ts';
+import { log } from '#lib/log.ts';
+import { getAuth } from '#lib/server/auth.ts';
+import { enforceRateLimit } from '#lib/server/rate-limit.ts';
+import { verifyTurnstileToken } from '#lib/server/turnstile.ts';
 import { error, fail, redirect } from '@sveltejs/kit';
 import { APIError } from 'better-auth';
 import { message, superValidate } from 'sveltekit-superforms';

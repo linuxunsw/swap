@@ -1,5 +1,5 @@
-import { getApplications } from '$lib/server/controllers/application';
-import { getLatestApplicationCycle } from '$lib/server/controllers/application-cycle';
+import { getApplications } from '#lib/server/controllers/application.ts';
+import { getLatestApplicationCycle } from '#lib/server/controllers/application-cycle.ts';
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 

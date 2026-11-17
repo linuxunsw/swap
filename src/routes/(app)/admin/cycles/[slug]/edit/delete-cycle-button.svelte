@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import ResponsiveAlertDialog from '$lib/components/responsive-alert-dialog/responsive-alert-dialog.svelte';
-	import { Button } from '$lib/components/ui/button/index.js';
+	import ResponsiveAlertDialog from '#lib/components/responsive-alert-dialog/responsive-alert-dialog.svelte';
+	import { Button } from '#lib/components/ui/button/index.js';
 	import { Trash2Icon } from '@lucide/svelte';
 
 	let alertOpen = $state(false);

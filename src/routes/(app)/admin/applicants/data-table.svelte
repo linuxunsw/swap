@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { createSvelteTable, FlexRender } from '$lib/components/ui/data-table/index.js';
-	import * as Table from '$lib/components/ui/table/index.js';
-	import { IsMobile } from '$lib/hooks/is-mobile.svelte';
+	import { createSvelteTable, FlexRender } from '#lib/components/ui/data-table/index.js';
+	import * as Table from '#lib/components/ui/table/index.js';
+	import { IsMobile } from '#lib/hooks/is-mobile.svelte.ts';
 	import {
 		type ColumnDef,
 		type ColumnFiltersState,

@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { Badge } from '$lib/components/ui/badge';
-	import { swapBadgeVariants } from '$lib/constants';
-	import type { SubcommitteeOption } from '$lib/server/controllers/subcommittee';
+	import { Badge } from '#lib/components/ui/badge/index.ts';
+	import { swapBadgeVariants } from '#lib/constants/index.ts';
+	import type { SubcommitteeOption } from '#lib/server/controllers/subcommittee.ts';
 	import { ChevronLeftIcon } from '@lucide/svelte';
 	import {
 		DEFAULT_BADGE_OVERFLOW_SIZING,

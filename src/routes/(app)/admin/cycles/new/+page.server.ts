@@ -1,6 +1,6 @@
-import { log } from '$lib/log';
-import { createCycleWithSubcommittees } from '$lib/server/controllers/application-cycle';
-import { getAllSubcommitteeOptions } from '$lib/server/controllers/subcommittee';
+import { log } from '#lib/log.ts';
+import { createCycleWithSubcommittees } from '#lib/server/controllers/application-cycle.ts';
+import { getAllSubcommitteeOptions } from '#lib/server/controllers/subcommittee.ts';
 import { parseDate } from '@internationalized/date';
 import { error, fail } from '@sveltejs/kit';
 import { redirect } from 'sveltekit-flash-message/server';

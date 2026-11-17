@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
-	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
-	import { getNavGroups } from '$lib/nav';
+	import * as Sidebar from '#lib/components/ui/sidebar/index.js';
+	import { getNavGroups } from '#lib/nav.ts';
 	import SignOutButton from './sign-out-button.svelte';
 	import Separator from './ui/separator/separator.svelte';
 

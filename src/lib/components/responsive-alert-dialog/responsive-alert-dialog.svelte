@@ -1,8 +1,8 @@
 <script lang="ts">
-	import * as AlertDialog from '$lib/components/ui/alert-dialog/index.js';
-	import { Button, buttonVariants, type ButtonVariant } from '$lib/components/ui/button/index.js';
-	import * as Drawer from '$lib/components/ui/drawer/index.js';
-	import { IsMobile } from '$lib/hooks/is-mobile.svelte.js';
+	import * as AlertDialog from '#lib/components/ui/alert-dialog/index.js';
+	import { Button, buttonVariants, type ButtonVariant } from '#lib/components/ui/button/index.js';
+	import * as Drawer from '#lib/components/ui/drawer/index.js';
+	import { IsMobile } from '#lib/hooks/is-mobile.svelte.js';
 	import { TriangleAlertIcon } from '@lucide/svelte';
 
 	let {

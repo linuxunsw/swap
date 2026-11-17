@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { SubcommitteeBadges } from '$lib/components/subcommittee-badges';
-	import { Badge } from '$lib/components/ui/badge';
-	import { Button } from '$lib/components/ui/button/index.js';
-	import * as Table from '$lib/components/ui/table/index.js';
-	import { IsMobile } from '$lib/hooks/is-mobile.svelte';
-	import type { ApplicationCycleWithSubcommittees } from '$lib/server/controllers/application-cycle';
+	import { SubcommitteeBadges } from '#lib/components/subcommittee-badges/index.ts';
+	import { Badge } from '#lib/components/ui/badge/index.ts';
+	import { Button } from '#lib/components/ui/button/index.js';
+	import * as Table from '#lib/components/ui/table/index.js';
+	import { IsMobile } from '#lib/hooks/is-mobile.svelte.ts';
+	import type { ApplicationCycleWithSubcommittees } from '#lib/server/controllers/application-cycle.ts';
 	import { SquarePenIcon } from '@lucide/svelte';
 
 	type Props = {

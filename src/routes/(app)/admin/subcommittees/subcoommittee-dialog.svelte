@@ -4,7 +4,7 @@
 		type ButtonSize,
 		type ButtonVariant,
 		buttonVariants
-	} from '$lib/components/ui/button/index.js';
+	} from '#lib/components/ui/button/index.js';
 	import {
 		ResponsiveDialog,
 		ResponsiveDialogClose,
@@ -14,8 +14,8 @@
 		ResponsiveDialogHeader,
 		ResponsiveDialogTitle,
 		ResponsiveDialogTrigger
-	} from '$lib/components/responsive-dialog/index.js';
-	import type { SubcommitteeOption } from '$lib/server/controllers/subcommittee';
+	} from '#lib/components/responsive-dialog/index.js';
+	import type { SubcommitteeOption } from '#lib/server/controllers/subcommittee.ts';
 	import type { Infer, SuperValidated } from 'sveltekit-superforms';
 	import type { Snippet } from 'svelte';
 	import SubcommitteeForm from './form/subcommittee-form.svelte';

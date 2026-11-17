@@ -1,6 +1,6 @@
-import type { Role } from '$lib/constants';
-import type { SwapSession, SwapUser } from '$lib/server/auth';
-import type { SwapDb } from '$lib/server/db';
+import type { Role } from '#lib/constants/index.ts';
+import type { SwapSession, SwapUser } from '#lib/server/auth.ts';
+import type { SwapDb } from '#lib/server/db/index.ts';
 
 // See https://svelte.dev/docs/kit/types#app.d.ts
 // for information about these interfaces

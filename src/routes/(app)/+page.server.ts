@@ -1,6 +1,6 @@
-import { getApplication } from '$lib/server/controllers/application';
-import { getApplicantCycleAccess } from '$lib/server/controllers/application-cycle';
-import { getApplicationSubcommitteeNames } from '$lib/server/controllers/subcommittee';
+import { getApplication } from '#lib/server/controllers/application.ts';
+import { getApplicantCycleAccess } from '#lib/server/controllers/application-cycle.ts';
+import { getApplicationSubcommitteeNames } from '#lib/server/controllers/subcommittee.ts';
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 

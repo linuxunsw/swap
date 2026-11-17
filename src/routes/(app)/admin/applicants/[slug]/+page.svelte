@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { Badge } from '$lib/components/ui/badge/index.js';
-	import { Button } from '$lib/components/ui/button/index.js';
-	import * as Card from '$lib/components/ui/card/index.js';
-	import { Separator } from '$lib/components/ui/separator/index.js';
-	import { STATUS_DISPLAY } from '$lib/constants';
-	import { formatDate } from '$lib/utils';
+	import { Badge } from '#lib/components/ui/badge/index.js';
+	import { Button } from '#lib/components/ui/button/index.js';
+	import * as Card from '#lib/components/ui/card/index.js';
+	import { Separator } from '#lib/components/ui/separator/index.js';
+	import { STATUS_DISPLAY } from '#lib/constants/index.ts';
+	import { formatDate } from '#lib/utils.ts';
 	import ApplicationResponses from '../../../application/application-responses.svelte';
 	import PersonalInfo from '../../../application/personal-info.svelte';
 	import SelectedSubcommittees from '../../../application/selected-subcommittees.svelte';

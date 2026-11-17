@@ -1,10 +1,10 @@
-import { log } from '$lib/log';
+import { log } from '#lib/log.ts';
 import {
 	deleteApplicationCycle,
 	getApplicationCycleById,
 	updateCycleWithSubcommittees
-} from '$lib/server/controllers/application-cycle';
-import { getAllSubcommitteeOptions } from '$lib/server/controllers/subcommittee';
+} from '#lib/server/controllers/application-cycle.ts';
+import { getAllSubcommitteeOptions } from '#lib/server/controllers/subcommittee.ts';
 import { parseDate } from '@internationalized/date';
 import { error, fail, type Actions } from '@sveltejs/kit';
 import { redirect } from 'sveltekit-flash-message/server';

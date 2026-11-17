@@ -1,5 +1,5 @@
 <script lang="ts">
-	import * as Card from '$lib/components/ui/card/index.js';
+	import * as Card from '#lib/components/ui/card/index.js';
 	import CycleForm from '../../form/cycle-form.svelte';
 	import DeleteCycleButton from './delete-cycle-button.svelte';
 	const { data } = $props();

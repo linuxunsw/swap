@@ -1,4 +1,4 @@
-import { OTP_REGEX, ZID_REGEX } from '$lib/constants';
+import { OTP_REGEX, ZID_REGEX } from '#lib/constants/index.ts';
 import * as v from 'valibot';
 
 export const sendOTPSchema = v.object({

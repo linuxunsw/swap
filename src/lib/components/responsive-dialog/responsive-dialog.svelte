@@ -1,7 +1,7 @@
 <script lang="ts">
-	import * as Dialog from '$lib/components/ui/dialog/index.js';
-	import * as Drawer from '$lib/components/ui/drawer/index.js';
-	import { IsMobile } from '$lib/hooks/is-mobile.svelte.js';
+	import * as Dialog from '#lib/components/ui/dialog/index.js';
+	import * as Drawer from '#lib/components/ui/drawer/index.js';
+	import { IsMobile } from '#lib/hooks/is-mobile.svelte.js';
 	import type { Snippet } from 'svelte';
 	import { setContext } from 'svelte';
 	import {

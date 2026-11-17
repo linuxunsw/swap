@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import AppSidebar from '$lib/components/app-sidebar.svelte';
-	import SiteHeader from '$lib/components/site-header.svelte';
-	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
-	import { navTitle } from '$lib/nav';
+	import AppSidebar from '#lib/components/app-sidebar.svelte';
+	import SiteHeader from '#lib/components/site-header.svelte';
+	import * as Sidebar from '#lib/components/ui/sidebar/index.js';
+	import { navTitle } from '#lib/nav.ts';
 	import { toast } from 'svelte-sonner';
 	import { getFlash } from 'sveltekit-flash-message';
 

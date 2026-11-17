@@ -1,5 +1,5 @@
-import { env } from '$env/dynamic/private';
-import { log } from '$lib/log';
+import { TURNSTILE_SECRET_KEY } from '$app/env/private';
+import { log } from '#lib/log.ts';
 
 const VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 
@@ -13,10 +13,7 @@ export async function verifyTurnstileToken(token: string): Promise<boolean> {
 		const res = await fetch(VERIFY_URL, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-			body: new URLSearchParams({
-				secret: env.TURNSTILE_SECRET_KEY,
-				response: token
-			})
+			body: new URLSearchParams({ secret: TURNSTILE_SECRET_KEY, response: token })
 		});
 
 		const result: TurnstileResult = await res.json();

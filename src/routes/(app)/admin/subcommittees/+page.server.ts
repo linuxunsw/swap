@@ -4,8 +4,8 @@ import {
 	getAllSubcommitteeOptions,
 	getSubcommitteeById,
 	updateSubcommittee
-} from '$lib/server/controllers/subcommittee';
-import { type SwapDb } from '$lib/server/db';
+} from '#lib/server/controllers/subcommittee.ts';
+import { type SwapDb } from '#lib/server/db/index.ts';
 import { error, redirect } from '@sveltejs/kit';
 import {
 	fail,

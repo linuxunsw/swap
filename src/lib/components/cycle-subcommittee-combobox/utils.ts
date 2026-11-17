@@ -1,5 +1,5 @@
-import { swapBadgeVariants } from '$lib/constants';
-import type { SubcommitteeOption } from '$lib/server/controllers/subcommittee';
+import { swapBadgeVariants } from '#lib/constants/index.ts';
+import type { SubcommitteeOption } from '#lib/server/controllers/subcommittee.ts';
 
 export type ComboboxOption = Pick<SubcommitteeOption, 'id' | 'name' | 'colour' | 'description'>;
 

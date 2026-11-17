@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { ResponsiveAlertDialog } from '$lib/components/responsive-alert-dialog/index.js';
-	import * as Form from '$lib/components/ui/form/index.js';
-	import * as InputGroup from '$lib/components/ui/input-group/index.js';
-	import { Input } from '$lib/components/ui/input/index.js';
-	import * as RadioGroup from '$lib/components/ui/radio-group/index.js';
-	import { Spinner } from '$lib/components/ui/spinner';
-	import { Textarea } from '$lib/components/ui/textarea';
-	import { swapBadgeVariants } from '$lib/constants';
+	import { ResponsiveAlertDialog } from '#lib/components/responsive-alert-dialog/index.js';
+	import * as Form from '#lib/components/ui/form/index.js';
+	import * as InputGroup from '#lib/components/ui/input-group/index.js';
+	import { Input } from '#lib/components/ui/input/index.js';
+	import * as RadioGroup from '#lib/components/ui/radio-group/index.js';
+	import { Spinner } from '#lib/components/ui/spinner/index.ts';
+	import { Textarea } from '#lib/components/ui/textarea/index.ts';
+	import { swapBadgeVariants } from '#lib/constants/index.ts';
 	import { CheckIcon, XIcon } from '@lucide/svelte';
 	import { useId } from 'bits-ui';
 	import { toast } from 'svelte-sonner';

@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { ResponsiveAlertDialog } from '$lib/components/responsive-alert-dialog/index.js';
-	import { Button } from '$lib/components/ui/button/index.js';
-	import { Spinner } from '$lib/components/ui/spinner/index.js';
+	import { ResponsiveAlertDialog } from '#lib/components/responsive-alert-dialog/index.js';
+	import { Button } from '#lib/components/ui/button/index.js';
+	import { Spinner } from '#lib/components/ui/spinner/index.js';
 	import { Trash2Icon } from '@lucide/svelte';
 
 	let {
